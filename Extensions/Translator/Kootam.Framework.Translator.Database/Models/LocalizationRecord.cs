@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Kootam.Framework.Translator.Database.Models;
+﻿namespace Kootam.Framework.Translator.Database.Models;
 
 public class LocalizationRecord
 {

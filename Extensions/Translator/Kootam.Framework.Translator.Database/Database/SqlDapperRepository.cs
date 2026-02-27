@@ -3,14 +3,11 @@ using Kootam.Framework.Translator.Abstractions;
 using Kootam.Framework.Translator.Database.Models;
 using Kootam.Framework.Translator.Database.Options;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Kootam.Framework.Translator.Database.Database;
 
-public class SqlDapperRepository: ITranslationStore
+public class SqlDapperRepository : ITranslationStore
 {
     private readonly IDbConnectionFactory _connectionFactory;
     private readonly TranslatorOptions _configuration;

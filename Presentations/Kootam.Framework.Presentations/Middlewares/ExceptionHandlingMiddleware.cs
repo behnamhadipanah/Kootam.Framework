@@ -1,5 +1,4 @@
-﻿using Kootam.Framework.Presentations.Common.Responses;
-using Kootam.Framework.Utilities.Common.Responses;
+﻿using Kootam.Framework.Utilities.Common.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;

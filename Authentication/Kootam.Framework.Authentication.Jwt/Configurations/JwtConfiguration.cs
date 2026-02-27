@@ -1,11 +1,11 @@
 ﻿using Kootam.Framework.Authentication.Jwt.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace Kootam.Framework.Authentication.Jwt.Configurations;
 
@@ -47,8 +47,8 @@ public abstract class JwtConfiguration<T>
     public RefreshToken GenerateRefreshToken(string ipAddress)
     {
 
-        
-        byte[] randomBytes =RandomNumberGenerator.GetBytes(64);
+
+        byte[] randomBytes = RandomNumberGenerator.GetBytes(64);
         return new RefreshToken
         {
             Token = Convert.ToBase64String(randomBytes),

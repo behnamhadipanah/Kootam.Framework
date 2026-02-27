@@ -23,7 +23,7 @@ public class RedisDBConfigs
     /// </summary>
     public RedisDBConfigModel? GetConfig(string name)
     {
-        return Configs.FirstOrDefault(c =>c.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+        return Configs.FirstOrDefault(c => c.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
     }
 
     /// <summary>

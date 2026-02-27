@@ -1,4 +1,5 @@
 ﻿namespace Kootam.Framework.UserManagement.Abstractions;
+
 public interface IUserInfoService
 {
     string GetUserAgent();

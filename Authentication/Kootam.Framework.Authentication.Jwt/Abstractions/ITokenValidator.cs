@@ -1,5 +1,4 @@
-﻿using Kootam.Framework.Authentication.Jwt.Models;
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 
 namespace Kootam.Framework.Authentication.Jwt.Abstractions;

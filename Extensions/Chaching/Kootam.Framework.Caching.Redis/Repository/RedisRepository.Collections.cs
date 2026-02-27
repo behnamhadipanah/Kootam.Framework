@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using StackExchange.Redis;
 
 namespace Kootam.Framework.Caching.Redis.Repository;
 

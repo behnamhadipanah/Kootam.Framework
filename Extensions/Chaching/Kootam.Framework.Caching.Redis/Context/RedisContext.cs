@@ -1,7 +1,7 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Kootam.Framework.Caching.Redis.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using StackExchange.Redis;
-using Kootam.Framework.Caching.Redis.Configuration;
 
 namespace Kootam.Framework.Caching.Redis.Context;
 
@@ -38,8 +38,8 @@ public class RedisContext : IRedisContext
                     config.Name, config.Host, config.Port, config.DBNumber);
 
                 var configOptions = ConfigurationOptions.Parse(config.ToConnectionString());
-                
-                
+
+
                 var connection = ConnectionMultiplexer.Connect(configOptions);
 
                 connection.ConnectionFailed += OnConnectionFailed;

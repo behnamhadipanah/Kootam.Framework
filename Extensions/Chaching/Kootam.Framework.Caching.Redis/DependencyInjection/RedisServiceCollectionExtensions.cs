@@ -6,7 +6,6 @@ using Kootam.Framework.Caching.Redis.HealthChecks;
 using Kootam.Framework.Caching.Redis.Repository;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace Kootam.Framework.Caching.Redis.Extensions;
@@ -32,8 +31,8 @@ public static class RedisCachingServiceCollectionExtensions
         {
             var section = configuration.GetSection(sectionName);
         });
-        
-        
+
+
         services.AddOptions<RedisDBConfigs>()
             .Validate(config =>
             {

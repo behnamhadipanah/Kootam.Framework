@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace Kootam.Framework.Authentication.Jwt.Storages;
 
-public class DistributedCacheTokenStore(IDistributedCache cache,ILogger<DistributedCacheTokenStore> logger) : ITokenStore
+public class DistributedCacheTokenStore(IDistributedCache cache, ILogger<DistributedCacheTokenStore> logger) : ITokenStore
 {
     private readonly TimeSpan _defaultExpiration = TimeSpan.FromDays(7);
 

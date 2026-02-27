@@ -15,7 +15,7 @@ IFormattable
     public BusinessId BusinessId { get; protected set; } = BusinessId.FromGuid(Guid.NewGuid());
     protected BaseEntity()
     {
-        
+
     }
 
     #region Equality Check

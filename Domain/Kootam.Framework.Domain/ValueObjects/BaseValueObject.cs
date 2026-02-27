@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Kootam.Framework.Domain.ValueObjects;
+﻿namespace Kootam.Framework.Domain.ValueObjects;
 
 public abstract class BaseValueObject<TValueObject> : IEquatable<TValueObject>
     where TValueObject : BaseValueObject<TValueObject>

@@ -1,7 +1,4 @@
 ﻿using Kootam.Framework.Authentication.Jwt.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Kootam.Framework.Authentication.Jwt.Abstractions;
 

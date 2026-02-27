@@ -3,14 +3,11 @@ using Kootam.Framework.Infrastructure.ValueConversions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Text;
 
 namespace Kootam.Framework.Infrastructure.Persistence
 {
-    public class BaseCommandDbContext:DbContext
+    public class BaseCommandDbContext : DbContext
     {
         protected IDbContextTransaction _transaction;
 

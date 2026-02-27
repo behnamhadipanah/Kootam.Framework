@@ -1,5 +1,4 @@
-﻿using Kootam.Framework.Authentication.Jwt.Models;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 
 namespace Kootam.Framework.Authentication.Jwt.Abstractions;
 

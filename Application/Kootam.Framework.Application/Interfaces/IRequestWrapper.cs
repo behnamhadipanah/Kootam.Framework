@@ -1,5 +1,4 @@
-﻿using Kootam.Framework.Utilities.Common;
-using Kootam.Framework.Utilities.Common.Responses;
+﻿using Kootam.Framework.Utilities.Common.Responses;
 using MediatR;
 
 

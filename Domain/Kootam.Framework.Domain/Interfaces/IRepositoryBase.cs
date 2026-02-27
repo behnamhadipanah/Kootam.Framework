@@ -1,15 +1,12 @@
 ﻿using Kootam.Framework.Domain.Entities;
-using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Text;
 
 namespace Kootam.Framework.Domain.Interfaces;
 
 
 public interface IRepositoryBase<TEntity, TKey>
     where TEntity : AggregateRoot<TKey>
-    where TKey : struct,IComparable,IComparable<TKey>,IConvertible,IEquatable<TKey>,IFormattable
+    where TKey : struct, IComparable, IComparable<TKey>, IConvertible, IEquatable<TKey>, IFormattable
 {
     #region query by expression
     Task<IList<TEntity>> GetByExpressionAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default, params Expression<Func<TEntity, object>>[] joins);

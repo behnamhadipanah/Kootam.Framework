@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace Kootam.Framework.Authentication.Jwt.Storages;
 
-public class RedisTokenStore(IRedisRepository redisRepository,ILogger<RedisTokenStore> logger) : ITokenStore
+public class RedisTokenStore(IRedisRepository redisRepository, ILogger<RedisTokenStore> logger) : ITokenStore
 {
 
 

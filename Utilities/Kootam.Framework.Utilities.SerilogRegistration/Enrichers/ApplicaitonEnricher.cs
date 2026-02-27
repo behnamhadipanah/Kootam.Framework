@@ -2,14 +2,11 @@
 using Microsoft.Extensions.Options;
 using Serilog.Core;
 using Serilog.Events;
-using System;
-using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
 
 namespace Kootam.Framework.Utilities.SerilogRegistration.Enrichers;
 
-public class ApplicaitonEnricher: ILogEventEnricher
+public class ApplicaitonEnricher : ILogEventEnricher
 {
 
     private readonly SerilogApplicationEnricherOptions _options;

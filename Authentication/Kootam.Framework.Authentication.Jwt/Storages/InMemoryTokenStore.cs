@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Kootam.Framework.Authentication.Jwt.Storages;
 
-public class InMemoryTokenStore(IMemoryCache cache,ILogger<InMemoryTokenStore> logger) : ITokenStore
+public class InMemoryTokenStore(IMemoryCache cache, ILogger<InMemoryTokenStore> logger) : ITokenStore
 {
     private readonly TimeSpan _defaultExpiration = TimeSpan.FromDays(7);
 

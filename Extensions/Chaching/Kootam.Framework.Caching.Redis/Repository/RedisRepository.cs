@@ -1,7 +1,7 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Kootam.Framework.Caching.Redis.Context;
+using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
 using System.Text.Json;
-using Kootam.Framework.Caching.Redis.Context;
 
 namespace Kootam.Framework.Caching.Redis.Repository;
 

@@ -7,9 +7,9 @@ using System.Linq.Expressions;
 
 namespace Kootam.Framework.Infrastructure.Persistence;
 
-public class RepositoryBase<TEntity, TDbContext, TKey> : IRepositoryBase<TEntity, TKey>
+
+public class RepositoryBase<TEntity, TKey> : IRepositoryBase<TEntity, TKey>
     where TEntity : AggregateRoot<TKey>
-    where TDbContext : BaseCommandDbContext
      where TKey : struct,
           IComparable,
           IComparable<TKey>,
@@ -17,8 +17,8 @@ public class RepositoryBase<TEntity, TDbContext, TKey> : IRepositoryBase<TEntity
           IEquatable<TKey>,
           IFormattable
 {
-    private readonly TDbContext _context;
-    public RepositoryBase(TDbContext context)
+    private readonly BaseCommandDbContext _context;
+    public RepositoryBase(BaseCommandDbContext context)
     {
         _context = context;
     }
@@ -31,7 +31,7 @@ public class RepositoryBase<TEntity, TDbContext, TKey> : IRepositoryBase<TEntity
 
     public async Task AddAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
-        await _context.AddAsync<TEntity>(entity,cancellationToken);
+        await _context.AddAsync<TEntity>(entity, cancellationToken);
 
     }
 
@@ -43,7 +43,7 @@ public class RepositoryBase<TEntity, TDbContext, TKey> : IRepositoryBase<TEntity
     }
     public async Task<bool> ExistsAsync(Expression<Func<TEntity, bool>> expression, CancellationToken cancellationToken = default)
     {
-        return await _context.Set<TEntity>().AnyAsync(expression,cancellationToken);
+        return await _context.Set<TEntity>().AnyAsync(expression, cancellationToken);
 
     }
 
@@ -61,7 +61,7 @@ public class RepositoryBase<TEntity, TDbContext, TKey> : IRepositoryBase<TEntity
     public async Task<TEntity> GetByAsync(long id, CancellationToken cancellationToken = default)
     {
 
-        return await _context.FindAsync<TEntity>(id,cancellationToken);
+        return await _context.FindAsync<TEntity>(id, cancellationToken);
 
     }
 

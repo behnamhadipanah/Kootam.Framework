@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Kootam.Framework.Utilities.SerilogRegistration.Options;
+﻿namespace Kootam.Framework.Utilities.SerilogRegistration.Options;
 
 public class SerilogApplicationEnricherOptions
 {

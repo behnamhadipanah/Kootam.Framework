@@ -2,7 +2,7 @@
 {
     public class ArgOutOfRangeException : ArgumentOutOfRangeException
     {
-        public ArgOutOfRangeException() 
+        public ArgOutOfRangeException()
         {
 
         }

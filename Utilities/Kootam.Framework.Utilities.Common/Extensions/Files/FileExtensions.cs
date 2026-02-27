@@ -32,7 +32,7 @@ namespace Kootam.Framework.Utilities.Common.Extensions.Files
             {
                 return string.Empty;
             }
-            
+
 
         }
 

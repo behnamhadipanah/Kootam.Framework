@@ -35,7 +35,7 @@ public static class DateExtensions
         Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
         gregorianDate = new DateTime(year, month, day, new PersianCalendar());
         if (hasClock.HasValue && hasClock.Value) return gregorianDate;
-        
+
         return gregorianDate.Date;
     }
 }

@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
+﻿using Kootam.Framework.Caching.Redis.Context;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
-using Kootam.Framework.Caching.Redis.Context;
 
 namespace Kootam.Framework.Caching.Redis.HealthChecks;
 

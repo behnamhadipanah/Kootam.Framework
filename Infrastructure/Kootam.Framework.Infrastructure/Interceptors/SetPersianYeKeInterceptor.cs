@@ -4,7 +4,7 @@ using System.Data.Common;
 
 namespace Kootam.Framework.Infrastructure.Interceptors;
 
-public class SetPersianYeKeInterceptor: DbCommandInterceptor
+public class SetPersianYeKeInterceptor : DbCommandInterceptor
 {
     public override InterceptionResult<int> NonQueryExecuting(DbCommand command, CommandEventData eventData, InterceptionResult<int> result)
     {

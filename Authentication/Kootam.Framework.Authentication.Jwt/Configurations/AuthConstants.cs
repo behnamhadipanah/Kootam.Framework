@@ -1,6 +1,6 @@
 ﻿namespace Kootam.Framework.Authentication.Jwt.Configurations;
 
-public  class AuthConstants
+public class AuthConstants
 {
     public string Audiance { get; set; } = "KotamGroups";
     public string Key { get; set; } = "*L0V3_h@dip@n@h_Jwt*C0D3*G3N3r4teT0K3N*";

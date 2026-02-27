@@ -4,7 +4,7 @@ using System.Globalization;
 
 namespace Kootam.Framework.Translator.Database.Services;
 
-public sealed class Translator (ITranslationStore store,ILogger<Translator> logger) : ITranslator
+public sealed class Translator(ITranslationStore store, ILogger<Translator> logger) : ITranslator
 {
     private CultureInfo Culture => CultureInfo.CurrentUICulture;
     #region Indexers 
