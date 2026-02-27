@@ -38,3 +38,9 @@
 /Utilities/Kootam.Framework.Utilities.Tools/obj
 /Extensions/Translator/Kootam.Framework.Translator.Database/bin/Debug/net10.0
 /Authentication/Kootam.Framework.Authentication.Jwt/bin/Debug/net10.0
+/Extensions/Abstractions/Kootam.Framework.AutoMap.Abstractions/bin/Debug
+/Extensions/Abstractions/Kootam.Framework.AutoMap.Abstractions/obj
+/Extensions/AutoMap/Kootam.Framework.AutoMap.AutoMapper/bin/Debug
+/Extensions/AutoMap/Kootam.Framework.AutoMap.AutoMapper/obj
+/Extensions/AutoMap/Kootam.Framework.AutoMap.Mapster/bin/Debug
+/Extensions/AutoMap/Kootam.Framework.AutoMap.Mapster/obj
