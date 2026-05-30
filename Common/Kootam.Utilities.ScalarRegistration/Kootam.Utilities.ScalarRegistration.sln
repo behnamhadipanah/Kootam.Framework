@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kootam.Utilities.ScalarRegistration", "Kootam.Utilities.ScalarRegistration\Kootam.Utilities.ScalarRegistration.csproj", "{7C995952-5721-4A28-8774-F6D997F9F3AF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kootam.Utilities.ScalarRegistration.Sample", "Kootam.Utilities.ScalarRegistration.Sample\Kootam.Utilities.ScalarRegistration.Sample.csproj", "{073BD10E-7CB0-4D22-8E96-F1D879277793}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7C995952-5721-4A28-8774-F6D997F9F3AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C995952-5721-4A28-8774-F6D997F9F3AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C995952-5721-4A28-8774-F6D997F9F3AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C995952-5721-4A28-8774-F6D997F9F3AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{073BD10E-7CB0-4D22-8E96-F1D879277793}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{073BD10E-7CB0-4D22-8E96-F1D879277793}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{073BD10E-7CB0-4D22-8E96-F1D879277793}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{073BD10E-7CB0-4D22-8E96-F1D879277793}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

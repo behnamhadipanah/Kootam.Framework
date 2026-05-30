@@ -1,4 +1,4 @@
-﻿using Kootam.Framework.Domain.Interfaces.Markers;
+﻿using Kootam.Framework.Domain.Contracts.Markers;
 using Kootam.Framework.Domain.ValueObjects;
 
 namespace Kootam.Framework.Domain.Entities;

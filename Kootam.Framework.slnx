@@ -2,19 +2,14 @@
   <Folder Name="/Application/">
     <Project Path="Application/Kootam.Framework.Application/Kootam.Framework.Application.csproj" />
   </Folder>
-  <Folder Name="/Authentication/">
-    <Project Path="Authentication/Kootam.Framework.Authentication.Jwt/Kootam.Framework.Authentication.Jwt.csproj" Id="ad38a1cd-9f47-4314-9a54-24a0752fe361" />
+  <Folder Name="/Common/">
+    <Project Path="Common/Kootam.Framework.Abstractions/Kootam.Framework.Abstractions.csproj" />
+    <Project Path="Common/Kootam.Framework.Utilities.Common/Kootam.Framework.Utilities.csproj" />
   </Folder>
   <Folder Name="/Domain/">
     <Project Path="Domain/Kootam.Framework.Domain/Kootam.Framework.Domain.csproj" />
   </Folder>
   <Folder Name="/Extentsions/" />
-  <Folder Name="/Extentsions/Abstractions/">
-    <Project Path="Extensions/Abstractions/Kootam.Framework.AutoMap.Abstractions/Kootam.Framework.AutoMap.Abstractions.csproj" Id="755ba5aa-3bad-4132-b6a3-fcbad49fc6ff" />
-    <Project Path="Extensions/Abstractions/Kootam.Framework.Caching.Abstractions/Kootam.Framework.Caching.Abstractions.csproj" Id="369c6a1d-51a2-4726-b834-0b954515fccb" />
-    <Project Path="Extensions/Abstractions/Kootam.Framework.Translator.Abstractions/Kootam.Framework.Translator.Abstractions.csproj" Id="0aa85235-de13-4c5d-9301-6bf5eaaf146c" />
-    <Project Path="Extensions/Abstractions/Kootam.Framework.UserManagement.Abstractions/Kootam.Framework.UserManagement.Abstractions.csproj" Id="5a0db87b-3f41-444a-baf3-6e28b53b26a2" />
-  </Folder>
   <Folder Name="/Extentsions/AutoMap/">
     <Project Path="Extensions/AutoMap/Kootam.Framework.AutoMap.AutoMapper/Kootam.Framework.AutoMap.AutoMapper.csproj" Id="fea4c0e4-f9a5-4023-8399-e749a69d72d8" />
     <Project Path="Extensions/AutoMap/Kootam.Framework.AutoMap.Mapster/Kootam.Framework.AutoMap.Mapster.csproj" Id="a00756aa-a9a5-460d-8bb0-c550a2d36524" />
@@ -33,10 +28,5 @@
   </Folder>
   <Folder Name="/Presentations/">
     <Project Path="Presentations/Kootam.Framework.Presentations/Kootam.Framework.Presentations.csproj" />
-  </Folder>
-  <Folder Name="/Utilities/">
-    <Project Path="Utilities/Kootam.Framework.Utilities.Common/Kootam.Framework.Utilities.Common.csproj" Id="e38c9a0a-3b10-4a22-94d0-934423a89d19" />
-    <Project Path="Utilities/Kootam.Framework.Utilities.ScalarRegistration/Kootam.Framework.Utilities.ScalarRegistration.csproj" Id="7c03bd5c-8372-453b-ba93-4fe0d50f8add" />
-    <Project Path="Utilities/Kootam.Framework.Utilities.SerilogRegistration/Kootam.Framework.Utilities.SerilogRegistration.csproj" Id="29ca3dee-ec74-44df-9173-0571205b2f15" />
   </Folder>
 </Solution>

@@ -1,0 +1,6 @@
+@Kootam.Extensions.Caching.InMemory.Sample_HostAddress = http://localhost:5249
+
+GET {{Kootam.Extensions.Caching.InMemory.Sample_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

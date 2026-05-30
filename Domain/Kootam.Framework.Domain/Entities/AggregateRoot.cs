@@ -3,7 +3,8 @@ using System.Reflection;
 
 namespace Kootam.Framework.Domain.Entities;
 
-public abstract class AggregateRoot<TKey> : BaseEntity<TKey>, IAggregateRoot where TKey : struct, IComparable, IComparable<TKey>, IConvertible, IEquatable<TKey>, IFormattable
+public abstract class AggregateRoot<TKey> : BaseEntity<TKey>, IAggregateRoot 
+    where TKey : struct, IComparable, IComparable<TKey>, IConvertible, IEquatable<TKey>, IFormattable
 {
     private readonly List<IDomainEvent> _events;
     protected AggregateRoot() => _events = new();

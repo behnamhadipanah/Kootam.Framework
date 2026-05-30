@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+	  <PackageIcon>icon.png</PackageIcon>
+	  <Authors>Behnam Hadipanah</Authors>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.7" />
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.7" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.7" />
+        <PackageReference Include="Microsoft.Extensions.Options" Version="10.0.7" />
+        <PackageReference Include="Scalar.AspNetCore" Version="2.14.6" />
+    </ItemGroup>
+	<ItemGroup>
+    <None Include="icon.png" Pack="true" PackagePath="\" />
+    </ItemGroup>
+</Project>

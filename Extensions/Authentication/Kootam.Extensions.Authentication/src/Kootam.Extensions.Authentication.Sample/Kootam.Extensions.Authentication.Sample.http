@@ -1,0 +1,6 @@
+@Kootam.Extensions.Authentication.Sample_HostAddress = http://localhost:5231
+
+GET {{Kootam.Extensions.Authentication.Sample_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

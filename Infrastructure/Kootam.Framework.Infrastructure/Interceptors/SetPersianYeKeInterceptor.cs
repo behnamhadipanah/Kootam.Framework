@@ -1,4 +1,4 @@
-﻿using Kootam.Framework.Utilities.Common.Extensions;
+﻿using Kootam.Framework.Utilities.Extensions;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using System.Data.Common;
 

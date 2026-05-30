@@ -1,20 +1,28 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-	  <Version>1.0.1</Version>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<Authors>Behnam Hadipanah</Authors>
+		<PackageIcon>icon.png</PackageIcon>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Kootam.Framework.Extensions.Abstractions.UserManagement" Version="1.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.1" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Kootam.Framework.Extensions.Abstractions.UserManagement" Version="1.0.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.8" />
+		<PackageReference Include="System.Security.Cryptography.Xml" Version="10.0.8" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Domain\Kootam.Framework.Domain\Kootam.Framework.Domain.csproj" />
-    <ProjectReference Include="..\..\Utilities\Kootam.Framework.Utilities.Common\Kootam.Framework.Utilities.Common.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\Common\Kootam.Framework.Abstractions\Kootam.Framework.Abstractions.csproj" />
+		<ProjectReference Include="..\..\Common\Kootam.Framework.Utilities.Common\Kootam.Framework.Utilities.csproj" />
+		<ProjectReference Include="..\..\Domain\Kootam.Framework.Domain\Kootam.Framework.Domain.csproj" />
+	</ItemGroup>
+
+
+	<ItemGroup>
+		<None Include="icon.png" Pack="true" PackagePath="\" />
+	</ItemGroup>
 
 </Project>

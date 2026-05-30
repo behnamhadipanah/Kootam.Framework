@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{0DD76CDA-6CC9-450B-ACBC-EC431B13D99D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kootam.Extensions.Authentication.Jwt", "src\Kootam.Extensions.Authentication.Jwt\Kootam.Extensions.Authentication.Jwt.csproj", "{8BEB1843-C13C-42B4-A04F-C839F3E4F015}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kootam.Extensions.Authentication.Jwt.Sample", "src\Kootam.Extensions.Authentication.Jwt.Sample\Kootam.Extensions.Authentication.Jwt.Sample.csproj", "{FF10E9DF-840C-4A89-8959-7BDA307A1AC3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8BEB1843-C13C-42B4-A04F-C839F3E4F015} = {0DD76CDA-6CC9-450B-ACBC-EC431B13D99D}
+		{FF10E9DF-840C-4A89-8959-7BDA307A1AC3} = {0DD76CDA-6CC9-450B-ACBC-EC431B13D99D}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8BEB1843-C13C-42B4-A04F-C839F3E4F015}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BEB1843-C13C-42B4-A04F-C839F3E4F015}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BEB1843-C13C-42B4-A04F-C839F3E4F015}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BEB1843-C13C-42B4-A04F-C839F3E4F015}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF10E9DF-840C-4A89-8959-7BDA307A1AC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF10E9DF-840C-4A89-8959-7BDA307A1AC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF10E9DF-840C-4A89-8959-7BDA307A1AC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF10E9DF-840C-4A89-8959-7BDA307A1AC3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

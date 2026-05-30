@@ -2,7 +2,7 @@
 using Mapster;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Kootam.Framework.AutoMap.Mapster.Extensions;
+namespace Kootam.Framework.AutoMap.Mapster.DependencyInjection;
 
 public static class MapsterCollectionExtensions
 {
