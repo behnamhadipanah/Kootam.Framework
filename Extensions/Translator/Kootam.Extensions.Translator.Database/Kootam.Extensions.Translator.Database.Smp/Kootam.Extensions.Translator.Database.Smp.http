@@ -1,0 +1,6 @@
+@Kootam.Extensions.Translator.Database.Smp_HostAddress = http://localhost:5171
+
+GET {{Kootam.Extensions.Translator.Database.Smp_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

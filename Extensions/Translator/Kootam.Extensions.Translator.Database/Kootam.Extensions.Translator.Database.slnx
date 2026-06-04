@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="Kootam.Extensions.Translator.Database.Smp/Kootam.Extensions.Translator.Database.Smp.csproj" />
+  <Project Path="Kootam.Extensions.Translator.Database/Kootam.Extensions.Translator.Database.csproj" />
+</Solution>

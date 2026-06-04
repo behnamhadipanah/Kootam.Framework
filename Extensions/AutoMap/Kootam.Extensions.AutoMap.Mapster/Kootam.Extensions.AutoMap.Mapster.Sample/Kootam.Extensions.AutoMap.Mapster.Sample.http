@@ -1,0 +1,6 @@
+@Kootam.Extensions.AutoMap.Mapster.Sample_HostAddress = http://localhost:5019
+
+GET {{Kootam.Extensions.AutoMap.Mapster.Sample_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

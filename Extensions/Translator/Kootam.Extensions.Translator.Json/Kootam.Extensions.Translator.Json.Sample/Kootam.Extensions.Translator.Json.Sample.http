@@ -1,0 +1,6 @@
+@Kootam.Extensions.Translator.Json.Sample_HostAddress = http://localhost:5252
+
+GET {{Kootam.Extensions.Translator.Json.Sample_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

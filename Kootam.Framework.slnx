@@ -10,15 +10,6 @@
     <Project Path="Domain/Kootam.Framework.Domain/Kootam.Framework.Domain.csproj" />
   </Folder>
   <Folder Name="/Extentsions/" />
-  <Folder Name="/Extentsions/AutoMap/">
-    <Project Path="Extensions/AutoMap/Kootam.Framework.AutoMap.AutoMapper/Kootam.Framework.AutoMap.AutoMapper.csproj" Id="fea4c0e4-f9a5-4023-8399-e749a69d72d8" />
-    <Project Path="Extensions/AutoMap/Kootam.Framework.AutoMap.Mapster/Kootam.Framework.AutoMap.Mapster.csproj" Id="a00756aa-a9a5-460d-8bb0-c550a2d36524" />
-  </Folder>
-  <Folder Name="/Extentsions/Caching/">
-    <Project Path="Extensions/Chaching/Kootam.Framework.Caching.Memory/Kootam.Framework.Caching.Memory.csproj" Id="915a5f93-b33f-43d1-a250-730b5661fd93" />
-    <Project Path="Extensions/Chaching/Kootam.Framework.Caching.Redis/Kootam.Framework.Caching.Redis.csproj" Id="c7a5e72d-24fa-48bf-adfc-d105582b8765" />
-    <Project Path="Extensions/Chaching/Kootam.Framework.Caching.SqlServer/Kootam.Framework.Caching.SqlServer.csproj" Id="72a7d26a-5b46-4903-82b3-ba3515bc55e4" />
-  </Folder>
   <Folder Name="/Extentsions/Translator/">
     <Project Path="Extensions/Translator/Kootam.Framework.Translator.Database/Kootam.Framework.Translator.Database.csproj" Id="b7cb00f7-5099-42a4-96a0-67365ad6ac68" />
     <Project Path="Extensions/Translator/Kootam.Framework.Translator.Json/Kootam.Framework.Translator.Json.csproj" Id="766e4828-746b-4ad8-93a0-0e7336ff8d3b" />
