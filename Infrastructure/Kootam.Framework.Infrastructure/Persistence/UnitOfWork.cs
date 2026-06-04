@@ -5,45 +5,46 @@ using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Kootam.Framework.Infrastructure.Persistence;
 
-public class UnitOfWork<TDbContext>(BaseCommandDbContext<TDbContext> context, IDbContextTransaction transaction) : IUnitOfWork, IDisposable
+public class UnitOfWork<TDbContext>(BaseCommandDbContext<TDbContext> context) : IUnitOfWork, IDisposable
     where TDbContext:DbContext
 {
+    private IDbContextTransaction? _transaction;
 
     public IDbContextTransaction BeginTransaction()
     {
-        transaction = context.Database.BeginTransaction();
-        return transaction;
+        _transaction = context.Database.BeginTransaction();
+        return _transaction;
     }
 
     public async Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default)
     {
-        transaction = await context.Database.BeginTransactionAsync(cancellationToken);
-        return transaction;
+        _transaction = await context.Database.BeginTransactionAsync(cancellationToken);
+        return _transaction;
     }
 
     public bool CommitTransaction()
     {
         int result = context.SaveChanges();
-        transaction?.Commit();
+        _transaction?.Commit();
         return result > 0;
     }
 
     public async Task<bool> CommitTransactionAsync(CancellationToken cancellationToken = default)
     {
         int result = await context.SaveChangesAsync(cancellationToken);
-        await transaction?.CommitAsync(cancellationToken);
+        await _transaction?.CommitAsync(cancellationToken);
         return result > 0;
     }
 
     public void Dispose()
     {
-        transaction.Dispose();
+        _transaction.Dispose();
         context.Dispose();
     }
 
     public void Rollback()
     {
-        transaction?.Rollback();
+        _transaction?.Rollback();
 
     }
 }
