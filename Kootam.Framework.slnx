@@ -9,11 +9,6 @@
   <Folder Name="/Domain/">
     <Project Path="Domain/Kootam.Framework.Domain/Kootam.Framework.Domain.csproj" />
   </Folder>
-  <Folder Name="/Extentsions/" />
-  <Folder Name="/Extentsions/Translator/">
-    <Project Path="Extensions/Translator/Kootam.Framework.Translator.Database/Kootam.Framework.Translator.Database.csproj" Id="b7cb00f7-5099-42a4-96a0-67365ad6ac68" />
-    <Project Path="Extensions/Translator/Kootam.Framework.Translator.Json/Kootam.Framework.Translator.Json.csproj" Id="766e4828-746b-4ad8-93a0-0e7336ff8d3b" />
-  </Folder>
   <Folder Name="/Infrastructure/">
     <Project Path="Infrastructure/Kootam.Framework.Infrastructure/Kootam.Framework.Infrastructure.csproj" />
   </Folder>
