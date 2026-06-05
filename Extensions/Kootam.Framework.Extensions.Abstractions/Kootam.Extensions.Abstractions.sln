@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kootam.Extensions.UserManag
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kootam.Extensions.Cqrs.Abstractions", "Kootam.Extensions.Cqrs.Abstractions\Kootam.Extensions.Cqrs.Abstractions.csproj", "{4B4E43D9-DB27-4B0B-BF3B-D117331D3E72}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kootam.Extensions.MessageBroker.Abstractions", "Kootam.Extensions.MessageBroker.Abstractions\Kootam.Extensions.MessageBroker.Abstractions.csproj", "{A48230BB-AF4D-4435-B254-F76214707F05}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 		{4B4E43D9-DB27-4B0B-BF3B-D117331D3E72}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4B4E43D9-DB27-4B0B-BF3B-D117331D3E72}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4B4E43D9-DB27-4B0B-BF3B-D117331D3E72}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A48230BB-AF4D-4435-B254-F76214707F05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A48230BB-AF4D-4435-B254-F76214707F05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A48230BB-AF4D-4435-B254-F76214707F05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A48230BB-AF4D-4435-B254-F76214707F05}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
