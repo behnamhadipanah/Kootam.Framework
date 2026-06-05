@@ -1,5 +1,7 @@
 <Solution>
   <Folder Name="/src/">
+    <Project Path="src/Kootam.MessageBroker.RabbitMQ.Sample/Kootam.MessageBroker.RabbitMQ.Sample.csproj" />
     <Project Path="src/Kootam.MessageBroker.RabbitMQ/Kootam.MessageBroker.RabbitMQ.csproj" />
   </Folder>
+  <Folder Name="/tests/" />
 </Solution>

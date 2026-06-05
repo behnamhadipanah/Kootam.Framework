@@ -1,7 +1,7 @@
 ﻿namespace Kootam.MessageBroker.Abstractions.Models;
 
-public class MessageEnvelope<T>
+public sealed class MessageEnvelope<T>
 {
-    public T Payload { get; init; } = default!;
+    public required T Payload { get; init; }
     public MessageMetadata Metadata { get; init; } = new();
 }

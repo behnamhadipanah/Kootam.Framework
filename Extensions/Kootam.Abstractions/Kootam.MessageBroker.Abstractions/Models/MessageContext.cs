@@ -2,7 +2,7 @@
 
 public class MessageContext<T>
 {
-    public T Message { get; init; } = default!;
+    public required T Message { get; init; }
     public MessageMetadata Metadata { get; init; } = new();
     public CancellationToken CancellationToken { get; init; }
 }
