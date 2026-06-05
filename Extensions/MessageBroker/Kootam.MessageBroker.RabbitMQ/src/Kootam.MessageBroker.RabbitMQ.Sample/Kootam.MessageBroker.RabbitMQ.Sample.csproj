@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <UserSecretsId>dotnet-Kootam.MessageBroker.RabbitMQ.Sample-243d544f-40a4-433a-9ccd-d8fe5c158a1b</UserSecretsId>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Kootam.MessageBroker.Abstractions" Version="1.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.8"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Kootam.MessageBroker.RabbitMQ\Kootam.MessageBroker.RabbitMQ.csproj" />
+    </ItemGroup>
+</Project>
