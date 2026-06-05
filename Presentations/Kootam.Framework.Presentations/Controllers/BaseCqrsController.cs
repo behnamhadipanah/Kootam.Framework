@@ -1,6 +1,6 @@
-﻿using Kootam.Extensions.Cqrs.Abstractions.Commands;
-using Kootam.Extensions.Cqrs.Abstractions.Models;
-using Kootam.Extensions.Cqrs.Abstractions.Queries;
+﻿using Kootam.Cqrs.Abstractions.Commands;
+using Kootam.Cqrs.Abstractions.Models;
+using Kootam.Cqrs.Abstractions.Queries;
 using Kootam.Framework.Presentations.Responses;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;

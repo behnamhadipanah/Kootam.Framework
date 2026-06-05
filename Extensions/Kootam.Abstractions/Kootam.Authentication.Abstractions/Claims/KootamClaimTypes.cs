@@ -1,4 +1,4 @@
-﻿namespace Kootam.Extensions.Authentication.Abstractions.Claims;
+﻿namespace Kootam.Authentication.Abstractions.Claims;
 
 public static class KootamClaimTypes
 {

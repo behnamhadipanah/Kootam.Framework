@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Kootam.Extensions.MessageBroker.Abstractions.Models;
+namespace Kootam.MessageBroker.Abstractions.Models;
 
 public class MessageMetadata
 {

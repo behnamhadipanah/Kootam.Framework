@@ -1,4 +1,4 @@
-﻿namespace Kootam.Extensions.Cqrs.Abstractions.Enums;
+﻿namespace Kootam.Cqrs.Abstractions.Enums;
 
 public enum ResultStatus
 {

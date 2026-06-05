@@ -1,0 +1,6 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Kootam.AutoMap.Mapster.Sample/Kootam.AutoMap.Mapster.Sample.csproj" />
+    <Project Path="src/Kootam.AutoMap.Mapster/Kootam.AutoMap.Mapster.csproj" />
+  </Folder>
+</Solution>

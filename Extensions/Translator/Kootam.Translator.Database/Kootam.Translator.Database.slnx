@@ -1,0 +1,6 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Kootam.Translator.Database.Sample/Kootam.Translator.Database.Sample.csproj" />
+    <Project Path="src/Kootam.Translator.Database/Kootam.Translator.Database.csproj" />
+  </Folder>
+</Solution>

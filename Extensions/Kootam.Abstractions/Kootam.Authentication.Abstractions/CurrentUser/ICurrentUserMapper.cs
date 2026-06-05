@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace Kootam.Extensions.Authentication.Abstractions.CurrentUser;
+namespace Kootam.Authentication.Abstractions.CurrentUser;
 
 public interface ICurrentUserMapper<TUser>
 {

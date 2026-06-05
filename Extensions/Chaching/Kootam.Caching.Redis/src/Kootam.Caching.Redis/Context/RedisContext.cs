@@ -1,9 +1,9 @@
-﻿using Kootam.Extensions.Caching.Redis.Configuration;
+﻿using Kootam.Caching.Redis.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using StackExchange.Redis;
 
-namespace Kootam.Extensions.Caching.Redis.Context;
+namespace Kootam.Caching.Redis.Context;
 
 /// <summary>
 /// Redis connection context implementation using StackExchange.Redis

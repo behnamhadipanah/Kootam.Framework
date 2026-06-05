@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace Kootam.Extensions.Translator.Abstractions;
+namespace Kootam.Translator.Abstractions;
 
 public interface ITranslator
 {

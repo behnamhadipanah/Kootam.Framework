@@ -1,7 +1,7 @@
-﻿using Kootam.Extensions.Caching.Abstractions;
+﻿using Kootam.Caching.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Kootam.Extensions.Caching.Redis.Sample.Controllers;
+namespace Kootam.Caching.Redis.Sample.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]

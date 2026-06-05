@@ -1,0 +1,5 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Kootam.MessageBroker.Kafka/Kootam.MessageBroker.Kafka.csproj" />
+  </Folder>
+</Solution>

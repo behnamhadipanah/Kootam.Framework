@@ -1,4 +1,4 @@
-$Solution = "Kootam.Framework.sln"
+$Solution = "Kootam.Framework.slnx"
 $OutputDir = "E:\BackupWork\LocalNugets"
 
 
@@ -19,8 +19,9 @@ dotnet build $Solution -c Release
 
 Write-Host "Looking for class library projects..."
 
-$csprojPaths = Get-ChildItem -Path . -Recurse -Filter *.csproj | Select-Object -ExpandProperty FullName
-
+$csprojPaths = Get-ChildItem -Path . -Recurse -Filter *.csproj |
+    Where-Object { $_.FullName -notmatch '[\\/]Extensions[\\/]' } |
+    Select-Object -ExpandProperty FullName
 $classlibProjects = @()
 
 foreach ($projPath in $csprojPaths) {

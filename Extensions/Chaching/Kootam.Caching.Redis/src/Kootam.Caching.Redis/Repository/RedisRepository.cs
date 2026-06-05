@@ -1,9 +1,9 @@
 ﻿using System.Text.Json;
-using Kootam.Extensions.Caching.Redis.Context;
+using Kootam.Caching.Redis.Context;
 using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
 
-namespace Kootam.Extensions.Caching.Redis.Repository;
+namespace Kootam.Caching.Redis.Repository;
 
 /// <summary>
 /// Redis repository implementation using StackExchange.Redis

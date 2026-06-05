@@ -1,4 +1,4 @@
-﻿namespace Kootam.Extensions.Authentication.Abstractions.Services;
+﻿namespace Kootam.Authentication.Abstractions.Services;
 
 public interface IPasswordHasherService
 {

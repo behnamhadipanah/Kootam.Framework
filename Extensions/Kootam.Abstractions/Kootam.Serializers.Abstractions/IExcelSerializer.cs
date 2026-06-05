@@ -1,4 +1,4 @@
-﻿namespace Kootam.Extensions.Serializers.Abstractions;
+﻿namespace Kootam.Serializers.Abstractions;
 
 public interface IExcelSerializer
 {

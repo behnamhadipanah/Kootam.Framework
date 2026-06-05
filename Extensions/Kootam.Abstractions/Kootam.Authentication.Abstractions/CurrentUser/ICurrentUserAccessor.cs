@@ -1,4 +1,4 @@
-﻿namespace Kootam.Extensions.Authentication.Abstractions.CurrentUser;
+﻿namespace Kootam.Authentication.Abstractions.CurrentUser;
 
 public interface ICurrentUserAccessor
 {

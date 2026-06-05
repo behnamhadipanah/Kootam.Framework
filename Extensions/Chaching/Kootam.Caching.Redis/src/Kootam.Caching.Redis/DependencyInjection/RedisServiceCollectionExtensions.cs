@@ -1,14 +1,14 @@
-﻿using Kootam.Extensions.Caching.Abstractions;
-using Kootam.Extensions.Caching.Redis.Adapter;
-using Kootam.Extensions.Caching.Redis.Configuration;
-using Kootam.Extensions.Caching.Redis.Context;
-using Kootam.Extensions.Caching.Redis.HealthChecks;
-using Kootam.Extensions.Caching.Redis.Repository;
+﻿using Kootam.Caching.Abstractions;
+using Kootam.Caching.Redis.Adapter;
+using Kootam.Caching.Redis.Configuration;
+using Kootam.Caching.Redis.Context;
+using Kootam.Caching.Redis.HealthChecks;
+using Kootam.Caching.Redis.Repository;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
-namespace Kootam.Extensions.Caching.Redis.DependencyInjection;
+namespace Kootam.Caching.Redis.DependencyInjection;
 
 /// <summary>
 /// Extension methods for registering Redis caching services

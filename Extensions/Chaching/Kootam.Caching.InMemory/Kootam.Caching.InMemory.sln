@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{9CDA8890-ABDE-4C8E-B39F-CAC0CBA73EBC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kootam.Caching.InMemory", "src\Kootam.Caching.InMemory\Kootam.Caching.InMemory.csproj", "{4337D68F-2205-4D7D-B47D-43EA5A8DDEB0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kootam.Caching.InMemory.Sample", "src\Kootam.Caching.InMemory.Sample\Kootam.Caching.InMemory.Sample.csproj", "{828DB9BB-8066-4EA1-95B1-A37D5BF6FE3A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4337D68F-2205-4D7D-B47D-43EA5A8DDEB0} = {9CDA8890-ABDE-4C8E-B39F-CAC0CBA73EBC}
+		{828DB9BB-8066-4EA1-95B1-A37D5BF6FE3A} = {9CDA8890-ABDE-4C8E-B39F-CAC0CBA73EBC}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4337D68F-2205-4D7D-B47D-43EA5A8DDEB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4337D68F-2205-4D7D-B47D-43EA5A8DDEB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4337D68F-2205-4D7D-B47D-43EA5A8DDEB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4337D68F-2205-4D7D-B47D-43EA5A8DDEB0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{828DB9BB-8066-4EA1-95B1-A37D5BF6FE3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{828DB9BB-8066-4EA1-95B1-A37D5BF6FE3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{828DB9BB-8066-4EA1-95B1-A37D5BF6FE3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{828DB9BB-8066-4EA1-95B1-A37D5BF6FE3A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

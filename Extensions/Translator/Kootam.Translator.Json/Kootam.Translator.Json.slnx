@@ -1,0 +1,6 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Kootam.Translator.Json.Sample/Kootam.Translator.Json.Sample.csproj" />
+    <Project Path="src/Kootam.Translator.Json/Kootam.Translator.Json.csproj" />
+  </Folder>
+</Solution>

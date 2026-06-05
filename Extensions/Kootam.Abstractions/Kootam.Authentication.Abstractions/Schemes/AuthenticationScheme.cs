@@ -1,4 +1,4 @@
-﻿namespace Kootam.Extensions.Authentication.Abstractions.Schemes;
+﻿namespace Kootam.Authentication.Abstractions.Schemes;
 
 public class AuthenticationScheme
 {

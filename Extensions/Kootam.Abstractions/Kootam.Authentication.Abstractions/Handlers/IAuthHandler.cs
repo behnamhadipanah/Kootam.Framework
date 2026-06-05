@@ -1,7 +1,7 @@
-﻿using Kootam.Extensions.Authentication.Abstractions.Models;
+﻿using Kootam.Authentication.Abstractions.Models;
 using Microsoft.AspNetCore.Http;
 
-namespace Kootam.Extensions.Authentication.Abstractions.Handlers;
+namespace Kootam.Authentication.Abstractions.Handlers;
 
 public interface IAuthHandler
 {

@@ -1,4 +1,4 @@
-$Solution = "Kootam.Extensions.Abstractions.sln"
+$Solution = "Kootam.Abstractions.sln"
 $OutputDir = "E:\BackupWork\LocalNugets"
 
 

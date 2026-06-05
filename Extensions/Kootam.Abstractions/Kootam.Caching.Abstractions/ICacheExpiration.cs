@@ -1,4 +1,4 @@
-﻿namespace Kootam.Extensions.Caching.Abstractions;
+﻿namespace Kootam.Caching.Abstractions;
 
 /// <summary>
 /// TTL / Expiration Operation

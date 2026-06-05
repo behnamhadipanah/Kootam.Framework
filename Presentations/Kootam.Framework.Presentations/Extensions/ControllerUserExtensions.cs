@@ -1,4 +1,4 @@
-﻿using Kootam.Extensions.Authentication.Abstractions.CurrentUser;
+﻿using Kootam.Authentication.Abstractions.CurrentUser;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 

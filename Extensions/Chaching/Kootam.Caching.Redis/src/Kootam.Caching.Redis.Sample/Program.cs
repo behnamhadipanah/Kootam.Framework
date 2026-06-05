@@ -1,4 +1,4 @@
-using Kootam.Extensions.Caching.Redis.DependencyInjection;
+using Kootam.Caching.Redis.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 

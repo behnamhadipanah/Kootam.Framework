@@ -1,6 +1,6 @@
-﻿using Kootam.Extensions.Cqrs.Abstractions.Enums;
+﻿using Kootam.Cqrs.Abstractions.Enums;
 
-namespace Kootam.Extensions.Cqrs.Abstractions.Models;
+namespace Kootam.Cqrs.Abstractions.Models;
 
 public class Result
 {

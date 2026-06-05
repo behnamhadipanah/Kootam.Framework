@@ -1,9 +1,9 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Kootam.Caching.Redis.Configuration;
+using Kootam.Caching.Redis.DependencyInjection;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using Kootam.Extensions.Caching.Redis.Configuration;
 using Xunit;
-using Kootam.Extensions.Caching.Redis.DependencyInjection;
 
 namespace Kootam.Extensions.Caching.Redis.UnitTest;
 

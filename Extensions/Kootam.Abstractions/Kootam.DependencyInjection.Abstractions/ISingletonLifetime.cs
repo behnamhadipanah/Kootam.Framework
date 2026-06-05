@@ -1,4 +1,4 @@
-﻿namespace Kootam.Extensions.DependencyInjection.Abstractions;
+﻿namespace Kootam.DependencyInjection.Abstractions;
 
 public interface ISingletonLifetime
 {

@@ -1,4 +1,4 @@
-﻿namespace Kootam.Extensions.Cqrs.Abstractions.Behaviors;
+﻿namespace Kootam.Cqrs.Abstractions.Behaviors;
 
 
 public delegate Task<TResponse> RequestHandlerDelegate<TResponse>();

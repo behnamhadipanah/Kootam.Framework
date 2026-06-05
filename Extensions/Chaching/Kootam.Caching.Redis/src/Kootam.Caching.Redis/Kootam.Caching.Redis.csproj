@@ -6,6 +6,7 @@
 		<Nullable>enable</Nullable>
 		<Authors>Behnam Hadipanah</Authors>
 		<PackageIcon>icon.png</PackageIcon>
+		<RootNamespace>Kootam.Caching.Redis</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

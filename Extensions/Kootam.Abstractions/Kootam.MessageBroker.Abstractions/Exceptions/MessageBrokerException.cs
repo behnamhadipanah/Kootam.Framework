@@ -1,4 +1,4 @@
-﻿namespace Kootam.Extensions.MessageBroker.Abstractions.Exceptions;
+﻿namespace Kootam.MessageBroker.Abstractions.Exceptions;
 
 public class MessageBrokerException : Exception
 {

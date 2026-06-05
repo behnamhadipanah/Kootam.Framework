@@ -1,6 +1,6 @@
-﻿using Kootam.Extensions.MessageBroker.Abstractions.Models;
+﻿using Kootam.MessageBroker.Abstractions.Models;
 
-namespace Kootam.Extensions.MessageBroker.Abstractions.Contracts;
+namespace Kootam.MessageBroker.Abstractions.Contracts;
 
 public interface IMessageSubscriber
 {

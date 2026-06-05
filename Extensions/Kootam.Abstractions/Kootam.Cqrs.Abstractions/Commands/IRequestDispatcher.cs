@@ -1,6 +1,6 @@
-﻿using Kootam.Extensions.Cqrs.Abstractions.Models;
+﻿using Kootam.Cqrs.Abstractions.Models;
 
-namespace Kootam.Extensions.Cqrs.Abstractions.Commands;
+namespace Kootam.Cqrs.Abstractions.Commands;
 
 public interface IRequestDispatcher
 {

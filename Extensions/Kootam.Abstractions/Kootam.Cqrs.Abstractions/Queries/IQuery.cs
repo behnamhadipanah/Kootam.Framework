@@ -1,4 +1,4 @@
-﻿namespace Kootam.Extensions.Cqrs.Abstractions.Queries;
+﻿namespace Kootam.Cqrs.Abstractions.Queries;
 
 public interface IQuery<TResult>
 {

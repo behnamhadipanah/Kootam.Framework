@@ -1,4 +1,4 @@
-﻿using Kootam.Extensions.Cqrs.Abstractions.Queries;
+﻿using Kootam.Cqrs.Abstractions.Queries;
 
 namespace Kootam.Framework.Abstractions;
 

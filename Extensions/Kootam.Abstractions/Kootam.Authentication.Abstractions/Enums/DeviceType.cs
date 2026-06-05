@@ -1,4 +1,4 @@
-﻿namespace Kootam.Extensions.Authentication.Abstractions.Enums;
+﻿namespace Kootam.Authentication.Abstractions.Enums;
 
 public enum DeviceType
 {

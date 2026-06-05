@@ -1,8 +1,8 @@
-﻿using Kootam.Extensions.Caching.Redis.Context;
+﻿using Kootam.Caching.Redis.Context;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
 
-namespace Kootam.Extensions.Caching.Redis.HealthChecks;
+namespace Kootam.Caching.Redis.HealthChecks;
 
 /// <summary>
 /// Health check for Redis connectivity

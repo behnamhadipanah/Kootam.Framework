@@ -1,4 +1,4 @@
-﻿namespace Kootam.Extensions.UserManagement.Abstractions;
+﻿namespace Kootam.UserManagement.Abstractions;
 
 public class FakeUserInfoService : IUserInfoService
 {

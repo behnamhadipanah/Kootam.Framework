@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using Kootam.Extensions.Cqrs.Abstractions.Enums;
-using Kootam.Extensions.Cqrs.Abstractions.Models;
+using Kootam.Cqrs.Abstractions.Enums;
+using Kootam.Cqrs.Abstractions.Models;
+
 using Kootam.Framework.Utilities.Responses;
 
 

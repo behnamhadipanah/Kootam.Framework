@@ -1,8 +1,8 @@
-﻿using Kootam.Extensions.Caching.Abstractions;
-using Kootam.Extensions.Caching.InMemory.Adapter;
+﻿using Kootam.Caching.InMemory.Adapter;
+using Kootam.Caching.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Kootam.Extensions.Caching.InMemory.DependencyInjection;
+namespace Kootam.Caching.InMemory.DependencyInjection;
 
 public static class InMemoryCachingServiceCollectionExtensions
 {

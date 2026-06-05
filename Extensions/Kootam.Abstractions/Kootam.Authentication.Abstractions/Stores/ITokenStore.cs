@@ -1,6 +1,6 @@
-﻿using Kootam.Extensions.Authentication.Abstractions.Models;
+﻿using Kootam.Authentication.Abstractions.Models;
 
-namespace Kootam.Extensions.Authentication.Abstractions.Stores;
+namespace Kootam.Authentication.Abstractions.Stores;
 
 public interface ITokenStore
 {

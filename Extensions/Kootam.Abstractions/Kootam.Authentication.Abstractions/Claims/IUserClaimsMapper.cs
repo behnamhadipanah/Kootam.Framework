@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace Kootam.Extensions.Authentication.Abstractions.Claims;
+namespace Kootam.Authentication.Abstractions.Claims;
 
 public interface IUserClaimsMapper<TUser>
 {

@@ -1,4 +1,4 @@
-﻿namespace Kootam.Extensions.Caching.Redis.Repository;
+﻿namespace Kootam.Caching.Redis.Repository;
 
 /// <summary>
 /// Repository for Redis operations with support for multiple databases

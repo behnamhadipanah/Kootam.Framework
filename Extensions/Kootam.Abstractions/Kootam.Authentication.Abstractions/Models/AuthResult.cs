@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace Kootam.Extensions.Authentication.Abstractions.Models;
+namespace Kootam.Authentication.Abstractions.Models;
 
 public class AuthResult
 {

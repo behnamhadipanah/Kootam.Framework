@@ -1,7 +1,7 @@
 ﻿using System.Collections.Concurrent;
-using Kootam.Extensions.Caching.Abstractions;
+using Kootam.Caching.Abstractions;
 
-namespace Kootam.Extensions.Caching.InMemory.Adapter;
+namespace Kootam.Caching.InMemory.Adapter;
 
 public class InMemoryCacheAdapter : ICacheStore
 {

@@ -1,6 +1,6 @@
 ﻿using StackExchange.Redis;
 
-namespace Kootam.Extensions.Caching.Redis.Context;
+namespace Kootam.Caching.Redis.Context;
 
 /// <summary>
 /// Redis connection context for managing multiple Redis database connections

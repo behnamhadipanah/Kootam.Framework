@@ -1,8 +1,8 @@
 ﻿using Kootam.Caching.Abstractions;
-using Kootam.Extensions.Caching.InMemory.Sample.Dtos;
+using Kootam.Caching.InMemory.Sample.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Kootam.Extensions.Caching.InMemory.Sample.Controllers;
+namespace Kootam.Caching.InMemory.Sample.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]

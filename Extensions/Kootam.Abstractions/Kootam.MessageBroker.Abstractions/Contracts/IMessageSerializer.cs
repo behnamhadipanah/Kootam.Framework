@@ -1,4 +1,4 @@
-﻿namespace Kootam.Extensions.MessageBroker.Abstractions.Contracts;
+﻿namespace Kootam.MessageBroker.Abstractions.Contracts;
 
 public interface IMessageSerializer
 {

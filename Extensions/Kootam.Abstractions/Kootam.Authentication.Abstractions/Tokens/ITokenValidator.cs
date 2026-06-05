@@ -1,8 +1,8 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
-using Kootam.Extensions.Authentication.Abstractions.Enums;
+using Kootam.Authentication.Abstractions.Enums;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Kootam.Extensions.Authentication.Abstractions.Tokens;
+namespace Kootam.Authentication.Abstractions.Tokens;
 
 public interface ITokenValidator
 {

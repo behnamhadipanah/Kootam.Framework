@@ -1,0 +1,5 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="Kootam.MessageBroker.AzureServiceBus/Kootam.MessageBroker.AzureServiceBus.csproj" />
+  </Folder>
+</Solution>

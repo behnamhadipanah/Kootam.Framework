@@ -1,8 +1,8 @@
-﻿using Kootam.Extensions.Caching.Abstractions;
-using Kootam.Extensions.Caching.Redis.Repository;
+﻿using Kootam.Caching.Abstractions;
+using Kootam.Caching.Redis.Repository;
 using Microsoft.Extensions.Logging;
 
-namespace Kootam.Extensions.Caching.Redis.Adapter;
+namespace Kootam.Caching.Redis.Adapter;
 
 /// <summary>
 /// High-level cache adapter implementation

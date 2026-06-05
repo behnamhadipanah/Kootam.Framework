@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 
-namespace Kootam.Extensions.Caching.Redis.Repository;
+namespace Kootam.Caching.Redis.Repository;
 
 /// <summary>
 /// Redis List, Set, and Sorted Set operations (Collections)

@@ -1,6 +1,6 @@
-﻿using Kootam.Extensions.Authentication.Abstractions.Models;
+﻿using Kootam.Authentication.Abstractions.Models;
 
-namespace Kootam.Extensions.Authentication.Abstractions.Tokens;
+namespace Kootam.Authentication.Abstractions.Tokens;
 
 public interface ITokenGenerator<TUser>
 {

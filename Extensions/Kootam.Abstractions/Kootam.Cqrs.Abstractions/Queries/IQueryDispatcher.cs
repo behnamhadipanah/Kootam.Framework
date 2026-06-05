@@ -1,6 +1,6 @@
-﻿using Kootam.Extensions.Cqrs.Abstractions.Models;
+﻿using Kootam.Cqrs.Abstractions.Models;
 
-namespace Kootam.Extensions.Cqrs.Abstractions.Queries;
+namespace Kootam.Cqrs.Abstractions.Queries;
 
 public interface IQueryDispatcher
 {

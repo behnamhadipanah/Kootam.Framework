@@ -1,5 +1,4 @@
-﻿
-namespace Kootam.Extensions.Cqrs.Abstractions.Commands;
+﻿namespace Kootam.Cqrs.Abstractions.Commands;
 
 public interface IRequest
 {

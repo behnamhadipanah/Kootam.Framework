@@ -1,4 +1,4 @@
-﻿namespace Kootam.Extensions.AutoMap.Abstractions;
+﻿namespace Kootam.AutoMap.Abstractions;
 
 public interface IMapper
 {

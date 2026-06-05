@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Kootam.Extensions.AutoMap.Abstractions" Version="1.0.0" />
+    <PackageReference Include="Kootam.AutoMap.Abstractions" Version="1.0.0" />
     <PackageReference Include="Mapster" Version="10.0.7" />
     <PackageReference Include="Mapster.DependencyInjection" Version="10.0.7" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="10.0.8" />

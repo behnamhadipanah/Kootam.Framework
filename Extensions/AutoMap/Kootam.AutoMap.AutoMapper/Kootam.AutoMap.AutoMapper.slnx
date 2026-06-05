@@ -1,4 +1,6 @@
 <Solution>
-  <Project Path="Kootam.AutoMap.AutoMapper.Sample/Kootam.AutoMap.AutoMapper.Sample.csproj" />
-  <Project Path="Kootam.AutoMap.AutoMapper/Kootam.AutoMap.AutoMapper.csproj" />
+  <Folder Name="/src/">
+    <Project Path="src/Kootam.AutoMap.AutoMapper.Sample/Kootam.AutoMap.AutoMapper.Sample.csproj" />
+    <Project Path="src/Kootam.AutoMap.AutoMapper/Kootam.AutoMap.AutoMapper.csproj" />
+  </Folder>
 </Solution>

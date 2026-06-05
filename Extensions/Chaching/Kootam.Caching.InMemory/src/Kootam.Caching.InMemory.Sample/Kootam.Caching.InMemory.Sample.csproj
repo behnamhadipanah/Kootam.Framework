@@ -4,11 +4,11 @@
         <TargetFramework>net10.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <RootNamespace>Kootam.Extensions.Caching.InMemory.Sample</RootNamespace>
+        <RootNamespace>Kootam.Caching.InMemory.Sample</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Kootam.Extensions.Caching.Abstractions" Version="1.0.0" />
+        <PackageReference Include="Kootam.Caching.Abstractions" Version="1.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.8" />
     </ItemGroup>
 

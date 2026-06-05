@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Kootam.Extensions.Caching.Redis.Configuration;
+namespace Kootam.Caching.Redis.Configuration;
 
 /// <summary>
 /// Configuration model for a single Redis database connection

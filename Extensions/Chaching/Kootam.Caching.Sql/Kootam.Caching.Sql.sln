@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{19D53EF4-A899-4094-A392-3BE6CED5D4B9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kootam.Caching.Sql", "src\Kootam.Caching.Sql\Kootam.Caching.Sql.csproj", "{20AAAF32-6EB4-4721-A30A-E74F78A12E9E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kootam.Caching.Sql.Sample", "src\Kootam.Caching.Sql.Sample\Kootam.Caching.Sql.Sample.csproj", "{76B7152B-EF5F-4BB8-B6F1-3FD2217DC6F0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{4D330E4D-664E-4AFE-ADFA-322BE515A98D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{20AAAF32-6EB4-4721-A30A-E74F78A12E9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20AAAF32-6EB4-4721-A30A-E74F78A12E9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20AAAF32-6EB4-4721-A30A-E74F78A12E9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20AAAF32-6EB4-4721-A30A-E74F78A12E9E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76B7152B-EF5F-4BB8-B6F1-3FD2217DC6F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76B7152B-EF5F-4BB8-B6F1-3FD2217DC6F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76B7152B-EF5F-4BB8-B6F1-3FD2217DC6F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76B7152B-EF5F-4BB8-B6F1-3FD2217DC6F0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{20AAAF32-6EB4-4721-A30A-E74F78A12E9E} = {19D53EF4-A899-4094-A392-3BE6CED5D4B9}
+		{76B7152B-EF5F-4BB8-B6F1-3FD2217DC6F0} = {19D53EF4-A899-4094-A392-3BE6CED5D4B9}
+	EndGlobalSection
+EndGlobal
