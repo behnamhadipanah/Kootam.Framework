@@ -1,4 +1,4 @@
-﻿using Kootam.Extensions.Caching.Abstractions;
+﻿using Kootam.Caching.Abstractions;
 using Kootam.Extensions.Caching.InMemory.Sample.Dtos;
 using Microsoft.AspNetCore.Mvc;
 

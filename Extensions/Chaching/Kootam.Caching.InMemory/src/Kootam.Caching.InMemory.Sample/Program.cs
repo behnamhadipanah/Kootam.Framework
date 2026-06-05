@@ -1,4 +1,4 @@
-using Kootam.Extensions.Caching.InMemory.DependencyInjection;
+using Kootam.Caching.InMemory.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 

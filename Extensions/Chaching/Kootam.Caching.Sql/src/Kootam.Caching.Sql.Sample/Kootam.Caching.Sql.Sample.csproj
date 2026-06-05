@@ -10,14 +10,4 @@
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.8" />
     </ItemGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\Kootam.Caching.Redis\Kootam.Caching.Redis.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Content Update="appsettings.Development.json">
-        <DependentUpon>appsettings.json</DependentUpon>
-      </Content>
-    </ItemGroup>
-
 </Project>

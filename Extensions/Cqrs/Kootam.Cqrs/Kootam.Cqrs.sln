@@ -1,8 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kootam.Extensions.Cqrs", "Kootam.Extensions.Cqrs\Kootam.Extensions.Cqrs.csproj", "{07737176-E40E-4A3E-97E7-12BA767363D7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kootam.Cqrs", "src\Kootam.Cqrs\Kootam.Cqrs.csproj", "{07737176-E40E-4A3E-97E7-12BA767363D7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kootam.Extensions.Cqrs.Sample", "Kootam.Extensions.Cqrs.Sample\Kootam.Extensions.Cqrs.Sample.csproj", "{2B3B6F5B-E348-43A5-9A9F-3CA2C916F61A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kootam.Cqrs.Sample", "src\Kootam.Cqrs.Sample\Kootam.Cqrs.Sample.csproj", "{2B3B6F5B-E348-43A5-9A9F-3CA2C916F61A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{16A5E6CD-187A-4B50-A5CD-83BDED7EA504}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,5 +20,9 @@ Global
 		{2B3B6F5B-E348-43A5-9A9F-3CA2C916F61A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B3B6F5B-E348-43A5-9A9F-3CA2C916F61A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B3B6F5B-E348-43A5-9A9F-3CA2C916F61A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{07737176-E40E-4A3E-97E7-12BA767363D7} = {16A5E6CD-187A-4B50-A5CD-83BDED7EA504}
+		{2B3B6F5B-E348-43A5-9A9F-3CA2C916F61A} = {16A5E6CD-187A-4B50-A5CD-83BDED7EA504}
 	EndGlobalSection
 EndGlobal
