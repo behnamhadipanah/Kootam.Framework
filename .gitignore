@@ -153,3 +153,5 @@
 /Extensions/AutoMap/Kootam.Extensions.AutoMap.Mapster/Kootam.Extensions.AutoMap.Mapster/bin/Release/net10.0
 /Extensions/Translator/Kootam.Extensions.Translator.Database/Kootam.Extensions.Translator.Database/bin/Release/net10.0
 /Extensions/Translator/Kootam.Extensions.Translator.Json/Kootam.Extensions.Translator.Json/bin/Release/net10.0
+/Extensions/Kootam.Framework.Extensions.Abstractions/Kootam.Extensions.MessageBroker.Abstractions/bin/Debug/net10.0
+/Extensions/Kootam.Framework.Extensions.Abstractions/Kootam.Extensions.MessageBroker.Abstractions/obj
