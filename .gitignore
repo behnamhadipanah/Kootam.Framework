@@ -156,3 +156,12 @@
 /Extensions/Kootam.Framework.Extensions.Abstractions/Kootam.Extensions.MessageBroker.Abstractions/bin/Debug/net10.0
 /Extensions/Kootam.Framework.Extensions.Abstractions/Kootam.Extensions.MessageBroker.Abstractions/obj
 /Extensions/Kootam.Framework.Extensions.Abstractions/Kootam.Extensions.MessageBroker.Abstractions/bin/Debug
+/Extensions/Authentication/Kootam.Authentication/.idea/.idea.Kootam.Extensions.Authentication/.idea
+/Extensions/Authentication/Kootam.Authentication/.vs
+/Extensions/Authentication/Kootam.Authentication/src/Kootam.Extensions.Authentication/bin
+/Extensions/Authentication/Kootam.Authentication/src/Kootam.Extensions.Authentication/obj
+/Extensions/Authentication/Kootam.Authentication/src/Kootam.Extensions.Authentication.Sample/bin
+/Extensions/Authentication/Kootam.Authentication/src/Kootam.Extensions.Authentication.Sample/obj
+/Extensions/Authentication/Kootam.Authentication.Jwt/.idea/.idea.Kootam.Extensions.Authentication.Jwt/.idea
+/Extensions/Authentication/Kootam.Authentication.Jwt/.vs
+/Extensions/Authentication/Kootam.Authentication.Jwt/src/Kootam.Extensions.Authentication.Jwt/bin
