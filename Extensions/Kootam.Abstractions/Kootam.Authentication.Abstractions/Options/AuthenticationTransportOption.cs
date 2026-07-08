@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace Kootam.Authentication.Abstractions.Options;
 
-public class AuthenticationTransportOptions
+public class AuthenticationTransportOption
 {
     public TransportMode Mode { get; set; } = TransportMode.AuthorizationHeader;
 

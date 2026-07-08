@@ -7,23 +7,23 @@ namespace Kootam.Authentication.TokenStores;
 
 public sealed class SessionWriter : ITokenStore
 {
-    private readonly AuthenticationTransportOptions _options;
+    private readonly AuthenticationTransportOption _options;
 
-    public SessionWriter(IOptions<AuthenticationTransportOptions> options)
+    public SessionWriter(IOptions<AuthenticationTransportOption> options)
     {
         _options = options.Value;
     }
 
-    public Task SignInAsync(HttpContext context, CredentialsOptions data)
+    public Task SignInAsync(HttpContext context, TokenStoreOption data)
     {
         context.Session.SetString( _options.AccessTokenKey,
             data.AccessToken);
 
-        if (!string.IsNullOrWhiteSpace(data.RefreshToken))
+        if (data.RefreshToken is not null)
         {
             context.Session.SetString(
                 _options.RefreshTokenKey,
-                data.RefreshToken);
+                data.RefreshToken.Token);
         }
 
         return Task.CompletedTask;

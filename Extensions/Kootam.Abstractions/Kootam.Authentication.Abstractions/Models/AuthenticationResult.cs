@@ -2,7 +2,7 @@
 
 namespace Kootam.Authentication.Abstractions.Models;
 
-public class AuthResult
+public class AuthenticationResult
 {
     public bool Succeeded { get; set; }
 
@@ -10,9 +10,9 @@ public class AuthResult
 
     public string? FailureMessage { get; set; }
 
-    public static AuthResult Success(ClaimsPrincipal principal)
+    public static AuthenticationResult Success(ClaimsPrincipal principal)
         => new() { Succeeded = true, Principal = principal };
 
-    public static AuthResult Fail(string message)
+    public static AuthenticationResult Fail(string message)
         => new() { Succeeded = false, FailureMessage = message };
 }

@@ -7,9 +7,9 @@ namespace Kootam.Authentication.TokenReaders;
 
 public sealed class CookieReader:ITokenReader
 {
-    private readonly AuthenticationTransportOptions _options;
+    private readonly AuthenticationTransportOption _options;
 
-    public CookieReader(IOptions<AuthenticationTransportOptions> options)
+    public CookieReader(IOptions<AuthenticationTransportOption> options)
     {
         _options = options.Value;
     }

@@ -48,7 +48,7 @@ public static class JwtExtensions
     {
         services.AddScoped<ITokenValidator, JwtTokenValidator>();
 
-        services.AddScoped<IAuthHandler, JwtAuthHandler>();
+        services.AddScoped<IAuthenticateHandler, JwtAuthHandler>();
 
         services.AddScoped<ITokenGenerator<TUser>, JwtTokenGenerator<TUser>>();
     }

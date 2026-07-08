@@ -7,36 +7,30 @@ using Microsoft.AspNetCore.Http;
 
 namespace Kootam.Authentication.Jwt.Handlers;
 
-public class JwtAuthHandler : IAuthHandler
+public class JwtAuthHandler : IAuthenticateHandler
 {
     private readonly ITokenValidator _validator;
+    private readonly ITokenReader _reader;
 
     public string Scheme => "Jwt";
 
-    public JwtAuthHandler(ITokenValidator validator)
+    public JwtAuthHandler(ITokenValidator validator, ITokenReader reader)
     {
         _validator = validator;
+        _reader = reader;
     }
 
-    public async Task<AuthResult> AuthenticateAsync(HttpContext context)
+    public async Task<AuthenticationResult> AuthenticateAsync(HttpContext context)
     {
-        var header = context.Request.Headers["Authorization"].FirstOrDefault();
-
-        if (string.IsNullOrEmpty(header))
-            return AuthResult.Fail("Missing Authorization header");
-
-        if (!header.StartsWith("Bearer "))
-            return AuthResult.Fail("Invalid scheme");
-
-        var token = header.Substring("Bearer ".Length);
-
+        string token=await _reader.ReadAsync(context);
+        
         var result = await _validator.ValidateTokenAsync(token, DeviceType.Desktop);
 
         if (!result.IsValid)
-            return AuthResult.Fail("Invalid token");
+            return AuthenticationResult.Fail("Invalid token");
 
         var principal = new ClaimsPrincipal(result.ClaimsIdentity);
 
-        return AuthResult.Success(principal);
+        return AuthenticationResult.Success(principal);
     }
 }

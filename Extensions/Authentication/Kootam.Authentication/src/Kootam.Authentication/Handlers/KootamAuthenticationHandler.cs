@@ -11,7 +11,7 @@ public class KootamAuthenticationHandler(
     ILoggerFactory logger,
     UrlEncoder encoder,
     ISystemClock clock,
-    IEnumerable<IAuthHandler> handlers)
+    IEnumerable<IAuthenticateHandler> handlers)
     : AuthenticationHandler<AuthenticationSchemeOptions>(options, logger, encoder, clock)
 {
     protected override async Task<AuthenticateResult> HandleAuthenticateAsync()

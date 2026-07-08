@@ -15,7 +15,7 @@ public static class AuthenticationExtensions
 
     public static AuthenticationBuilder AddKootamAuthentication(
         this IServiceCollection services,
-        Action<AuthenticationTransportOptions>? configure = null)
+        Action<AuthenticationTransportOption>? configure = null)
     {
         RegisterCoreServices(services);
 
@@ -33,7 +33,7 @@ public static class AuthenticationExtensions
     public static AuthenticationBuilder AddKootamAuthentication(
         this IServiceCollection services,
         string scheme,
-        Action<AuthenticationTransportOptions>? configure = null)
+        Action<AuthenticationTransportOption>? configure = null)
     {
         RegisterCoreServices(services);
 

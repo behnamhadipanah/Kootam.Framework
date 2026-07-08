@@ -6,6 +6,6 @@ namespace Kootam.Authentication.Abstractions.Tokens;
 
 public interface ITokenStore
 {
-    Task SignInAsync(HttpContext context, CredentialsOptions data);
+    Task SignInAsync(HttpContext context, TokenStoreOption data);
     Task SignOutAsync(HttpContext context);
 }

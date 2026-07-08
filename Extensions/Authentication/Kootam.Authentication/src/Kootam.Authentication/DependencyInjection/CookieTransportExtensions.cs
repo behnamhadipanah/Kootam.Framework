@@ -11,7 +11,7 @@ public static class CookieTransportExtensions
 {
     public static AuthenticationBuilder UseCookies(
         this AuthenticationBuilder builder,
-        Action<AuthenticationTransportOptions>? configure = null)
+        Action<AuthenticationTransportOption>? configure = null)
     {
         if (configure != null)
             builder.Services.Configure(configure);

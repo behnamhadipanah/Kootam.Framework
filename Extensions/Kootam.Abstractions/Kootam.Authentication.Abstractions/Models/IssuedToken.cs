@@ -1,12 +1,12 @@
-﻿namespace Kootam.Authentication.Abstractions.Options;
+﻿namespace Kootam.Authentication.Abstractions.Models;
 
-public sealed class CredentialsOptions
+public sealed class IssuedToken
 {
     public required string AccessToken { get; init; }
 
-    public string? RefreshToken { get; init; }
-
     public DateTimeOffset AccessTokenExpires { get; init; }
+
+    public RefreshToken? RefreshToken { get; init; }
 
     public DateTimeOffset? RefreshTokenExpires { get; init; }
 }

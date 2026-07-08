@@ -6,7 +6,7 @@ namespace Kootam.Authentication.TokenStores;
 
 public sealed class HeaderWriter : ITokenStore
 {
-    public Task SignInAsync(HttpContext context, CredentialsOptions data)
+    public Task SignInAsync(HttpContext context, TokenStoreOption data)
     {
         context.Response.Headers.Append("Authorization", $"Bearer {data.AccessToken}");
 

@@ -7,9 +7,9 @@ namespace Kootam.Authentication.TokenReaders;
 
 public sealed class SessionReader : ITokenReader
 {
-    private readonly AuthenticationTransportOptions _options;
+    private readonly AuthenticationTransportOption _options;
 
-    public SessionReader(IOptions<AuthenticationTransportOptions> options)
+    public SessionReader(IOptions<AuthenticationTransportOption> options)
     {
         _options = options.Value;
     }

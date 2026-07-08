@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Http;
 
 namespace Kootam.Authentication.Abstractions.Handlers;
 
-public interface IAuthHandler
+public interface IAuthenticateHandler
 {
     string Scheme { get; }
 
-    Task<AuthResult> AuthenticateAsync(HttpContext context);
+    Task<AuthenticationResult> AuthenticateAsync(HttpContext context);
 }

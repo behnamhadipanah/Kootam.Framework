@@ -7,14 +7,14 @@ namespace Kootam.Authentication.TokenStores;
 
 public sealed class CookieWriter : ITokenStore
 {
-    private readonly AuthenticationTransportOptions _options;
+    private readonly AuthenticationTransportOption _options;
 
-    public CookieWriter(IOptions<AuthenticationTransportOptions> options)
+    public CookieWriter(IOptions<AuthenticationTransportOption> options)
     {
         _options = options.Value;
     }
 
-    public Task SignInAsync(HttpContext context, CredentialsOptions data)
+    public Task SignInAsync(HttpContext context, TokenStoreOption data)
     {
         context.Response.Cookies.Append(
             _options.AccessTokenKey,
@@ -27,11 +27,11 @@ public sealed class CookieWriter : ITokenStore
                 Expires = data.AccessTokenExpires
             });
 
-        if (!string.IsNullOrWhiteSpace(data.RefreshToken))
+        if(data.RefreshToken is not null)
         {
             context.Response.Cookies.Append(
                 _options.RefreshTokenKey,
-                data.RefreshToken,
+                data.RefreshToken.Token,
                 new CookieOptions
                 {
                     HttpOnly = _options.HttpOnly,
