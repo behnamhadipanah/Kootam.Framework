@@ -2,7 +2,9 @@ using Kootam.Authentication.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddKootamAuthentication("KootamScheme");
+builder.Services.AddKootamAuthentication("KootamScheme")
+    .UseCookies();
+    //.UseComposite();
 builder.Services.AddCurrentUser();
 
 builder.Services.AddOpenApi();

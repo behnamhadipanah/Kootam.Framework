@@ -12,6 +12,7 @@ builder.Services.AddScoped<IUserClaimsMapper<LogginedUserViewModel>, LogginedUse
 
 builder.Services
     .AddKootamAuthentication("SampleScheme")
+    .UseCookies() // or other
     .AddJwt<LogginedUserViewModel>(builder.Configuration);
 
 

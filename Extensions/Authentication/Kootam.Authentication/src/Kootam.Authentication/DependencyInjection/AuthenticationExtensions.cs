@@ -1,4 +1,5 @@
-﻿using Kootam.Authentication.Abstractions.Services;
+﻿using Kootam.Authentication.Abstractions.Options;
+using Kootam.Authentication.Abstractions.Services;
 using Kootam.Authentication.Handlers;
 using Kootam.Authentication.Services;
 using Microsoft.AspNetCore.Authentication;
@@ -11,6 +12,41 @@ namespace Kootam.Authentication.DependencyInjection;
 public static class AuthenticationExtensions
 {
     public const string KootamScheme = "KootamScheme";
+
+    public static AuthenticationBuilder AddKootamAuthentication(
+        this IServiceCollection services,
+        Action<AuthenticationTransportOptions>? configure = null)
+    {
+        RegisterCoreServices(services);
+
+        if (configure is not null)
+            services.Configure(configure);
+
+        services.AddAuthentication(KootamScheme)
+            .AddScheme<AuthenticationSchemeOptions, KootamAuthenticationHandler>(
+                KootamScheme,
+                null);
+
+        return new AuthenticationBuilder(services);
+    }
+
+    public static AuthenticationBuilder AddKootamAuthentication(
+        this IServiceCollection services,
+        string scheme,
+        Action<AuthenticationTransportOptions>? configure = null)
+    {
+        RegisterCoreServices(services);
+
+        if (configure is not null)
+            services.Configure(configure);
+
+        services.AddAuthentication(scheme)
+            .AddScheme<AuthenticationSchemeOptions, KootamAuthenticationHandler>(
+                scheme,
+                null);
+
+        return new AuthenticationBuilder(services);
+    }
 
     public static AuthenticationBuilder AddKootamAuthentication(
         this IServiceCollection services)

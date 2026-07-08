@@ -2,11 +2,11 @@
 
 namespace Kootam.Authentication.Builder;
 
-public class AuthenticationBuilder
+public sealed class AuthenticationBuilder
 {
     public IServiceCollection Services { get; }
 
-    public AuthenticationBuilder(IServiceCollection services)
+    internal AuthenticationBuilder(IServiceCollection services)
     {
         Services = services;
     }

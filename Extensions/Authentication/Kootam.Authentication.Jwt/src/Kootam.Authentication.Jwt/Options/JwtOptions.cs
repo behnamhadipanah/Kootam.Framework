@@ -1,4 +1,6 @@
 ﻿
+using Microsoft.Net.Http.Headers;
+
 namespace Kootam.Authentication.Jwt.Options;
 
 public class JwtOptions
