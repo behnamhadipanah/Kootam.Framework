@@ -9,8 +9,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Kootam.Authentication" Version="1.0.0" />
         <PackageReference Include="Kootam.Authentication.Abstractions" Version="1.0.0" />
+        <PackageReference Include="Kootam.Authentication" Version="1.0.0" />
         <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="10.0.8" />
         <PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" Version="10.0.8" />
         <PackageReference Include="System.Security.Cryptography.Xml" Version="10.0.8" />
