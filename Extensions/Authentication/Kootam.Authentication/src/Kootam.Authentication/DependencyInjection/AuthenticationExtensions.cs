@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using AuthenticationBuilder = Kootam.Authentication.Builder.AuthenticationBuilder;
+using AuthenticationService = Kootam.Authentication.Services.AuthenticationService;
+using IAuthenticationService = Kootam.Authentication.Abstractions.Services.IAuthenticationService;
 
 namespace Kootam.Authentication.DependencyInjection;
 
@@ -83,5 +85,6 @@ public static class AuthenticationExtensions
         services.AddHttpContextAccessor();
 
         services.AddScoped<IPasswordHasherService, PasswordHasherService>();
+        services.AddScoped<IAuthenticationService, AuthenticationService>();
     }
 }

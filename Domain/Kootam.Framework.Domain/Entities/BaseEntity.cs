@@ -4,12 +4,7 @@ using Kootam.Framework.Domain.ValueObjects;
 namespace Kootam.Framework.Domain.Entities;
 
 public abstract class BaseEntity<TKey> : IAuditableEntity
-where TKey : struct,
-IComparable,
-IComparable<TKey>,
-IConvertible,
-IEquatable<TKey>,
-IFormattable
+where TKey : struct
 {
     public TKey Id { get; protected set; }
     public BusinessId BusinessId { get; protected set; } = BusinessId.FromGuid(Guid.NewGuid());

@@ -9,4 +9,5 @@ public interface IRefreshTokenService
     Task RevokeAsync(string refreshToken,CancellationToken cancellationToken = default);
 
     Task<RefreshToken?> FindAsync(string refreshToken,CancellationToken cancellationToken = default);
+    Task RotateAsync(RefreshToken oldToken,RefreshToken newToken, CancellationToken cancellationToken = default);
 }

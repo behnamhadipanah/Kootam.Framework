@@ -1,4 +1,5 @@
-﻿using Kootam.Authentication.Abstractions.Handlers;
+﻿using Kootam.Authentication.Abstractions.Claims;
+using Kootam.Authentication.Abstractions.Handlers;
 using Kootam.Authentication.Abstractions.Tokens;
 using Kootam.Authentication.Builder;
 using Kootam.Authentication.Jwt.Handlers;

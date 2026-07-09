@@ -1,6 +1,6 @@
 ﻿namespace Kootam.Authentication.Jwt.Sample.ViewModels;
 
-public class LogginedUserViewModel
+public class LoggingUserViewModel
 {
     public long  Id { get; set; }
     public string FirstName { get; set; }

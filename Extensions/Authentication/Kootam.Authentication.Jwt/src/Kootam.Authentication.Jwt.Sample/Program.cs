@@ -7,13 +7,13 @@ using Kootam.Authentication.Jwt.Sample.ViewModels;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenApi();
-builder.Services.AddScoped<IUserClaimsMapper<LogginedUserViewModel>, LogginedUserClaimsMapper>();
+builder.Services.AddScoped<IUserClaimsMapper<LoggingUserViewModel>, LoggingUserClaimsMapper>();
 
 
 builder.Services
     .AddKootamAuthentication("SampleScheme")
     .UseCookies() // or other
-    .AddJwt<LogginedUserViewModel>(builder.Configuration);
+    .AddJwt<LoggingUserViewModel>(builder.Configuration);
 
 
 /*

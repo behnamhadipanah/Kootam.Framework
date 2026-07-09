@@ -4,9 +4,9 @@ using Kootam.Authentication.Jwt.Sample.ViewModels;
 
 namespace Kootam.Authentication.Jwt.Sample.Mappers;
 
-public class LogginedUserClaimsMapper : IUserClaimsMapper<LogginedUserViewModel>
+public class LoggingUserClaimsMapper : IUserClaimsMapper<LoggingUserViewModel>
 {
-    public List<Claim> MapToClaims(LogginedUserViewModel user)
+    public List<Claim> MapToClaims(LoggingUserViewModel user)
     {
         return new List<Claim>
         {

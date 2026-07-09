@@ -1,0 +1,6 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Kootam.Authentication.SqlServer.Sample/Kootam.Authentication.SqlServer.Sample.csproj" Id="f3f58df4-f0be-4ecb-b752-00121b77853c" />
+    <Project Path="src/Kootam.Authentication.SqlServer/Kootam.Authentication.SqlServer.csproj" Id="4b0cabb7-3589-4f6a-b046-ddcd68385a98" />
+  </Folder>
+</Solution>

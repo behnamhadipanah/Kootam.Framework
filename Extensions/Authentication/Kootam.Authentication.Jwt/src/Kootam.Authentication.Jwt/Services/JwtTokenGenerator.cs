@@ -20,9 +20,10 @@ public class JwtTokenGenerator<TUser> : ITokenGenerator<TUser>
         _options = options.Value;
         _claimsMapper = claimsMapper;
     }
-    public string GenerateAccessToken(TUser user)
+    public IssuedAccessToken GenerateAccessToken(TUser user)
     {
         var claims = _claimsMapper.MapToClaims(user);
+        var expires = DateTime.UtcNow.AddMinutes(_options.AccessTokenMinutes);
 
         var key = new SymmetricSecurityKey(
                     Encoding.UTF8.GetBytes(_options.Key));
@@ -36,10 +37,14 @@ public class JwtTokenGenerator<TUser> : ITokenGenerator<TUser>
          audience: _options.Audience,
          claims: claims,
          notBefore: DateTime.UtcNow,
-         expires: DateTime.UtcNow.AddMinutes(_options.AccessTokenMinutes),
+         expires: expires,
          signingCredentials: credentials);
 
-        return new JwtSecurityTokenHandler().WriteToken(token);
+        return new IssuedAccessToken
+        {
+            Token = new JwtSecurityTokenHandler().WriteToken(token),
+            Expires = expires
+        };
     }
 
     public RefreshToken GenerateRefreshToken(string ipAddress)

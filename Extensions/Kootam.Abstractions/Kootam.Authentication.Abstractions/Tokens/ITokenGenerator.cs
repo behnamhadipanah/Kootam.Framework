@@ -4,7 +4,7 @@ namespace Kootam.Authentication.Abstractions.Tokens;
 
 public interface ITokenGenerator<TUser>
 {
-    string GenerateAccessToken(TUser user);
+    IssuedAccessToken GenerateAccessToken(TUser user);
 
     RefreshToken GenerateRefreshToken(string ipAddress);
 }

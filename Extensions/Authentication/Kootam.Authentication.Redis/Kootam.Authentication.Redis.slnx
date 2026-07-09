@@ -1,0 +1,6 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Kootam.Authentication.Redis/Kootam.Authentication.Redis.csproj" />
+  </Folder>
+  <Folder Name="/tests/" />
+</Solution>
