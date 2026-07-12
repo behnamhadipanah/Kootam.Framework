@@ -5,6 +5,8 @@
   <Folder Name="/Common/">
     <Project Path="Common/Kootam.Framework.Abstractions/Kootam.Framework.Abstractions.csproj" />
     <Project Path="Common/Kootam.Framework.Utilities.Common/Kootam.Framework.Utilities.csproj" />
+    <Project Path="Common/Kootam.Framework.Utilities.SerilogRegistration/Kootam.Framework.Utilities.SerilogRegistration.csproj" />
+    <Project Path="Common/Kootam.Framework.Utilities.Tools/Kootam.Framework.Utilities.Tools.csproj" />
   </Folder>
   <Folder Name="/Domain/">
     <Project Path="Domain/Kootam.Framework.Domain/Kootam.Framework.Domain.csproj" />
