@@ -1,5 +1,5 @@
 # Find solution file automatically
-$Solution = Get-ChildItem -Path . -Filter *.sln -Recurse -ErrorAction SilentlyContinue |
+$Solution = Get-ChildItem -Path . -Filter *.slnx -Recurse -ErrorAction SilentlyContinue |
             Select-Object -First 1 -ExpandProperty FullName
 
 if (-not $Solution) {
