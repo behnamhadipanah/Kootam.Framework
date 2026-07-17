@@ -49,7 +49,10 @@ public class JwtTokenValidator(IOptions<JwtOptions> authConstant) : ITokenValida
 
     public async Task<TokenValidationResult> ValidateTokenAsync(string token, DeviceType deviceType)
     {
-        var handler = new JwtSecurityTokenHandler();
+        var handler = new JwtSecurityTokenHandler()
+        {
+            MapInboundClaims = authConstant.Value.MapInboundClaims
+        };
 
         var parameters = new TokenValidationParameters
         {
