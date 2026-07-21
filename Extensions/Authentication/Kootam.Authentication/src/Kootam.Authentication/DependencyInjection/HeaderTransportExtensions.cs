@@ -10,7 +10,7 @@ public static class HeaderTransportExtensions
     public static AuthenticationBuilder UseAuthorizationHeader(
         this AuthenticationBuilder builder)
     {
-        builder.Services.AddScoped<ITokenReader, HeaderReader>();
+        builder.Services.AddScoped<IAccessTokenReader, HeaderReader>();
 
         return builder;
     }

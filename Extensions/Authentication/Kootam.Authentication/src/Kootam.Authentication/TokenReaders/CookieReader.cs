@@ -5,7 +5,7 @@ using Microsoft.Extensions.Options;
 
 namespace Kootam.Authentication.TokenReaders;
 
-public sealed class CookieReader:ITokenReader
+public sealed class CookieReader: IAccessTokenReader
 {
     private readonly AuthenticationTransportOption _options;
 

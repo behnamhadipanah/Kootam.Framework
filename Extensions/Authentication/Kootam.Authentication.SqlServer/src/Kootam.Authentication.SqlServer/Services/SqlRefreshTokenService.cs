@@ -72,9 +72,28 @@ public class SqlRefreshTokenService<TUserKey>(IRefreshTokenRepository<TUserKey> 
         };
     }
 
-    public Task RotateAsync(RefreshToken<TUserKey> oldToken, RefreshToken<TUserKey> newToken,
+    public async Task RotateAsync(RefreshToken<TUserKey> oldToken, RefreshToken<TUserKey> newToken,
         CancellationToken cancellationToken = new CancellationToken())
     {
-        throw new NotImplementedException();
+        var entity = await refreshTokenRepository.FindAsync(oldToken.Token, cancellationToken);
+
+        if (entity is null)
+            throw new InvalidOperationException("Refresh token not found.");
+
+        entity.Revoked = DateTime.UtcNow;
+        entity.RevokedByIp = oldToken.RevokedByIp;
+        entity.ReplacedByToken = newToken.Token;
+
+        await refreshTokenRepository.AddAsync(new RefreshToken<TUserKey>
+        {
+            Id = Guid.NewGuid(),
+            UserId = newToken.UserId,
+            Token = newToken.Token,
+            Created = newToken.Created,
+            CreatedByIp = newToken.CreatedByIp,
+            Expires = newToken.Expires
+        }, cancellationToken);
+
+        await refreshTokenRepository.SaveChangesAsync(cancellationToken);
     }
 }

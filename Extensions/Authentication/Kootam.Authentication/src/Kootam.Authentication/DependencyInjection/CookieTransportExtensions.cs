@@ -1,6 +1,7 @@
 using Kootam.Authentication.Abstractions.Options;
 using Kootam.Authentication.Abstractions.Tokens;
 using Kootam.Authentication.Builder;
+using Kootam.Authentication.RefreshTokenReader;
 using Kootam.Authentication.TokenReaders;
 using Kootam.Authentication.TokenStores;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,7 +17,8 @@ public static class CookieTransportExtensions
         if (configure != null)
             builder.Services.Configure(configure);
 
-        builder.Services.AddScoped<ITokenReader, CookieReader>();
+        builder.Services.AddScoped<IAccessTokenReader, CookieReader>();
+        builder.Services.AddScoped<IRefreshTokenReader, CookieRefreshTokenReader>();
 
         builder.Services.AddScoped(typeof(ITokenStore<> ),typeof(CookieWriter<>));
 

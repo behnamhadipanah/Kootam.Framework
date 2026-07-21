@@ -2,7 +2,7 @@
 
 namespace Kootam.Authentication.Abstractions.Tokens;
 
-public interface ITokenReader
+public interface IAccessTokenReader
 {
     ValueTask<string?> ReadAsync(HttpContext context);
 

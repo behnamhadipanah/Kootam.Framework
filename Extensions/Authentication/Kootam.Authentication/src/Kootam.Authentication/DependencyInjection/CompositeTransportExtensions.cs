@@ -1,5 +1,6 @@
 using Kootam.Authentication.Abstractions.Tokens;
 using Kootam.Authentication.Builder;
+using Kootam.Authentication.RefreshTokenReader;
 using Kootam.Authentication.TokenReaders;
 using Kootam.Authentication.TokenStores;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,7 +19,8 @@ public static class CompositeTransportExtensions
 
         builder.Services.AddScoped<CookieReader>();
 
-        builder.Services.AddScoped<ITokenReader, CompositeReader>();
+        builder.Services.AddScoped<IAccessTokenReader, CompositeReader>();
+        builder.Services.AddScoped<IRefreshTokenReader, CompositeRefreshTokenReader>();
 
         builder.Services.AddScoped(typeof(ITokenStore<>),typeof(CookieWriter<>));
 

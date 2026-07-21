@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace Kootam.Authentication.TokenReaders;
 
-public sealed class QueryStringReader : ITokenReader
+public sealed class QueryStringReader : IAccessTokenReader
 {
     public ValueTask<string?> ReadAsync(HttpContext context)
     {

@@ -10,11 +10,11 @@ namespace Kootam.Authentication.Jwt.Handlers;
 public class JwtAuthHandler : IAuthenticateHandler
 {
     private readonly ITokenValidator _validator;
-    private readonly ITokenReader _reader;
+    private readonly IAccessTokenReader _reader;
 
     public string Scheme => "Jwt";
 
-    public JwtAuthHandler(ITokenValidator validator, ITokenReader reader)
+    public JwtAuthHandler(ITokenValidator validator, IAccessTokenReader reader)
     {
         _validator = validator;
         _reader = reader;

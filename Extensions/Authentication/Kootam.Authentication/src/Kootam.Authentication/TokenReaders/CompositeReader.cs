@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Http;
 
 namespace Kootam.Authentication.TokenReaders;
 
-public sealed class CompositeReader:ITokenReader
+public sealed class CompositeReader:IAccessTokenReader
 {
-    private readonly IEnumerable<ITokenReader> _tokenReads;
+    private readonly IEnumerable<IAccessTokenReader> _tokenReads;
 
-    public CompositeReader(IEnumerable<ITokenReader> tokenReads)
+    public CompositeReader(IEnumerable<IAccessTokenReader> tokenReads)
     {
         _tokenReads = tokenReads;
     }
