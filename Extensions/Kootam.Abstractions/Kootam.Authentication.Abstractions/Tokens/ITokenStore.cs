@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Http;
 
 namespace Kootam.Authentication.Abstractions.Tokens;
 
-public interface ITokenStore
+public interface ITokenStore<TUserKey>
 {
-    Task SignInAsync(HttpContext context, TokenStoreOption data);
+    Task SignInAsync(HttpContext context, TokenStoreOption<TUserKey> data);
     Task SignOutAsync(HttpContext context);
 }

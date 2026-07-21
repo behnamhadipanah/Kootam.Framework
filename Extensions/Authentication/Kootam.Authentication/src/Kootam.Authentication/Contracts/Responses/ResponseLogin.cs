@@ -2,5 +2,5 @@
 
 namespace Kootam.Authentication.Contracts.Responses;
 
-public record ResponseLogin(string AccessToken,RefreshToken RefreshToken);
+public record ResponseLogin<TUserKey>(string AccessToken,RefreshToken<TUserKey> RefreshToken);
 

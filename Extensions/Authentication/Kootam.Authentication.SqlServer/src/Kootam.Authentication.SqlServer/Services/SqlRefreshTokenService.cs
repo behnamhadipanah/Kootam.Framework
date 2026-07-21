@@ -4,14 +4,15 @@ using Kootam.Authentication.SqlServer.Repositories;
 
 namespace Kootam.Authentication.SqlServer.Services;
 
-public class SqlRefreshTokenService(IRefreshTokenRepository refreshTokenRepository) : IRefreshTokenService
+public class SqlRefreshTokenService<TUserKey>(IRefreshTokenRepository<TUserKey> refreshTokenRepository) : IRefreshTokenService<TUserKey>
 {
-    public async Task StoreAsync(RefreshToken refreshToken, CancellationToken cancellationToken = new CancellationToken())
+    public async Task StoreAsync(RefreshToken<TUserKey> refreshToken, CancellationToken cancellationToken = new CancellationToken())
     {
         await refreshTokenRepository.AddAsync(
-            new RefreshToken
+            new RefreshToken<TUserKey>
             {
                 Id = Guid.NewGuid(),
+                UserId=refreshToken.UserId,
                 Token = refreshToken.Token,
                 Created = refreshToken.Created,
                 CreatedByIp = refreshToken.CreatedByIp,
@@ -40,7 +41,7 @@ public class SqlRefreshTokenService(IRefreshTokenRepository refreshTokenReposito
                 refreshToken,
                 cancellationToken);
 
-        if (entity == null)
+        if (entity is null)
             return;
 
         entity.Revoked = DateTime.UtcNow;
@@ -48,19 +49,20 @@ public class SqlRefreshTokenService(IRefreshTokenRepository refreshTokenReposito
         await refreshTokenRepository.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<RefreshToken?> FindAsync(string refreshToken, CancellationToken cancellationToken = new CancellationToken())
+    public async Task<RefreshToken<TUserKey>?> FindAsync(string refreshToken, CancellationToken cancellationToken = new CancellationToken())
     {
         var entity =
             await refreshTokenRepository.FindAsync(
                 refreshToken,
                 cancellationToken);
 
-        if (entity == null)
+        if (entity is null)
             return null;
 
-        return new RefreshToken
+        return new RefreshToken<TUserKey>
         {
             Token = entity.Token,
+            UserId=entity.UserId,
             Created = entity.Created,
             CreatedByIp = entity.CreatedByIp,
             Expires = entity.Expires,
@@ -70,7 +72,7 @@ public class SqlRefreshTokenService(IRefreshTokenRepository refreshTokenReposito
         };
     }
 
-    public Task RotateAsync(RefreshToken oldToken, RefreshToken newToken,
+    public Task RotateAsync(RefreshToken<TUserKey> oldToken, RefreshToken<TUserKey> newToken,
         CancellationToken cancellationToken = new CancellationToken())
     {
         throw new NotImplementedException();

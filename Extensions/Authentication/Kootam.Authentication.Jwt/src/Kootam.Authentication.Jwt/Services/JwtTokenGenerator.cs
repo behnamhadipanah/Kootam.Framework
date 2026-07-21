@@ -10,7 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Kootam.Authentication.Jwt.Services;
 
-public class JwtTokenGenerator<TUser> : ITokenGenerator<TUser>
+public class JwtTokenGenerator<TUser,TUserKey> : ITokenGenerator<TUser, TUserKey>
 {
     private readonly JwtOptions _options;
     private readonly IUserClaimsMapper<TUser> _claimsMapper;
@@ -47,12 +47,13 @@ public class JwtTokenGenerator<TUser> : ITokenGenerator<TUser>
         };
     }
 
-    public RefreshToken GenerateRefreshToken(string ipAddress)
+    public RefreshToken<TUserKey> GenerateRefreshToken(TUserKey userKey,string ipAddress)
     {
         var randomBytes = RandomNumberGenerator.GetBytes(64);
 
-        return new RefreshToken
+        return new RefreshToken<TUserKey>
         {
+            UserId=userKey,
             Token = Convert.ToBase64String(randomBytes),
             Created = DateTime.UtcNow,
             CreatedByIp = ipAddress,

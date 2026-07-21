@@ -4,10 +4,10 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Kootam.Authentication.SqlServer.Configurations;
 
-public class RefreshTokenConfiguration
-    : IEntityTypeConfiguration<RefreshToken>
+public class RefreshTokenConfiguration<TUserKey>
+    : IEntityTypeConfiguration<RefreshToken<TUserKey>>
 {
-    public void Configure(EntityTypeBuilder<RefreshToken> builder)
+    public void Configure(EntityTypeBuilder<RefreshToken<TUserKey>> builder)
     {
         builder.ToTable("RefreshTokens");
 

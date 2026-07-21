@@ -12,7 +12,7 @@ namespace Kootam.Authentication.Jwt.DependencyInjection;
 
 public static class JwtExtensions
 {
-    public static AuthenticationBuilder AddJwt<TUser>(
+    public static AuthenticationBuilder AddJwt(
           this AuthenticationBuilder builder,
           IConfiguration configuration
         )
@@ -25,11 +25,11 @@ public static class JwtExtensions
                 "JwtOptions.Key must not be empty.")
             .ValidateOnStart();                     
 
-        RegisterCoreServices<TUser>(builder.Services);
+        RegisterCoreServices(builder.Services);
 
         return builder;
     }
-    public static AuthenticationBuilder AddJwt<TUser>(
+    public static AuthenticationBuilder AddJwt(
         this AuthenticationBuilder builder,Action<JwtOptions> configure)
     {
         
@@ -41,16 +41,16 @@ public static class JwtExtensions
                 "JwtOptions.Key must not be empty.")
             .ValidateOnStart();
 
-        RegisterCoreServices<TUser>(builder.Services);
+        RegisterCoreServices(builder.Services);
 
         return builder;
     }
-    private static void RegisterCoreServices<TUser>(IServiceCollection services)
+    private static void RegisterCoreServices(IServiceCollection services)
     {
         services.AddScoped<ITokenValidator, JwtTokenValidator>();
 
         services.AddScoped<IAuthenticateHandler, JwtAuthHandler>();
 
-        services.AddScoped<ITokenGenerator<TUser>, JwtTokenGenerator<TUser>>();
+        services.AddScoped(typeof(ITokenGenerator<,>),typeof(JwtTokenGenerator<,>));
     }
 }

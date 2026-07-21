@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Http;
 
 namespace Kootam.Authentication.Abstractions.Services;
 
-public interface IAuthenticationService
+public interface IAuthenticationService<TUserKey>
 {
-    Task SignInAsync(IssuedToken token,CancellationToken cancellationToken=default);
+    Task SignInAsync(IssuedToken<TUserKey> token,CancellationToken cancellationToken=default);
 
     Task SignOutAsync(CancellationToken cancellationToken=default);
 }

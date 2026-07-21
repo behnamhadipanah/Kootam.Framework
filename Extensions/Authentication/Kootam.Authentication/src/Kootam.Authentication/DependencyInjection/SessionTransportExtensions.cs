@@ -13,7 +13,8 @@ public static class SessionTransportExtensions
     {
         builder.Services.AddScoped<ITokenReader, SessionReader>();
 
-        builder.Services.AddScoped<ITokenStore, SessionWriter>();
+        
+        builder.Services.AddScoped(typeof(ITokenStore<>), typeof(SessionWriter<>));
 
         return builder;
     }

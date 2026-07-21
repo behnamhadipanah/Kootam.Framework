@@ -20,7 +20,7 @@ public static class CompositeTransportExtensions
 
         builder.Services.AddScoped<ITokenReader, CompositeReader>();
 
-        builder.Services.AddScoped<ITokenStore, CookieWriter>();
+        builder.Services.AddScoped(typeof(ITokenStore<>),typeof(CookieWriter<>));
 
         return builder;
     }

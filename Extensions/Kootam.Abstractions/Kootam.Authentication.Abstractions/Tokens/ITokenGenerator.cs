@@ -2,9 +2,9 @@
 
 namespace Kootam.Authentication.Abstractions.Tokens;
 
-public interface ITokenGenerator<TUser>
+public interface ITokenGenerator<TUser,TUserKey>
 {
     IssuedAccessToken GenerateAccessToken(TUser user);
 
-    RefreshToken GenerateRefreshToken(string ipAddress);
+    RefreshToken<TUserKey> GenerateRefreshToken(TUserKey userKey,string ipAddress);
 }

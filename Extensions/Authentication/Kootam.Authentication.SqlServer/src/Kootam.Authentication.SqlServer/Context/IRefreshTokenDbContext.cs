@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Kootam.Authentication.SqlServer.Context;
 
-public interface IRefreshTokenDbContext
+public interface IRefreshTokenDbContext<TUserKey>
 {
-    DbSet<RefreshToken> RefreshTokens { get; }
+    DbSet<RefreshToken<TUserKey>> RefreshTokens { get; }
     Task<int> SaveChangesAsync(
         CancellationToken cancellationToken = default);
 }

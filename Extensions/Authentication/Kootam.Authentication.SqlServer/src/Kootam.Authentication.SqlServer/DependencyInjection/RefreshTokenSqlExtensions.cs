@@ -14,9 +14,9 @@ public static class RefreshTokenSqlExtensions
         this IServiceCollection services)
         
     {
-        services.TryAddScoped<IRefreshTokenRepository,RefreshTokenRepository>();
+        services.TryAddScoped(typeof(IRefreshTokenRepository<>),typeof(RefreshTokenRepository<>));
 
-        services.TryAddScoped<IRefreshTokenService,SqlRefreshTokenService>();
+        services.TryAddScoped(typeof(IRefreshTokenService<>),typeof(SqlRefreshTokenService<>));
 
         return services;
     }

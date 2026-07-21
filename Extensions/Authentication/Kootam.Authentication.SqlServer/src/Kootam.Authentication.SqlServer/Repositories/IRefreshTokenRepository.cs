@@ -2,11 +2,11 @@
 
 namespace Kootam.Authentication.SqlServer.Repositories;
 
-public interface IRefreshTokenRepository
+public interface IRefreshTokenRepository<TUserKey>
 {
-    Task AddAsync(RefreshToken token,CancellationToken cancellationToken);
+    Task AddAsync(RefreshToken<TUserKey> token,CancellationToken cancellationToken);
 
-    Task<RefreshToken?> FindAsync(string token,CancellationToken cancellationToken);
+    Task<RefreshToken<TUserKey>?> FindAsync(string token,CancellationToken cancellationToken);
 
     Task SaveChangesAsync(CancellationToken cancellationToken);
 }

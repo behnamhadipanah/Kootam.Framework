@@ -6,15 +6,15 @@ using Microsoft.AspNetCore.Http;
 
 namespace Kootam.Authentication.Services;
 
-public class AuthenticationService(IHttpContextAccessor httpContextAccessor, ITokenStore tokenStore) : IAuthenticationService
+public class AuthenticationService<TUserKey>(IHttpContextAccessor httpContextAccessor, ITokenStore<TUserKey> tokenStore) : IAuthenticationService<TUserKey>
 {
 
-    public async Task SignInAsync(IssuedToken token, CancellationToken cancellationToken = new CancellationToken())
+    public async Task SignInAsync(IssuedToken<TUserKey> token, CancellationToken cancellationToken = new CancellationToken())
     {
         var context = httpContextAccessor.HttpContext
                       ?? throw new InvalidOperationException("HttpContext not found.");
 
-        await tokenStore.SignInAsync(context, new TokenStoreOption()
+        await tokenStore.SignInAsync(context, new TokenStoreOption<TUserKey>()
         {
             AccessToken = token.AccessToken,
             RefreshToken = token.RefreshToken,

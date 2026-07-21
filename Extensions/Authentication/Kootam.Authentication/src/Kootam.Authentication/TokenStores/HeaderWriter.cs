@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Http;
 
 namespace Kootam.Authentication.TokenStores;
 
-public sealed class HeaderWriter : ITokenStore
+public sealed class HeaderWriter<TUserKey> : ITokenStore<TUserKey>
 {
-    public Task SignInAsync(HttpContext context, TokenStoreOption data)
+    public Task SignInAsync(HttpContext context, TokenStoreOption<TUserKey> data)
     {
         context.Response.Headers.Append("Authorization", $"Bearer {data.AccessToken}");
 

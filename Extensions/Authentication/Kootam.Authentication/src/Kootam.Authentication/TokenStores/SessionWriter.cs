@@ -5,7 +5,7 @@ using Microsoft.Extensions.Options;
 
 namespace Kootam.Authentication.TokenStores;
 
-public sealed class SessionWriter : ITokenStore
+public sealed class SessionWriter<TUserKey> : ITokenStore<TUserKey>
 {
     private readonly AuthenticationTransportOption _options;
 
@@ -14,7 +14,7 @@ public sealed class SessionWriter : ITokenStore
         _options = options.Value;
     }
 
-    public Task SignInAsync(HttpContext context, TokenStoreOption data)
+    public Task SignInAsync(HttpContext context, TokenStoreOption<TUserKey> data)
     {
         context.Session.SetString( _options.AccessTokenKey,
             data.AccessToken);

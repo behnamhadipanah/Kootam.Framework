@@ -5,7 +5,7 @@ using Microsoft.Extensions.Options;
 
 namespace Kootam.Authentication.TokenStores;
 
-public sealed class CookieWriter : ITokenStore
+public sealed class CookieWriter<TUserKey> : ITokenStore<TUserKey>
 {
     private readonly AuthenticationTransportOption _options;
 
@@ -14,7 +14,7 @@ public sealed class CookieWriter : ITokenStore
         _options = options.Value;
     }
 
-    public Task SignInAsync(HttpContext context, TokenStoreOption data)
+    public Task SignInAsync(HttpContext context, TokenStoreOption<TUserKey> data)
     {
         context.Response.Cookies.Append(
             _options.AccessTokenKey,

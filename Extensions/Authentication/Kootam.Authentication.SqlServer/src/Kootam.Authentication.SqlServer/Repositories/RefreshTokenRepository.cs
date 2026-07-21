@@ -4,12 +4,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Kootam.Authentication.SqlServer.Repositories;
 
-public class RefreshTokenRepository(IRefreshTokenDbContext context)
-    : IRefreshTokenRepository
+public class RefreshTokenRepository<TUserKey>(IRefreshTokenDbContext<TUserKey> context)
+    : IRefreshTokenRepository<TUserKey>
 {
 
     public async Task AddAsync(
-        RefreshToken token,
+        RefreshToken<TUserKey> token,
         CancellationToken cancellationToken)
     {
         await context.RefreshTokens.AddAsync(
@@ -17,7 +17,7 @@ public class RefreshTokenRepository(IRefreshTokenDbContext context)
             cancellationToken);
     }
 
-    public Task<RefreshToken?> FindAsync(
+    public Task<RefreshToken<TUserKey>?> FindAsync(
         string token,
         CancellationToken cancellationToken)
     {
