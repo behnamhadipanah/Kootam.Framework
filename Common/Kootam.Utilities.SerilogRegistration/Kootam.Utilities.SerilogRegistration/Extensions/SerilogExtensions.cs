@@ -1,6 +1,6 @@
 ﻿using Serilog;
 
-namespace Kootam.Framework.Utilities.SerilogRegistration.Extensions;
+namespace Kootam.Utilities.SerilogRegistration.Extensions;
 
 public class SerilogExtensions
 {

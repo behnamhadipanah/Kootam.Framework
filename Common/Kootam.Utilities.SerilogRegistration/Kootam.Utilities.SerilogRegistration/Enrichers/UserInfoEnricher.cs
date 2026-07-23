@@ -2,7 +2,7 @@
 using Serilog.Core;
 using Serilog.Events;
 
-namespace Kootam.Framework.Utilities.SerilogRegistration.Enrichers
+namespace Kootam.Utilities.SerilogRegistration.Enrichers
 {
     public class UserInfoEnricher(IUserInfoService userInfoService) : ILogEventEnricher
     {

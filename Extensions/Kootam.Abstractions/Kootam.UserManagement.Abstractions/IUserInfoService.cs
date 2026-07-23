@@ -10,7 +10,7 @@ public interface IUserInfoService
     string GetUsername();
     string? GetClaim(string claimType);
     bool IsCurrentUser(string userId);
-    bool HasAccess(string access);
+    bool HasAccess(string claimType,string value);
     string UserIdOrDefault();
     string UserIdOrDefault(string defaultValue);
 }

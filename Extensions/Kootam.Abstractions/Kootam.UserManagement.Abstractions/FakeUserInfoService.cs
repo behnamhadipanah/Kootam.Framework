@@ -33,7 +33,7 @@ public class FakeUserInfoService : IUserInfoService
         return "UserName";
     }
 
-    public bool HasAccess(string access)
+    public bool HasAccess(string claimType,string value)
     {
         return true;
     }

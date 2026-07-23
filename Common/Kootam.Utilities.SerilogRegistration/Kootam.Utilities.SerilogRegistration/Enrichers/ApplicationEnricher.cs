@@ -1,16 +1,16 @@
-﻿using Kootam.Framework.Utilities.SerilogRegistration.Options;
+﻿using System.Reflection;
+using Kootam.Utilities.SerilogRegistration.Options;
 using Microsoft.Extensions.Options;
 using Serilog.Core;
 using Serilog.Events;
-using System.Reflection;
 
-namespace Kootam.Framework.Utilities.SerilogRegistration.Enrichers;
+namespace Kootam.Utilities.SerilogRegistration.Enrichers;
 
-public class ApplicaitonEnricher : ILogEventEnricher
+public class ApplicationEnricher : ILogEventEnricher
 {
 
     private readonly SerilogApplicationEnricherOptions _options;
-    public ApplicaitonEnricher(IOptions<SerilogApplicationEnricherOptions> options)
+    public ApplicationEnricher(IOptions<SerilogApplicationEnricherOptions> options)
     {
         _options = options.Value;
     }
