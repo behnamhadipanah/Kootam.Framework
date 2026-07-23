@@ -3,17 +3,19 @@ using Kootam.Authentication.DependencyInjection;
 using Kootam.Authentication.Jwt.DependencyInjection;
 using Kootam.Authentication.Jwt.Sample.Mappers;
 using Kootam.Authentication.Jwt.Sample.ViewModels;
+using Kootam.UserManagement.Abstractions;
+using Kootam.UserManagement.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenApi();
 builder.Services.AddScoped<IUserClaimsMapper<LoggingUserViewModel>, LoggingUserClaimsMapper>();
 
-
+builder.Services.AddScoped<IUserInfoService, WebUserInfoService>();
 builder.Services
     .AddKootamAuthentication("SampleScheme")
     .UseCookies() // or other
-    .AddJwt<LoggingUserViewModel>(builder.Configuration);
+    .AddJwt(builder.Configuration);
 
 
 /*

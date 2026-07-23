@@ -1,7 +1,6 @@
 $ErrorActionPreference = "Stop"
 
-function Step($message)
-{
+function Step($message) {
     Write-Host ""
     Write-Host "==================================================" -ForegroundColor Cyan
     Write-Host $message -ForegroundColor Yellow
@@ -25,10 +24,8 @@ $TempNuGetConfig = Join-Path $env:TEMP "Kootam.NuGet.Config"
 "@ | Set-Content -Path $TempNuGetConfig -Encoding UTF8
 
 
-$Root = "E:\BackupWork\VCS\Github\Kootam.Framework\Extensions"
-$Exclude = "E:\BackupWork\VCS\Github\Kootam.Framework\Extensions\Kootam.Abstractions"
-$OutputDir = ".\nugets"
-
+$Root = Join-Path $RepoRoot "Extensions"
+$Exclude = Join-Path $Root "Kootam.Abstractions"
 
 if (!(Test-Path $OutputDir)) {
     Step "Creating output directory..."
@@ -50,47 +47,43 @@ git pull origin Main
 Step "Finding solutions..."
 
 
-$solutions = Get-ChildItem $Root -Recurse -Include *.sln,*.slnx |
-    Where-Object {
-        $_.FullName -notlike "$Exclude*" -and
-        $_.FullName -notmatch "\\Sample\\|\.Sample"
-    }
+$solutions = Get-ChildItem $Root -Recurse -Include *.sln, *.slnx |
+Where-Object {
+    $_.FullName -notlike "$Exclude*" -and
+    $_.FullName -notmatch "\\Sample\\|\.Sample"
+}
 
 
-foreach ($solution in $solutions)
-{
+foreach ($solution in $solutions) {
     Step "Processing solution: $($solution.Name)"
+    
+    Write-Host "Restoring packages..."
+    dotnet restore $solution.FullName --configfile $TempNuGetConfig
 
+    if ($LASTEXITCODE -ne 0) {
+        Write-Warning "Restore failed. Skipping $($solution.Name)"
+        continue
+    }
 
     Write-Host "Cleaning..."
 
     dotnet clean $solution.FullName -c Release
 
-    if ($LASTEXITCODE -ne 0)
-    {
+    if ($LASTEXITCODE -ne 0) {
         Write-Warning "Clean failed. Skipping $($solution.Name)"
         continue
     }
 
 
-    Write-Host "Restoring packages..."
+    
 
-    dotnet restore $solution.FullName -c Release --no-restore
-
-
-    if ($LASTEXITCODE -ne 0)
-    {
-        Write-Warning "Restore failed. Skipping $($solution.Name)"
-        continue
-    }
 
 
     Write-Host "Building..."
 
-    dotnet build $solution.FullName -c Release
+    dotnet build $solution.FullName -c Release  --no-restore
 
-    if ($LASTEXITCODE -ne 0)
-    {
+    if ($LASTEXITCODE -ne 0) {
         Write-Warning "Build failed. Skipping $($solution.Name)"
         continue
     }
@@ -98,10 +91,9 @@ foreach ($solution in $solutions)
 
     Write-Host "Packing..."
 
-    dotnet pack $solution.FullName -c Release -o $OutputDir --configfile $TempNuGetConfig
+    dotnet pack $solution.FullName -c Release --no-build  -o $OutputDir --configfile $TempNuGetConfig
 
-    if ($LASTEXITCODE -ne 0)
-    {
+    if ($LASTEXITCODE -ne 0) {
         Write-Warning "Pack failed. Skipping $($solution.Name)"
         continue
     }
