@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="Kootam.Cqrs.Abstractions" Version="1.0.0" />
-    <PackageReference Include="System.Security.Cryptography.Xml" Version="10.0.8" />
+    <PackageReference Include="System.Security.Cryptography.Xml" Version="10.0.10" />
   </ItemGroup>
 	<ItemGroup>
 		<None Include="icon.png" Pack="true" PackagePath="\" />

@@ -1,50 +1,86 @@
-$Solution = "Kootam.Framework.slnx"
+$RepoRoot = "E:\BackupWork\VCS\Github\Kootam.Framework"
+$PriorityProject = "E:\BackupWork\VCS\Github\Kootam.Framework\Extensions\Kootam.Abstractions"
 $OutputDir = "E:\BackupWork\LocalNugets"
 
-
-Write-Host "Using output path: $OutputDir"
-
 if (!(Test-Path $OutputDir)) {
-    New-Item -ItemType Directory -Path $OutputDir | Out-Null
+    New-Item -ItemType Directory -Force -Path $OutputDir | Out-Null
 }
 
-Write-Host "Cleaning solution..."
-dotnet clean $Solution -c Release
+Set-Location $RepoRoot
 
-Write-Host "Restoring packages..."
-dotnet restore $Solution
+Write-Host "==============================="
+Write-Host "Updating repository..."
+Write-Host "==============================="
 
-Write-Host "Building solution..."
-dotnet build $Solution -c Release
+git checkout main
+if ($LASTEXITCODE -ne 0) { throw "Checkout failed." }
 
-Write-Host "Looking for class library projects..."
+git pull origin main
+if ($LASTEXITCODE -ne 0) { throw "Git pull failed." }
 
-$csprojPaths = Get-ChildItem -Path . -Recurse -Filter *.csproj |
-    Where-Object { $_.FullName -notmatch '[\\/]Extensions[\\/]' } |
-    Select-Object -ExpandProperty FullName
-$classlibProjects = @()
+#######################################################
+# Pack Kootam.Abstractions FIRST
+#######################################################
 
-foreach ($projPath in $csprojPaths) {
-    $xml = [xml](Get-Content $projPath)
-    $outputTypeNode = $xml.Project.PropertyGroup.OutputType
-    $propertyGroups = $xml.Project.PropertyGroup
-    $isClassLib = $false
-    foreach ($pg in $propertyGroups) {
-        if ($pg.OutputType -eq "Library" -or $pg.OutputType -eq $null) {
-            $isClassLib = $true
-        }
+Write-Host ""
+Write-Host "==============================="
+Write-Host "Packing Kootam.Abstractions..."
+Write-Host "==============================="
+
+Push-Location $PriorityProject
+
+$proj = Get-ChildItem -Filter *.csproj | Select-Object -First 1
+
+dotnet clean $proj.FullName -c Release
+dotnet restore $proj.FullName
+dotnet build $proj.FullName -c Release
+dotnet pack $proj.FullName -c Release -o $OutputDir
+
+Pop-Location
+
+#######################################################
+# Pack all solutions
+#######################################################
+
+$solutions = Get-ChildItem `
+    -Path $RepoRoot `
+    -Recurse `
+    -Include *.sln,*.slnx |
+    Sort-Object FullName
+
+foreach ($solution in $solutions)
+{
+    Write-Host ""
+    Write-Host "========================================"
+    Write-Host "Processing $($solution.Name)"
+    Write-Host "========================================"
+
+    try
+    {
+        dotnet clean $solution.FullName -c Release
+        if ($LASTEXITCODE -ne 0) { throw "Clean failed." }
+
+        dotnet restore $solution.FullName
+        if ($LASTEXITCODE -ne 0) { throw "Restore failed." }
+
+        dotnet build $solution.FullName -c Release
+        if ($LASTEXITCODE -ne 0) { throw "Build failed." }
+
+        dotnet pack $solution.FullName -c Release -o $OutputDir
+        if ($LASTEXITCODE -ne 0) { throw "Pack failed." }
+
+        Write-Host "✔ $($solution.Name) completed."
     }
-    if ($isClassLib) {
-        $classlibProjects += $projPath
+    catch
+    {
+        Write-Warning "$($solution.Name) failed."
+        Write-Warning $_
     }
 }
 
-Write-Host "Packing class libraries only..."
-
-foreach ($proj in $classlibProjects) {
-    Write-Host "Packing: $proj"
-    dotnet pack $proj -c Release -o $OutputDir
-}
-
-Write-Host "`nDone!"
-Write-Host "NuGet packages saved to: $OutputDir"
+Write-Host ""
+Write-Host "========================================"
+Write-Host "Done!"
+Write-Host "Packages saved to:"
+Write-Host $OutputDir
+Write-Host "========================================"

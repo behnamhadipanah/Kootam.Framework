@@ -1,12 +1,20 @@
 $Solution = "Kootam.Abstractions.sln"
 $OutputDir = "E:\BackupWork\LocalNugets"
 
-
 Write-Host "Using output path: $OutputDir"
 
 if (!(Test-Path $OutputDir)) {
     New-Item -ItemType Directory -Path $OutputDir | Out-Null
 }
+
+Write-Host "Fetching latest changes..."
+git fetch origin
+
+Write-Host "Switching to main..."
+git checkout Main
+
+Write-Host "Pulling latest main..."
+git pull origin Main
 
 Write-Host "Cleaning solution..."
 dotnet clean $Solution -c Release
@@ -17,10 +25,8 @@ dotnet restore $Solution
 Write-Host "Building solution..."
 dotnet build $Solution -c Release
 
-
 Write-Host "Packing all projects..."
 dotnet pack $Solution -c Release -o $OutputDir
-
 
 Write-Host "`nDone!"
 Write-Host "NuGet packages saved to: $OutputDir"

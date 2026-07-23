@@ -17,6 +17,17 @@ if (!(Test-Path $OutputDir)) {
     New-Item -ItemType Directory -Path $OutputDir | Out-Null
 }
 
+
+Write-Host "Fetching latest changes..."
+git fetch origin
+
+Write-Host "Switching to main..."
+git checkout Main
+
+Write-Host "Pulling latest main..."
+git pull origin Main
+
+
 Write-Host "Cleaning solution..."
 dotnet clean $Solution -c Release
 

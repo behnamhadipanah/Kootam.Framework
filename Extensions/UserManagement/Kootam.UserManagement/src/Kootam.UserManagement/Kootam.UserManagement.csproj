@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="Kootam.UserManagement.Abstractions" Version="1.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.11" />
   </ItemGroup>
 	<ItemGroup>
 		<None Include="icon.png" Pack="true" PackagePath="\" />
