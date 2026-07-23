@@ -8,6 +8,24 @@ function Step($message)
     Write-Host "==================================================" -ForegroundColor Cyan
 }
 
+$RepoRoot = "E:\BackupWork\VCS\Github\Kootam.Framework"
+$OutputDir = Join-Path $RepoRoot "nugets"
+
+$TempNuGetConfig = Join-Path $env:TEMP "Kootam.NuGet.Config"
+
+@"
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+  <packageSources>
+    <clear />
+    <add key="local" value="$OutputDir" />
+    <add key="nuget.org" value="https://api.nuget.org/v3/index.json" />
+  </packageSources>
+</configuration>
+"@ | Set-Content -Path $TempNuGetConfig -Encoding UTF8
+
+
+
 $Repo = "E:\BackupWork\VCS\Github\Kootam.Framework"
 $OutputDir = ".\nugets"
 
@@ -43,7 +61,7 @@ foreach ($solution in $solutions)
     }
 
     Write-Host "Restoring packages..."
-    dotnet restore $solution.FullName
+    dotnet restore $solution.FullName -c Release --no-restore
 
     if ($LASTEXITCODE -ne 0) {
         Write-Warning "Restore failed. Skipping..."
@@ -59,7 +77,7 @@ foreach ($solution in $solutions)
     }
 
     Write-Host "Packing..."
-    dotnet pack $solution.FullName -c Release -o $OutputDir
+    dotnet pack $solution.FullName -c Release -o $OutputDir --configfile $TempNuGetConfig
 
     if ($LASTEXITCODE -ne 0) {
         Write-Warning "Pack failed. Skipping..."
