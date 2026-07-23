@@ -1,4 +1,4 @@
-﻿using Kootam.Framework.Extensions.Abstractions.UserManagement;
+﻿using Kootam.UserManagement.Abstractions;
 using Serilog.Core;
 using Serilog.Events;
 
