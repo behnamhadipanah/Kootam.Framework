@@ -58,7 +58,7 @@ foreach ($solution in $solutions) {
     }
 
     Write-Host "Restoring packages..."
-    dotnet restore $solution.FullName -c Release --configfile $TempNuGetConfig
+    dotnet restore $solution.FullName --configfile $TempNuGetConfig
 
     if ($LASTEXITCODE -ne 0) {
         Write-Warning "Restore failed. Skipping..."
@@ -66,7 +66,7 @@ foreach ($solution in $solutions) {
     }
 
     Write-Host "Building..."
-    dotnet build $solution.FullName -c Release --no-restore
+    dotnet build $solution.FullName -c Release  --no-restore
     
     if ($LASTEXITCODE -ne 0) {
         Write-Warning "Build failed. Skipping..."
