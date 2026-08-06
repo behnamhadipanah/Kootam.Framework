@@ -35,16 +35,16 @@ Best for static translations shipped with the application.
 
 **Structure:** JSON files per culture (e.g. `Resources/en.json`, `Resources/fa.json`).
 
-Register via `AddTranslator` in `Kootam.Translator.Json.DependencyInjection`:
+Register via `AddJsonTranslator` in `Kootam.Translator.Json.DependencyInjection`:
 
 ```csharp
 using Kootam.Translator.Json.DependencyInjection;
 
-builder.Services.AddTranslator(builder.Configuration);
+builder.Services.AddJsonTranslator(builder.Configuration);
 // or
-builder.Services.AddTranslator(options =>
+builder.Services.AddJsonTranslator(options =>
 {
-    options.ResourcesPath = "Resources";
+    options.FilePath = "Resources/translations.json";
     options.DefaultCulture = "en";
 });
 ```
@@ -57,21 +57,21 @@ Configure `JsonTranslatorOptions` section in `appsettings.json`.
 
 Best for dynamic translations managed via admin UI.
 
-Register via `Kootam.Translator.Database.DependencyInjection`:
+Register via `AddDbTranslator` in `Kootam.Translator.Database.DependencyInjection`:
 
 ```csharp
 using Kootam.Translator.Database.DependencyInjection;
 
 // Recommended: WebApplicationBuilder + fluent builder
-builder.AddTranslator()
+builder.AddDbTranslator()
     .UseCaching(reloadIntervalInMinutes: 5);
 
 // Direct DB read on every lookup (no in-memory cache)
-builder.AddTranslator()
+builder.AddDbTranslator()
     .WithoutCaching();
 
 // Table managed by EF migration (no auto-create at startup)
-builder.AddTranslator()
+builder.AddDbTranslator()
     .UseMigrations()
     .UseCaching(5);
 
@@ -82,10 +82,10 @@ app.UseTranslator(); // initializes store at startup (table, cache, seed data)
 Alternative registration on `IServiceCollection`:
 
 ```csharp
-builder.Services.AddTranslator(builder.Configuration)
+builder.Services.AddDbTranslator(builder.Configuration)
     .UseCaching(5);
 
-builder.Services.AddTranslator(options =>
+builder.Services.AddDbTranslator(options =>
 {
     options.ConnectionString = builder.Configuration.GetConnectionString("Default");
     options.UseCaching = true;

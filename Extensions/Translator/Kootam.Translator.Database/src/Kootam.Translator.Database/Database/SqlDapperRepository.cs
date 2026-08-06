@@ -1,10 +1,10 @@
 ﻿using Dapper;
 using Kootam.Translator.Abstractions;
+using Kootam.Translator.Database.Models;
+using Kootam.Translator.Database.Options;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Collections.Concurrent;
-using Kootam.Translator.Database.Models;
-using Kootam.Translator.Database.Options;
 
 namespace Kootam.Translator.Database.Database;
 
@@ -57,11 +57,8 @@ public sealed class SqlDapperRepository : ITranslationStore, IDisposable
 
             if (_configuration.ReloadDataIntervalInMinuts > 0)
             {
-                _reloadTimer = new Timer(
-                    _ => LoadLocalizationRecords(),
-                    null,
-                    TimeSpan.FromMinutes(_configuration.ReloadDataIntervalInMinuts),
-                    TimeSpan.FromMinutes(_configuration.ReloadDataIntervalInMinuts));
+                var interval = TimeSpan.FromMinutes(_configuration.ReloadDataIntervalInMinuts);
+                _reloadTimer = new Timer(_ => LoadLocalizationRecords(), null, interval, interval);
             }
         }
         else
@@ -73,27 +70,6 @@ public sealed class SqlDapperRepository : ITranslationStore, IDisposable
         }
     }
 
-    private void LoadLocalizationRecords()
-    {
-        try
-        {
-            _logger.LogInformation("Translator loading records...");
-
-            using var connection = _connectionFactory.CreateConnection();
-            var records = connection.Query<LocalizationRecord>(_selectAllCommand);
-
-            _cache.Clear();
-            foreach (var record in records)
-                _cache[(record.Key, record.Culture)] = record;
-
-            _logger.LogInformation("Loaded {Count} translation records", _cache.Count);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Loading localization records failed");
-        }
-    }
-
     public string Get(string key, string culture)
         => _configuration.UseCaching
             ? GetFromCache(key, culture)
@@ -101,13 +77,33 @@ public sealed class SqlDapperRepository : ITranslationStore, IDisposable
 
     private string GetFromCache(string key, string culture)
     {
-        if (_cache.TryGetValue((key, culture), out var record))
-            return record.Value;
+        if (TryGetCachedValue(key, culture, out var value))
+            return value;
+
+        if (TryGetFallbackValue(key, culture, out value))
+            return value;
 
         return InsertMissingTranslation(key, culture);
     }
 
     private string GetFromDatabase(string key, string culture)
+    {
+        var value = QueryTranslation(key, culture);
+        if (value is not null)
+            return value;
+
+        if (!string.IsNullOrWhiteSpace(_configuration.FallbackCulture)
+            && !string.Equals(culture, _configuration.FallbackCulture, StringComparison.OrdinalIgnoreCase))
+        {
+            value = QueryTranslation(key, _configuration.FallbackCulture);
+            if (value is not null)
+                return value;
+        }
+
+        return InsertMissingTranslation(key, culture);
+    }
+
+    private string? QueryTranslation(string key, string culture)
     {
         try
         {
@@ -116,15 +112,38 @@ public sealed class SqlDapperRepository : ITranslationStore, IDisposable
                 _selectByKeyCommand,
                 new { Key = key, Culture = culture });
 
-            if (record is not null)
-                return record.Value;
+            return record?.Value;
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Read translation failed. Key: {Key}, Culture: {Culture}", key, culture);
+            return null;
+        }
+    }
+
+    private bool TryGetCachedValue(string key, string culture, out string value)
+    {
+        if (_cache.TryGetValue((key, culture), out var record))
+        {
+            value = record.Value;
+            return true;
         }
 
-        return InsertMissingTranslation(key, culture);
+        value = string.Empty;
+        return false;
+    }
+
+    private bool TryGetFallbackValue(string key, string culture, out string value)
+    {
+        value = string.Empty;
+
+        if (string.IsNullOrWhiteSpace(_configuration.FallbackCulture)
+            || string.Equals(culture, _configuration.FallbackCulture, StringComparison.OrdinalIgnoreCase))
+        {
+            return false;
+        }
+
+        return TryGetCachedValue(key, _configuration.FallbackCulture, out value);
     }
 
     private string InsertMissingTranslation(string key, string culture)
@@ -151,10 +170,35 @@ public sealed class SqlDapperRepository : ITranslationStore, IDisposable
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Insert missing translation failed");
+            _logger.LogError(ex, "Insert missing translation failed. Key: {Key}, Culture: {Culture}", key, culture);
         }
 
         return record.Value;
+    }
+
+    private void LoadLocalizationRecords()
+    {
+        try
+        {
+            _logger.LogInformation("Translator loading records...");
+
+            using var connection = _connectionFactory.CreateConnection();
+            var records = connection.Query<LocalizationRecord>(_selectAllCommand).ToList();
+
+            var updated = new ConcurrentDictionary<(string Key, string Culture), LocalizationRecord>();
+            foreach (var record in records)
+                updated[(record.Key, record.Culture)] = record;
+
+            _cache.Clear();
+            foreach (var pair in updated)
+                _cache[pair.Key] = pair.Value;
+
+            _logger.LogInformation("Loaded {Count} translation records", _cache.Count);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Loading localization records failed");
+        }
     }
 
     public void Dispose()

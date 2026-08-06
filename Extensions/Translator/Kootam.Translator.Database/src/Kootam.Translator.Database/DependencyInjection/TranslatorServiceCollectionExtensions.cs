@@ -12,48 +12,52 @@ namespace Kootam.Translator.Database.DependencyInjection;
 
 public static class TranslatorServiceCollectionExtensions
 {
-    public static TranslatorBuilder AddTranslator(
+    public static TranslatorBuilder AddDbTranslator(
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        return services.AddTranslator(
+        return services.AddDbTranslator(
             configuration.GetSection(TranslatorOptions.DefaultTranslatorOptionsName));
     }
 
-    public static TranslatorBuilder AddTranslator(
+    public static TranslatorBuilder AddDbTranslator(
         this IServiceCollection services,
         IConfiguration configuration,
         string sectionName)
     {
-        return services.AddTranslator(
+        return services.AddDbTranslator(
             configuration.GetSection(sectionName));
     }
 
-    public static TranslatorBuilder AddTranslator(
+    public static TranslatorBuilder AddDbTranslator(
         this IServiceCollection services,
         IConfigurationSection section)
     {
         services.AddOptions<TranslatorOptions>()
-                .Bind(section)
-                .ValidateOnStart();
+            .Bind(section)
+            .ValidateDataAnnotations()
+            .ValidateOnStart();
 
-        RegisterTranslatorServices(services);
+        RegisterCoreServices(services);
 
         return new TranslatorBuilder(services);
     }
 
-    public static TranslatorBuilder AddTranslator(
+    public static TranslatorBuilder AddDbTranslator(
         this IServiceCollection services,
         Action<TranslatorOptions> setupAction)
     {
-        services.Configure(setupAction);
+        services.AddOptions<TranslatorOptions>()
+            .Configure(setupAction)
+            .ValidateDataAnnotations()
+            .ValidateOnStart();
 
-        RegisterTranslatorServices(services);
+        RegisterCoreServices(services);
 
         return new TranslatorBuilder(services);
     }
 
-    private static void RegisterTranslatorServices(IServiceCollection services)
+    private static void RegisterCoreServices(IServiceCollection services)
     {
         services.AddSingleton<IDbConnectionFactory>(sp =>
         {

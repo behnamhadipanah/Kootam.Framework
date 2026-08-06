@@ -1,7 +1,7 @@
-﻿using Kootam.Translator.Abstractions;
+using Kootam.Translator.Abstractions;
 using System.Globalization;
 
-namespace Kootam.Translator.Database.Services;
+namespace Kootam.Translator.Json.Services;
 
 public sealed class Translator(ITranslationStore store) : ITranslator
 {

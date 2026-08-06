@@ -6,10 +6,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
-builder.AddTranslator()
+builder.AddDbTranslator()
     .UseCaching(reloadIntervalInMinutes: 5);
-// builder.AddTranslator().WithoutCaching();
-// builder.AddTranslator().UseMigrations();
+// builder.AddDbTranslator().WithoutCaching();
+// builder.AddDbTranslator().UseMigrations();
 
 var app = builder.Build();
 

@@ -9,13 +9,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Kootam.Translator.Abstractions" Version="1.0.0" />
+    <ProjectReference Include="..\..\..\..\Kootam.Abstractions\Kootam.Translator.Abstractions\Kootam.Translator.Abstractions.csproj" />
     <PackageReference Include="Dapper" Version="2.1.79" />
 		<PackageReference Include="Microsoft.Data.SqlClient" Version="7.0.2" />
 		<PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.10" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.10" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.10" />
 		<PackageReference Include="Microsoft.Extensions.Options" Version="10.0.10" />
+		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="10.0.10" />
+		<PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" Version="10.0.10" />
 		                        
   </ItemGroup>
   <ItemGroup>
