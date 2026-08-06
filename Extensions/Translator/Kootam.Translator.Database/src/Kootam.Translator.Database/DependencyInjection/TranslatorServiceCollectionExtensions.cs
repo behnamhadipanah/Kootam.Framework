@@ -1,4 +1,5 @@
 ﻿using Kootam.Translator.Abstractions;
+using Kootam.Translator.Database.Builder;
 using Kootam.Translator.Database.Database;
 using Kootam.Translator.Database.Options;
 using Microsoft.Extensions.Configuration;
@@ -11,7 +12,7 @@ namespace Kootam.Translator.Database.DependencyInjection;
 
 public static class TranslatorServiceCollectionExtensions
 {
-    public static IServiceCollection AddTranslator(
+    public static TranslatorBuilder AddTranslator(
         this IServiceCollection services,
         IConfiguration configuration)
     {
@@ -19,7 +20,7 @@ public static class TranslatorServiceCollectionExtensions
             configuration.GetSection(TranslatorOptions.DefaultTranslatorOptionsName));
     }
 
-    public static IServiceCollection AddTranslator(
+    public static TranslatorBuilder AddTranslator(
         this IServiceCollection services,
         IConfiguration configuration,
         string sectionName)
@@ -28,44 +29,39 @@ public static class TranslatorServiceCollectionExtensions
             configuration.GetSection(sectionName));
     }
 
-    public static IServiceCollection AddTranslator(
+    public static TranslatorBuilder AddTranslator(
         this IServiceCollection services,
         IConfigurationSection section)
     {
-        services.AddSingleton<ITranslator, Services.Translator>();
+        services.AddOptions<TranslatorOptions>()
+                .Bind(section)
+                .ValidateOnStart();
 
-        //services.AddOptions<TranslatorOptions>()
-        //        .Bind(section)
-        //        .ValidateDataAnnotations()
-        //        .ValidateOnStart();
+        RegisterTranslatorServices(services);
 
-        services.AddSingleton<IDbConnectionFactory>(sp =>
-        {
-            var options = sp.GetRequiredService<IOptions<TranslatorOptions>>().Value;
-            return new SqlConnectionFactory(options.ConnectionString);
-        });
-
-        services.AddSingleton<ITranslator, SqlDapperRepository>();
-
-        return services;
+        return new TranslatorBuilder(services);
     }
 
-    public static IServiceCollection AddTranslator(
+    public static TranslatorBuilder AddTranslator(
         this IServiceCollection services,
         Action<TranslatorOptions> setupAction)
     {
-        services.AddSingleton<ITranslator, Services.Translator>();
-
         services.Configure(setupAction);
 
+        RegisterTranslatorServices(services);
+
+        return new TranslatorBuilder(services);
+    }
+
+    private static void RegisterTranslatorServices(IServiceCollection services)
+    {
         services.AddSingleton<IDbConnectionFactory>(sp =>
         {
             var options = sp.GetRequiredService<IOptions<TranslatorOptions>>().Value;
             return new SqlConnectionFactory(options.ConnectionString);
         });
 
-        services.AddSingleton<ITranslator, SqlDapperRepository>();
-
-        return services;
+        services.AddSingleton<ITranslationStore, SqlDapperRepository>();
+        services.AddSingleton<ITranslator, TranslatorService>();
     }
 }

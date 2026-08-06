@@ -7,9 +7,10 @@ public class TranslatorOptions
     public static string DefaultTranslatorOptionsName = "Translator";
     public string ConnectionString { get; set; } = string.Empty;
     public bool AutoCreateSqlTable { get; set; } = true;
+    public bool UseCaching { get; set; } = true;
     public string TableName { get; set; } = "Translations";
     public string SchemaName { get; set; } = "dbo";
-    public int ReloadDataIntervalInMinuts { get; set; }
+    public int ReloadDataIntervalInMinuts { get; set; } = 5;
     public DefaultTranslationOption[] DefaultTranslations { get; set; } = Array.Empty<DefaultTranslationOption>();
 
     [Required]

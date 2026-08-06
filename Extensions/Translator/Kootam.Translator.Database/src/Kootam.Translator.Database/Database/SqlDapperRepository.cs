@@ -1,87 +1,75 @@
 ﻿using Dapper;
 using Kootam.Translator.Abstractions;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System.Collections.Concurrent;
-using System.Globalization;
 using Kootam.Translator.Database.Models;
 using Kootam.Translator.Database.Options;
 
 namespace Kootam.Translator.Database.Database;
 
-public class SqlDapperRepository : ITranslator
+public sealed class SqlDapperRepository : ITranslationStore, IDisposable
 {
     private readonly IDbConnectionFactory _connectionFactory;
     private readonly TranslatorOptions _configuration;
     private readonly ILogger<SqlDapperRepository> _logger;
 
     private readonly ConcurrentDictionary<(string Key, string Culture), LocalizationRecord> _cache = new();
-    private readonly Timer _reloadTimer;
+    private readonly Timer? _reloadTimer;
 
-    private readonly string _selectCommand;
+    private readonly string _selectAllCommand;
+    private readonly string _selectByKeyCommand;
     private readonly string _insertCommand;
 
     private bool _disposed;
 
     public SqlDapperRepository(
         IDbConnectionFactory connectionFactory,
-        TranslatorOptions configuration,
+        IOptions<TranslatorOptions> options,
         ILogger<SqlDapperRepository> logger)
     {
         _connectionFactory = connectionFactory;
-        _configuration = configuration;
+        _configuration = options.Value;
         _logger = logger;
 
-        _selectCommand =
-            $"SELECT * FROM [{configuration.SchemaName}].[{configuration.TableName}]";
+        _selectAllCommand =
+            $"SELECT * FROM [{_configuration.SchemaName}].[{_configuration.TableName}]";
+
+        _selectByKeyCommand =
+            $"SELECT TOP 1 * FROM [{_configuration.SchemaName}].[{_configuration.TableName}] " +
+            $"WHERE [Key] = @Key AND [Culture] = @Culture";
 
         _insertCommand =
-            $"INSERT INTO [{configuration.SchemaName}].[{configuration.TableName}]([Key],[Value],[Culture]) " +
+            $"INSERT INTO [{_configuration.SchemaName}].[{_configuration.TableName}]([Key],[Value],[Culture]) " +
             $"VALUES (@Key,@Value,@Culture); SELECT CAST(SCOPE_IDENTITY() as bigint);";
 
-        if (_configuration.AutoCreateSqlTable)
-            CreateTableIfNeeded();
+        TranslatorDatabaseInitializer.EnsureTable(_connectionFactory, _configuration, _logger);
 
-        LoadLocalizationRecords();
-        SeedData();
-        LoadLocalizationRecords();
-
-        _reloadTimer = new Timer(
-            _ => LoadLocalizationRecords(),
-            null,
-            TimeSpan.FromMinutes(configuration.ReloadDataIntervalInMinuts),
-            TimeSpan.FromMinutes(configuration.ReloadDataIntervalInMinuts));
-    }
-
-    private void CreateTableIfNeeded()
-    {
-        try
+        if (_configuration.UseCaching)
         {
-            using var connection = _connectionFactory.CreateConnection();
+            LoadLocalizationRecords();
+            TranslatorDatabaseInitializer.SeedDefaults(
+                _connectionFactory,
+                _configuration,
+                _logger,
+                _cache);
+            LoadLocalizationRecords();
 
-            var sql = $@"
-IF NOT EXISTS (
-    SELECT * FROM INFORMATION_SCHEMA.TABLES
-    WHERE TABLE_SCHEMA = '{_configuration.SchemaName}'
-      AND TABLE_NAME = '{_configuration.TableName}'
-)
-BEGIN
-    CREATE TABLE [{_configuration.SchemaName}].[{_configuration.TableName}](
-        Id BIGINT IDENTITY(1,1) PRIMARY KEY,
-        BusinessId UNIQUEIDENTIFIER NOT NULL UNIQUE DEFAULT NEWID(),
-        [Key] NVARCHAR(255) NOT NULL,
-        [Value] NVARCHAR(500) NOT NULL,
-        [Culture] NVARCHAR(5) NULL
-    )
-END";
-
-            connection.Execute(sql);
-
-            _logger.LogInformation("Translator table ensured.");
+            if (_configuration.ReloadDataIntervalInMinuts > 0)
+            {
+                _reloadTimer = new Timer(
+                    _ => LoadLocalizationRecords(),
+                    null,
+                    TimeSpan.FromMinutes(_configuration.ReloadDataIntervalInMinuts),
+                    TimeSpan.FromMinutes(_configuration.ReloadDataIntervalInMinuts));
+            }
         }
-        catch (Exception ex)
+        else
         {
-            _logger.LogError(ex, "Create table failed");
-            throw;
+            TranslatorDatabaseInitializer.SeedDefaults(
+                _connectionFactory,
+                _configuration,
+                _logger);
         }
     }
 
@@ -92,7 +80,7 @@ END";
             _logger.LogInformation("Translator loading records...");
 
             using var connection = _connectionFactory.CreateConnection();
-            var records = connection.Query<LocalizationRecord>(_selectCommand);
+            var records = connection.Query<LocalizationRecord>(_selectAllCommand);
 
             _cache.Clear();
             foreach (var record in records)
@@ -106,43 +94,42 @@ END";
         }
     }
 
-    private void SeedData()
-    {
-        try
-        {
-            var missing = _configuration.DefaultTranslations
-                .Where(d => !_cache.ContainsKey((d.Key, d.Culture)))
-                .ToList();
-
-            if (!missing.Any()) return;
-
-            using var connection = _connectionFactory.CreateConnection();
-
-            foreach (var item in missing)
-            {
-                connection.Execute(_insertCommand, item);
-                _cache[(item.Key, item.Culture)] = new LocalizationRecord
-                {
-                    Key = item.Key,
-                    Culture = item.Culture,
-                    Value = item.Value
-                };
-            }
-
-            _logger.LogInformation("Seeded {Count} default translations", missing.Count);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "SeedData failed");
-        }
-    }
-
     public string Get(string key, string culture)
+        => _configuration.UseCaching
+            ? GetFromCache(key, culture)
+            : GetFromDatabase(key, culture);
+
+    private string GetFromCache(string key, string culture)
     {
         if (_cache.TryGetValue((key, culture), out var record))
             return record.Value;
 
-        record = new LocalizationRecord
+        return InsertMissingTranslation(key, culture);
+    }
+
+    private string GetFromDatabase(string key, string culture)
+    {
+        try
+        {
+            using var connection = _connectionFactory.CreateConnection();
+            var record = connection.QueryFirstOrDefault<LocalizationRecord>(
+                _selectByKeyCommand,
+                new { Key = key, Culture = culture });
+
+            if (record is not null)
+                return record.Value;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Read translation failed. Key: {Key}, Culture: {Culture}", key, culture);
+        }
+
+        return InsertMissingTranslation(key, culture);
+    }
+
+    private string InsertMissingTranslation(string key, string culture)
+    {
+        var record = new LocalizationRecord
         {
             Key = key,
             Culture = culture,
@@ -153,11 +140,14 @@ END";
         {
             using var connection = _connectionFactory.CreateConnection();
             record.Id = connection.Query<long>(_insertCommand, record).FirstOrDefault();
-            _cache[(key, culture)] = record;
+
+            if (_configuration.UseCaching)
+                _cache[(key, culture)] = record;
 
             _logger.LogInformation(
                 "Missing translation inserted. Key: {Key}, Culture: {Culture}",
-                key, culture);
+                key,
+                culture);
         }
         catch (Exception ex)
         {
@@ -169,32 +159,10 @@ END";
 
     public void Dispose()
     {
-        if (_disposed) return;
+        if (_disposed)
+            return;
+
         _disposed = true;
-        _reloadTimer.Dispose();
+        _reloadTimer?.Dispose();
     }
-
-    public string Get(string key)
-    {
-        throw new NotImplementedException();
-    }
-
-    public string Get(string key, params object[] arguments)
-    {
-        throw new NotImplementedException();
-    }
-
-    public string Get(string key, CultureInfo culture)
-    {
-        throw new NotImplementedException();
-    }
-
-    public string Get(string key, CultureInfo culture, params object[] arguments)
-    {
-        throw new NotImplementedException();
-    }
-
-    public string this[string key] => throw new NotImplementedException();
-
-    public string this[string key, params object[] arguments] => throw new NotImplementedException();
 }
