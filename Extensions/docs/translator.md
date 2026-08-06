@@ -62,17 +62,75 @@ Register via `Kootam.Translator.Database.DependencyInjection`:
 ```csharp
 using Kootam.Translator.Database.DependencyInjection;
 
-builder.Services.AddTranslator(builder.Configuration);
-// or
+// Recommended: WebApplicationBuilder + fluent builder
+builder.AddTranslator()
+    .UseCaching(reloadIntervalInMinutes: 5);
+
+// Direct DB read on every lookup (no in-memory cache)
+builder.AddTranslator()
+    .WithoutCaching();
+
+// Table managed by EF migration (no auto-create at startup)
+builder.AddTranslator()
+    .UseMigrations()
+    .UseCaching(5);
+
+var app = builder.Build();
+app.UseTranslator(); // initializes store at startup (table, cache, seed data)
+```
+
+Alternative registration on `IServiceCollection`:
+
+```csharp
+builder.Services.AddTranslator(builder.Configuration)
+    .UseCaching(5);
+
 builder.Services.AddTranslator(options =>
 {
     options.ConnectionString = builder.Configuration.GetConnectionString("Default");
+    options.UseCaching = true;
+    options.ReloadDataIntervalInMinuts = 5;
 });
+```
+
+### Caching vs direct DB
+
+| Mode | Method / option | Behavior |
+|------|-----------------|----------|
+| Cached (default) | `.UseCaching(minutes)` or `UseCaching: true` | Loads all records at startup; reloads on timer |
+| Direct | `.WithoutCaching()` or `UseCaching: false` | `SELECT` per lookup; no reload timer |
+
+### Table creation
+
+| Approach | Setup |
+|----------|--------|
+| Auto-create at startup | `.AutoCreateTable()` (default) or `AutoCreateSqlTable: true` |
+| EF migration | `.UseMigrations()` then add SQL in migration |
+
+```csharp
+using Kootam.Translator.Database.Database;
+
+migrationBuilder.Sql(
+    TranslatorMigrationScripts.GetCreateTableScript("dbo", "Translations"));
 ```
 
 Uses Dapper against a localization table. Model: `LocalizationRecord` (key, culture, value).
 
-**Options class:** `TranslatorOptions` with `ConnectionString` and `DefaultTranslatorOptionsName`.
+**Options class:** `TranslatorOptions` — section name `Translator` (`DefaultTranslatorOptionsName`).
+
+```json
+"Translator": {
+  "ConnectionString": "...",
+  "AutoCreateSqlTable": true,
+  "UseCaching": true,
+  "ReloadDataIntervalInMinuts": 5,
+  "SchemaName": "dbo",
+  "TableName": "Translations",
+  "DefaultCulture": "fa-IR",
+  "FallbackCulture": "en-US",
+  "DefaultTranslations": []
+}
+```
 
 ---
 
@@ -111,8 +169,8 @@ var faMessage = translator.Get("WelcomeMessage", new CultureInfo("fa-IR"));
 |----------|------|----------|
 | Static app strings | Yes | Overkill |
 | Admin-editable text | No | Yes |
-| Deployment | Files in repo | DB migration |
-| Performance | Fast (in-memory cache) | DB round-trip |
+| Deployment | Files in repo | DB migration or auto-create |
+| Performance | Fast (in-memory cache) | Cached or DB round-trip per lookup |
 
 Pick **one** backend per service.
 
