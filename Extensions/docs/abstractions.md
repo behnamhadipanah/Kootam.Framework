@@ -12,6 +12,9 @@ Shared contracts used across all Kootam extensions. These are **class libraries 
 |---------------|---------|
 | `Kootam.Cqrs.Abstractions` | Commands, queries, handlers, `Result<T>`, pipeline behaviors |
 | `Kootam.Authentication.Abstractions` | Auth services, tokens, claims, current user |
+| `Kootam.Authentication.SignIn.Abstractions` | Contact OTP and external sign-in contracts |
+| `Kootam.Email.Abstractions` | Email document and sender contracts |
+| `Kootam.Sms.Abstractions` | SMS sender contracts |
 | `Kootam.Caching.Abstractions` | Cache read/write/store interfaces |
 | `Kootam.AutoMap.Abstractions` | `IMapper` abstraction |
 | `Kootam.MessageBroker.Abstractions` | Publisher, subscriber, message envelope |
@@ -68,6 +71,34 @@ Handlers must return `Result`/`Result<T>` — never throw for expected business 
 | `ITokenStore<TUserKey>` | Write tokens to transport |
 | `ICurrentUserAccessor` | Access current authenticated user |
 | `IUserClaimsMapper<TUser>` | Map domain user to claims |
+
+### Sign-in
+
+`Kootam.Authentication.SignIn.Abstractions` is the host-facing contract. The implementation package verifies codes and external identities. The host implements `IContactOtpSender`.
+
+| Type | Role |
+|------|------|
+| `IContactOtpService` | Request and verify an email or mobile code |
+| `IContactOtpSender` | Deliver the code. Registered by the host |
+| `IExternalIdentityVerifier` | Verify Google, Apple, Microsoft, Facebook, and Telegram |
+| `IExternalSignInCatalog` | Public client identifiers for sign-in buttons |
+| `SignInOptions` | OTP windows and external provider settings |
+
+---
+
+## Send Abstractions
+
+Application code references these packages. SMTP and Kavenegar stay in the implementation packages.
+
+| Type | Role |
+|------|------|
+| `IEmailDocumentRenderer` | Turn an `EmailCard` into an `EmailDocument` |
+| `IEmailSender` | Deliver the document |
+| `EmailOptions` | `Log` or `Smtp` settings |
+| `ISmsOtpSender` | Send a verification code |
+| `ISmsSender` | Send a free-form message and a verification code |
+| `SmsOptions` | `Log` or `Kavenegar` settings |
+| `SmsDeliveryException` | Delivery failure with `SmsDeliveryFailureKind` |
 
 ---
 

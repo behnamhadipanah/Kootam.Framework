@@ -9,6 +9,7 @@ function Step($message)
 }
 
 $Project = "E:\BackupWork\VCS\Github\Kootam.Framework\Extensions\Kootam.Abstractions"
+$Solution = "Kootam.Abstractions.sln"
 
 # ریشه Repository را از روی مسیر پروژه پیدا می‌کند
 $RepositoryRoot = Split-Path (Split-Path $Project -Parent) -Parent
@@ -36,33 +37,38 @@ git checkout Main
 
 Step "Pulling latest changes from remote..."
 
-git pull origin Main
+try {
+    git pull origin Main
+}
+catch {
+    Write-Warning "git pull failed. Continuing with local code."
+}
 
-Step "Finding project file..."
+if (!(Test-Path $Solution)) {
+    throw "Solution not found: $Solution"
+}
 
-$csproj = Get-ChildItem *.csproj | Select-Object -First 1
+Write-Host "Solution : $Solution"
 
-Write-Host "Project : $($csproj.Name)"
+Step "Cleaning solution..."
 
-Step "Cleaning project..."
-
-dotnet clean $csproj.FullName -c Release
+dotnet clean $Solution -c Release
 
 Step "Restoring NuGet packages..."
 
-dotnet restore $csproj.FullName
+dotnet restore $Solution
 
-Step "Building project (Release)..."
+Step "Building solution (Release)..."
 
-dotnet build $csproj.FullName -c Release
+dotnet build $Solution -c Release
 
-Step "Creating NuGet package..."
+Step "Creating NuGet packages..."
 
 Write-Host "Output directory: $OutputDir" -ForegroundColor Cyan
 
-dotnet pack $csproj.FullName -c Release -o $OutputDir
+dotnet pack $Solution -c Release -o $OutputDir
 
 Step "Completed successfully."
 
-Write-Host "NuGet package created in:"
+Write-Host "NuGet packages created in:"
 Write-Host $OutputDir -ForegroundColor Green

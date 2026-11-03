@@ -11,6 +11,7 @@ step() {
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 PROJECT="$REPO_ROOT/Extensions/Kootam.Abstractions"
+SOLUTION="Kootam.Abstractions.sln"
 OUTPUT_DIR="$REPO_ROOT/nugets"
 
 step "Checking output directory..."
@@ -29,31 +30,30 @@ step "Switching to main branch..."
 git checkout Main
 
 step "Pulling latest changes from remote..."
-git pull origin Main
+if ! git pull origin Main; then
+    echo "WARNING: git pull failed. Continuing with local code." >&2
+fi
 
-step "Finding project file..."
-csproj="$(find . -maxdepth 1 -name '*.csproj' | head -n 1)"
-
-if [[ -z "$csproj" ]]; then
-    echo "No .csproj found in $PROJECT" >&2
+if [[ ! -f "$SOLUTION" ]]; then
+    echo "Solution not found: $PROJECT/$SOLUTION" >&2
     exit 1
 fi
 
-echo "Project : $(basename "$csproj")"
+echo "Solution : $SOLUTION"
 
-step "Cleaning project..."
-dotnet clean "$csproj" -c Release
+step "Cleaning solution..."
+dotnet clean "$SOLUTION" -c Release
 
 step "Restoring NuGet packages..."
-dotnet restore "$csproj"
+dotnet restore "$SOLUTION"
 
-step "Building project (Release)..."
-dotnet build "$csproj" -c Release
+step "Building solution (Release)..."
+dotnet build "$SOLUTION" -c Release
 
-step "Creating NuGet package..."
+step "Creating NuGet packages..."
 echo "Output directory: $OUTPUT_DIR"
-dotnet pack "$csproj" -c Release -o "$OUTPUT_DIR"
+dotnet pack "$SOLUTION" -c Release -o "$OUTPUT_DIR"
 
 step "Completed successfully."
-echo "NuGet package created in:"
+echo "NuGet packages created in:"
 echo "$OUTPUT_DIR"

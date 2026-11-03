@@ -93,7 +93,8 @@ Kootam.Framework/
 | Area | Packages |
 |------|----------|
 | **CQRS** | `Kootam.Cqrs`, `Kootam.Cqrs.Abstractions` |
-| **Authentication** | `Kootam.Authentication`, `Kootam.Authentication.Jwt`, `Kootam.Authentication.SqlServer`, `Kootam.Authentication.Redis`, `Kootam.Authentication.InMemory` |
+| **Authentication** | `Kootam.Authentication`, `Kootam.Authentication.Jwt`, `Kootam.Authentication.SqlServer`, `Kootam.Authentication.Redis`, `Kootam.Authentication.InMemory`, `Kootam.Authentication.SignIn`, `Kootam.Authentication.SignIn.Abstractions` |
+| **Send** | `Kootam.Email`, `Kootam.Email.Abstractions`, `Kootam.Sms`, `Kootam.Sms.Abstractions` |
 | **Caching** | `Kootam.Caching.InMemory`, `Kootam.Caching.Redis`, `Kootam.Caching.Sql` |
 | **Message Broker** | `Kootam.MessageBroker.RabbitMQ`, `Kootam.MessageBroker.Kafka`, `Kootam.MessageBroker.AzureServiceBus` |
 | **Auto Mapping** | `Kootam.AutoMap.AutoMapper`, `Kootam.AutoMap.Mapster` |

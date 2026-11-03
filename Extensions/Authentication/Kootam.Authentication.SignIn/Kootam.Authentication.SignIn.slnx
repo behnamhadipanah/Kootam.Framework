@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Kootam.Authentication.SignIn.Sample/Kootam.Authentication.SignIn.Sample.csproj" />
+    <Project Path="src/Kootam.Authentication.SignIn/Kootam.Authentication.SignIn.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Kootam.Authentication.SignIn.UnitTest/Kootam.Authentication.SignIn.UnitTest.csproj" />
+  </Folder>
+</Solution>

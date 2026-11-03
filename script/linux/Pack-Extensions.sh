@@ -42,7 +42,9 @@ step "Switching to main branch..."
 git checkout Main
 
 step "Pulling latest changes from remote..."
-git pull origin Main
+if ! git pull origin Main; then
+    echo "WARNING: git pull failed. Continuing with local code." >&2
+fi
 
 step "Finding solutions..."
 

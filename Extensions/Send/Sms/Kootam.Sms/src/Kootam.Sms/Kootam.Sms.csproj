@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <Authors>Behnam Hadipanah</Authors>
+    <Description>SMS delivery for Kootam applications, including Kavenegar and a log mode.</Description>
+    <Version>1.0.0</Version>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\..\..\docs\sms.md" Pack="true" PackagePath="README.md" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Kavenegar" Version="2.0.1" />
+    <ProjectReference Include="..\..\..\..\..\Kootam.Abstractions\Kootam.Sms.Abstractions\Kootam.Sms.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>
