@@ -1,4 +1,6 @@
-﻿using Kootam.Caching.Redis.Configuration;
+using Kootam.Caching.Abstractions;
+using Kootam.Caching.Redis.Adapter;
+using Kootam.Caching.Redis.Configuration;
 using Kootam.Caching.Redis.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -115,5 +117,29 @@ public class RedisOptionsTests
 
         Assert.Contains("Host", ex.Message);
         #endregion
+    }
+
+    [Fact]
+    public void AddRedisCaching_registers_one_adapter_as_store_and_adapter()
+    {
+        var services = new ServiceCollection();
+        services.AddRedisCaching(host: "localhost");
+
+        var concrete = Assert.Single(services, static descriptor => descriptor.ServiceType == typeof(RedisCacheAdapter));
+        var store = Assert.Single(services, static descriptor => descriptor.ServiceType == typeof(ICacheStore));
+        var adapter = Assert.Single(services, static descriptor => descriptor.ServiceType == typeof(ICacheAdapter));
+        Assert.Equal(ServiceLifetime.Singleton, concrete.Lifetime);
+        Assert.Equal(ServiceLifetime.Singleton, store.Lifetime);
+        Assert.Equal(ServiceLifetime.Singleton, adapter.Lifetime);
+
+        var sentinel = new RedisCacheAdapter(null!, null!);
+        var provider = new FixedProvider(sentinel);
+        Assert.Same(sentinel, store.ImplementationFactory!(provider));
+        Assert.Same(sentinel, adapter.ImplementationFactory!(provider));
+    }
+
+    private sealed class FixedProvider(object service) : IServiceProvider
+    {
+        public object? GetService(Type serviceType) => service;
     }
 }

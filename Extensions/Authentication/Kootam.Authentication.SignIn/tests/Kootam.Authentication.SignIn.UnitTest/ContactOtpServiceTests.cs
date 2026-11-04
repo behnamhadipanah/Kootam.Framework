@@ -1,10 +1,7 @@
-using Kootam.Authentication.SignIn.Contracts.Options;
-using Kootam.Authentication.SignIn.Enums;
-using Kootam.Authentication.SignIn.Models;
-using Kootam.Authentication.SignIn.Sample;
+using Kootam.Authentication.Abstractions.Enums;
+using Kootam.Authentication.Abstractions.Options;
 using Kootam.Authentication.SignIn.Services;
 using Kootam.Email;
-using Kootam.Sms;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 
@@ -16,16 +13,20 @@ public class ContactOtpServiceTests
     public async Task Email_and_mobile_codes_are_hashed_and_verified()
     {
         var cache = new MemorySignInCache();
-        var sender = new RecordingContactOtpSender();
-        var service = CreateService(cache, sender, "123456");
+        var email = new RecordingEmailSender();
+        var sms = new RecordingSmsSender();
+        var service = CreateService(cache, email, sms, "123456");
 
-        var email = await service.RequestAsync(ContactOtpPurpose.EmailLogin, "Ada@Example.com");
-        var mobile = await service.RequestAsync(ContactOtpPurpose.MobileLogin, "09120000000");
+        var emailResult = await service.RequestAsync(ContactOtpPurpose.EmailLogin, "Ada@Example.com");
+        var mobileResult = await service.RequestAsync(ContactOtpPurpose.MobileLogin, "09120000000");
 
-        Assert.Equal(ContactOtpStatus.Success, email.Status);
-        Assert.Equal("ada@example.com", email.Destination);
-        Assert.Equal("+989120000000", mobile.Destination);
-        Assert.Equal("123456", sender.LastCode);
+        Assert.Equal(ContactOtpStatus.Success, emailResult.Status);
+        Assert.Equal("ada@example.com", emailResult.Destination);
+        Assert.Equal("+989120000000", mobileResult.Destination);
+        Assert.Equal("123456", email.LastDocument?.PlainText);
+        Assert.Equal("123456", sms.LastCode);
+        Assert.Equal(1, sms.OtpCalls);
+        Assert.Equal(0, sms.TextCalls);
 
         var verifiedEmail = await service.VerifyAsync(ContactOtpPurpose.EmailLogin, "ada@example.com", "123456");
         var verifiedMobile = await service.VerifyAsync(ContactOtpPurpose.MobileLogin, "+989120000000", "123456");
@@ -41,7 +42,7 @@ public class ContactOtpServiceTests
     {
         var clock = new FixedTimeProvider(new DateTimeOffset(2026, 11, 3, 12, 0, 0, TimeSpan.Zero));
         var cache = new MemorySignInCache { Clock = clock };
-        var service = CreateService(cache, new RecordingContactOtpSender(), "123456", clock);
+        var service = CreateService(cache, new RecordingEmailSender(), new RecordingSmsSender(), "123456", clock);
         await service.RequestAsync(ContactOtpPurpose.EmailLogin, "ada@example.com");
 
         clock.Move(TimeSpan.FromMinutes(11));
@@ -54,29 +55,55 @@ public class ContactOtpServiceTests
     [Fact]
     public async Task Failed_delivery_removes_the_code()
     {
-        var sender = new RecordingContactOtpSender { Fail = true };
-        var service = CreateService(new MemorySignInCache(), sender, "123456");
+        var sms = new RecordingSmsSender { Fail = true };
+        var service = CreateService(new MemorySignInCache(), new RecordingEmailSender(), sms, "123456");
 
         var requested = await service.RequestAsync(ContactOtpPurpose.MobileLogin, "09120000000");
-        sender.Fail = false;
+        sms.Fail = false;
         var verified = await service.VerifyAsync(ContactOtpPurpose.MobileLogin, "09120000000", "123456");
 
         Assert.Equal(ContactOtpStatus.DeliveryFailed, requested.Status);
         Assert.Equal(ContactOtpStatus.InvalidCode, verified.Status);
     }
 
+    [Fact]
+    public async Task Email_uses_the_sign_in_copy_and_logo()
+    {
+        var renderer = new RecordingEmailRenderer();
+        var service = CreateService(
+            new MemorySignInCache(),
+            new RecordingEmailSender(),
+            new RecordingSmsSender(),
+            "123456",
+            renderer: renderer,
+            emailOptions: new EmailOptions { LogoUrl = "https://cdn.example/logo.png" });
+
+        await service.RequestAsync(ContactOtpPurpose.EmailLogin, "ada@example.com");
+
+        Assert.NotNull(renderer.LastCard);
+        Assert.Equal("Sign-in code", renderer.LastCard.Subject);
+        Assert.Equal("https://cdn.example/logo.png", renderer.LastCard.LogoUrl);
+        Assert.Equal("123456", renderer.LastCard.Highlight);
+    }
+
     private static ContactOtpService CreateService(
         MemorySignInCache cache,
-        RecordingContactOtpSender sender,
+        RecordingEmailSender email,
+        RecordingSmsSender sms,
         string code,
-        TimeProvider? time = null)
+        TimeProvider? time = null,
+        RecordingEmailRenderer? renderer = null,
+        EmailOptions? emailOptions = null)
         => new(
             cache,
             new FixedCodeGenerator(code),
-            sender,
             Options.Create(new SignInOptions()),
+            Options.Create(emailOptions ?? new EmailOptions()),
             time ?? TimeProvider.System,
-            NullLogger<ContactOtpService>.Instance);
+            NullLogger<ContactOtpService>.Instance,
+            renderer ?? new RecordingEmailRenderer(),
+            email,
+            sms);
 
     private sealed class FixedTimeProvider(DateTimeOffset utcNow) : TimeProvider
     {
@@ -85,60 +112,5 @@ public class ContactOtpServiceTests
         public void Move(TimeSpan by) => utcNow = utcNow.Add(by);
 
         public override DateTimeOffset GetUtcNow() => utcNow;
-    }
-}
-
-public class SmsSignInChannelTests
-{
-    [Fact]
-    public async Task Mobile_login_sends_the_template_code_and_not_free_text()
-    {
-        var sms = new RecordingSmsSender();
-        var sender = new ContactOtpSender(
-            Options.Create(new SignInOptions()),
-            Options.Create(new EmailOptions { Mode = "Log", LogoUrl = "https://cdn.example/logo.png" }),
-            Options.Create(new SmsOptions { Mode = "Log" }),
-            new EmailCardRenderer(),
-            new DiscardEmailSender(),
-            sms,
-            new SignInDevelopmentCodes());
-
-        await sender.SendAsync(
-            ContactOtpPurpose.MobileLogin,
-            "+989120000000",
-            "123456",
-            DateTimeOffset.UtcNow.AddMinutes(10));
-
-        Assert.Equal(1, sms.OtpCalls);
-        Assert.Equal(0, sms.TextCalls);
-        Assert.Equal("123456", sms.LastCode);
-    }
-
-    private sealed class RecordingSmsSender : ISmsSender
-    {
-        public int OtpCalls { get; private set; }
-
-        public int TextCalls { get; private set; }
-
-        public string? LastCode { get; private set; }
-
-        public Task SendOtpAsync(string phoneNumber, string code, CancellationToken cancellationToken = default)
-        {
-            OtpCalls++;
-            LastCode = code;
-            return Task.CompletedTask;
-        }
-
-        public Task SendAsync(string phoneNumber, string message, CancellationToken cancellationToken = default)
-        {
-            TextCalls++;
-            return Task.CompletedTask;
-        }
-    }
-
-    private sealed class DiscardEmailSender : IEmailSender
-    {
-        public Task SendAsync(string to, EmailDocument document, CancellationToken cancellationToken = default)
-            => Task.CompletedTask;
     }
 }

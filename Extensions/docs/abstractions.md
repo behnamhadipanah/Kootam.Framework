@@ -11,8 +11,7 @@ Shared contracts used across all Kootam extensions. These are **class libraries 
 | NuGet Package | Purpose |
 |---------------|---------|
 | `Kootam.Cqrs.Abstractions` | Commands, queries, handlers, `Result<T>`, pipeline behaviors |
-| `Kootam.Authentication.Abstractions` | Auth services, tokens, claims, current user |
-| `Kootam.Authentication.SignIn.Abstractions` | Contact OTP and external sign-in contracts |
+| `Kootam.Authentication.Abstractions` | Auth services, tokens, claims, current user, contact OTP, and external sign-in |
 | `Kootam.Email.Abstractions` | Email document and sender contracts |
 | `Kootam.Sms.Abstractions` | SMS sender contracts |
 | `Kootam.Caching.Abstractions` | Cache read/write/store interfaces |
@@ -74,12 +73,11 @@ Handlers must return `Result`/`Result<T>` — never throw for expected business 
 
 ### Sign-in
 
-`Kootam.Authentication.SignIn.Abstractions` is the host-facing contract. The implementation package verifies codes and external identities. The host implements `IContactOtpSender`.
+Contact OTP and external sign-in contracts live in `Kootam.Authentication.Abstractions`. The implementation package verifies codes and external identities. The host registers one Kootam cache, and `AddKootamEmail` or `AddKootamSms` for each enabled channel, before `AddKootamSignIn`. Sign-in uses `ICacheStore`, `IEmailSender`, and `ISmsOtpSender`.
 
 | Type | Role |
 |------|------|
 | `IContactOtpService` | Request and verify an email or mobile code |
-| `IContactOtpSender` | Deliver the code. Registered by the host |
 | `IExternalIdentityVerifier` | Verify Google, Apple, Microsoft, Facebook, and Telegram |
 | `IExternalSignInCatalog` | Public client identifiers for sign-in buttons |
 | `SignInOptions` | OTP windows and external provider settings |

@@ -1,10 +1,13 @@
 using System.Net.Http.Json;
 using System.Security.Cryptography;
 using System.Text;
-using Kootam.Authentication.SignIn.Contracts;
+using Kootam.Authentication.Abstractions.Enums;
+using Kootam.Authentication.Abstractions.Models;
+using Kootam.Authentication.Abstractions.Options;
+using Kootam.Authentication.Abstractions.Services;
+using Kootam.Caching.Abstractions;
 using Kootam.Authentication.SignIn.Enums;
 using Kootam.Authentication.SignIn.Models;
-using Kootam.Authentication.SignIn.Contracts.Options;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -14,7 +17,7 @@ namespace Kootam.Authentication.SignIn.Services;
 public sealed class ExternalIdentityVerifier(
     IOptions<SignInOptions> options,
     IHttpClientFactory httpClientFactory,
-    ISignInCache cache,
+    ICacheStore cache,
     TimeProvider timeProvider,
     ILogger<ExternalIdentityVerifier> logger) : IExternalIdentityVerifier
 {

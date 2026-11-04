@@ -20,6 +20,12 @@ public static class EmailServiceCollectionExtensions
             .Validate(
                 static options => !options.IsSmtp || options.SmtpIsReady(),
                 "Email:Mode is Smtp but Host, Port, FromAddress, User, and Password are required.")
+            .Validate(
+                static options => !options.IsSmtp || options.Smtp.Port is > 0 and <= 65535,
+                "Email:Smtp:Port must be between 1 and 65535.")
+            .Validate(
+                static options => !options.IsSmtp || options.Smtp.ImplicitSslPort is >= 0 and <= 65535,
+                "Email:Smtp:ImplicitSslPort must be between 0 and 65535.")
             .ValidateOnStart();
 
         services.TryAddSingleton<IEmailDocumentRenderer, EmailCardRenderer>();

@@ -1,21 +1,28 @@
 using System.Security.Cryptography;
 using System.Text;
-using Kootam.Authentication.SignIn.Contracts;
-using Kootam.Authentication.SignIn.Enums;
+using Kootam.Authentication.Abstractions.Enums;
+using Kootam.Authentication.Abstractions.Models;
+using Kootam.Authentication.Abstractions.Options;
+using Kootam.Authentication.Abstractions.Services;
+using Kootam.Caching.Abstractions;
 using Kootam.Authentication.SignIn.Models;
-using Kootam.Authentication.SignIn.Contracts.Options;
+using Kootam.Email;
+using Kootam.Sms;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace Kootam.Authentication.SignIn.Services;
 
 public sealed class ContactOtpService(
-    ISignInCache cache,
+    ICacheStore cache,
     IContactOtpCodeGenerator codeGenerator,
-    IContactOtpSender sender,
     IOptions<SignInOptions> options,
+    IOptions<EmailOptions> emailOptions,
     TimeProvider timeProvider,
-    ILogger<ContactOtpService> logger) : IContactOtpService
+    ILogger<ContactOtpService> logger,
+    IEmailDocumentRenderer? emailRenderer = null,
+    IEmailSender? emailSender = null,
+    ISmsOtpSender? smsSender = null) : IContactOtpService
 {
     public async Task<ContactOtpResult> RequestAsync(
         ContactOtpPurpose purpose,
@@ -53,7 +60,7 @@ public sealed class ContactOtpService(
 
         try
         {
-            await sender.SendAsync(purpose, normalized, plainCode, expiresAt, cancellationToken);
+            await SendAsync(purpose, normalized, plainCode, expiresAt, cancellationToken);
         }
         catch (Exception exception) when (exception is not OperationCanceledException)
         {
@@ -118,6 +125,39 @@ public sealed class ContactOtpService(
 
         await cache.RemoveAsync(codeKey);
         return ContactOtpResult.Success(normalized);
+    }
+
+    private async Task SendAsync(
+        ContactOtpPurpose purpose,
+        string destination,
+        string code,
+        DateTimeOffset expiresAt,
+        CancellationToken cancellationToken)
+    {
+        if (purpose == ContactOtpPurpose.MobileLogin)
+        {
+            if (smsSender is null)
+                throw new InvalidOperationException("Call AddKootamSms before AddKootamSignIn when SignIn:MobileOtp is enabled.");
+
+            await smsSender.SendOtpAsync(destination, code, cancellationToken);
+            return;
+        }
+
+        if (emailRenderer is null || emailSender is null)
+            throw new InvalidOperationException("Call AddKootamEmail before AddKootamSignIn when SignIn:EmailOtp is enabled.");
+
+        var method = options.Value.EmailOtp;
+        var minutes = Math.Max(1, (int)Math.Ceiling((expiresAt - timeProvider.GetUtcNow()).TotalMinutes));
+        var document = emailRenderer.Render(new EmailCard(
+            Subject: method.Subject,
+            LogoUrl: emailOptions.Value.LogoUrl,
+            Body: method.Body,
+            Title: method.Subject,
+            Highlight: code,
+            Footer: string.IsNullOrWhiteSpace(method.Footer)
+                ? $"This code expires in {minutes} minutes."
+                : method.Footer));
+        await emailSender.SendAsync(destination, document, cancellationToken);
     }
 
     private static string SafeDetail(string? message, string plainCode)

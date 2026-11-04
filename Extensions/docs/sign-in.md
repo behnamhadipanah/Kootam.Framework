@@ -10,19 +10,16 @@
 
 ## نصب و ثبت
 
-کش Kootam باید قبل از استفاده از کدها ثبت شده باشد. `ICacheStore` یا `ICacheAdapter` هر دو پذیرفته می‌شوند.
+کش Kootam باید قبل از `AddKootamSignIn` ثبت شده باشد. ورود همان `ICacheStore` را مصرف می‌کند. اگر Redis در پروژه است و لازم است، `AddRedisCaching` را صدا بزنید. در غیر این صورت `AddInMemoryCaching`.
 
-ارسال نامه و پیامک داخل این پکیج نیست. `Kootam.Email` و `Kootam.Sms` پکیج‌های مشترک‌اند و میزبان آن‌ها را جدا اضافه می‌کند. این پکیج فقط `IContactOtpSender` را صدا می‌زند. اگر ورود با ایمیل یا موبایل روشن باشد و این سرویس قبلاً ثبت نشده باشد، `AddKootamSignIn` خطا می‌دهد.
+ارسال از پکیج‌های موجود Email و Sms است. ورود نامه را با `IEmailDocumentRenderer` و `IEmailSender` می‌سازد و کد موبایل را با `ISmsOtpSender` می‌فرستد. اگر `EmailOtp` روشن باشد و ایمیل ثبت نشده باشد، یا `MobileOtp` روشن باشد و پیامک ثبت نشده باشد، `AddKootamSignIn` خطا می‌دهد. کانال دیگری با جایگزینی همان `IEmailSender` یا `ISmsOtpSender` وصل می‌شود.
 
 ```csharp
-builder.Services.AddInMemoryCaching();
-builder.Services.AddKootamEmail(builder.Configuration);
-builder.Services.AddKootamSms(builder.Configuration);
-builder.Services.AddSingleton<IContactOtpSender, ContactOtpSender>();
+builder.Services.AddInMemoryCaching(); // یا AddRedisCaching(builder.Configuration)
+builder.Services.AddKootamEmail(builder.Configuration); // فقط وقتی ورود با ایمیل لازم است
+builder.Services.AddKootamSms(builder.Configuration);   // فقط وقتی ورود با پیامک لازم است
 builder.Services.AddKootamSignIn(builder.Configuration);
 ```
-
-`ContactOtpSender` در Sample است: نامه را با `IEmailSender` و کد موبایل را با `ISmsOtpSender` می‌فرستد. میزبان می‌تواند همین شکل را داشته باشد یا فرستندهٔ دیگری ثبت کند.
 
 ## تنظیمات
 
@@ -76,7 +73,7 @@ if (!verified.Succeeded)
 // Find or create the user, then issue a Kootam JWT.
 ```
 
-کد هش می‌شود. پاسخ درخواست، خود کد را برنمی‌گرداند. Sample کد را در نامه با لوگوی `Email:LogoUrl`، subject و متن `EmailOtp` می‌گذارد.
+کد هش می‌شود. پاسخ درخواست، خود کد را برنمی‌گرداند. نامه لوگوی `Email:LogoUrl`، subject و متن `EmailOtp` را دارد و کد در بخش برجسته است.
 
 ## ورود با کد پیامکی
 
@@ -88,7 +85,7 @@ var verified = await otp.VerifyAsync(ContactOtpPurpose.MobileLogin, phoneNumber,
 1. شماره نرمال می‌شود. `0912...` و `+98912...` یکی هستند.
 2. درخواست اضافه در پنجرهٔ زمانی `RateLimited` است.
 3. هش کد تا زمان انقضا در کش می‌ماند.
-4. همان کد به `IContactOtpSender` می‌رود. Sample آن را با `ISmsOtpSender.SendOtpAsync` و قالب کاوه‌نگار می‌فرستد و متن آزاد نمی‌فرستد.
+4. همان کد با `ISmsOtpSender.SendOtpAsync` و قالب کاوه‌نگار می‌رود و متن آزاد فرستاده نمی‌شود.
 5. اگر ارسال شکست بخورد، کد پاک می‌شود و نتیجه `DeliveryFailed` است.
 6. `VerifyAsync` فقط شمارهٔ تأییدشده را برمی‌گرداند. کد یک‌بارمصرف است.
 
@@ -96,7 +93,7 @@ var verified = await otp.VerifyAsync(ContactOtpPurpose.MobileLogin, phoneNumber,
 
 ## حالت Log در توسعه
 
-`SignInDevelopmentCodes` را Sample پر می‌کند، فقط وقتی حالت ایمیل یا پیامک `Log` باشد. Sample از همین مقدار برای `Verify` استفاده می‌کند. در production این حالت را خاموش کنید.
+`Email:Mode` و `Sms:Mode` برابر `Log` کد را تحویل نمی‌دهند. پیامک کد را در لاگ می‌نویسد. نامه متن ساده را، که کد داخل آن است، در لاگ می‌نویسد. پاسخ API کد را برنمی‌گرداند. در production این حالت را خاموش کنید.
 
 ## SSO
 

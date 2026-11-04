@@ -1,4 +1,4 @@
-using Kootam.Authentication.SignIn.Enums;
+using Kootam.Authentication.Abstractions.Enums;
 
 namespace Kootam.Authentication.SignIn.Services;
 

@@ -1,4 +1,4 @@
-namespace Kootam.Authentication.SignIn.Contracts;
+namespace Kootam.Authentication.Abstractions.Services;
 
 public interface IContactOtpCodeGenerator
 {

@@ -21,7 +21,7 @@ public sealed class SmtpEmailSender(IOptions<EmailOptions> options, ILogger<Smtp
 
         var smtp = email.Smtp;
         var connectHost = string.IsNullOrWhiteSpace(smtp.ConnectHost) ? null : smtp.ConnectHost.Trim();
-        var implicitSsl = smtp.Port == 465;
+        var implicitSsl = smtp.UsesImplicitSsl();
         using var message = new MimeMessage();
         message.From.Add(new MailboxAddress(email.FromName?.Trim() ?? string.Empty, email.FromAddress!.Trim()));
         message.To.Add(MailboxAddress.Parse(to.Trim()));

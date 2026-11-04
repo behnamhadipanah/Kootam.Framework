@@ -1,6 +1,6 @@
-using Kootam.Authentication.SignIn.Enums;
+using Kootam.Authentication.Abstractions.Enums;
 
-namespace Kootam.Authentication.SignIn.Models;
+namespace Kootam.Authentication.Abstractions.Models;
 
 public sealed record ExternalSignInRequest(
     ExternalSignInProvider Provider,

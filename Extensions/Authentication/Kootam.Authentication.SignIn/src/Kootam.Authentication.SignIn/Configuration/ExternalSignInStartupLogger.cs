@@ -1,4 +1,4 @@
-using Kootam.Authentication.SignIn.Contracts.Options;
+using Kootam.Authentication.Abstractions.Options;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;

@@ -1,7 +1,7 @@
-using Kootam.Authentication.SignIn.Contracts;
-using Kootam.Authentication.SignIn.Enums;
-using Kootam.Authentication.SignIn.Models;
-using Kootam.Authentication.SignIn.Contracts.Options;
+using Kootam.Authentication.Abstractions.Enums;
+using Kootam.Authentication.Abstractions.Models;
+using Kootam.Authentication.Abstractions.Options;
+using Kootam.Authentication.Abstractions.Services;
 using Microsoft.Extensions.Options;
 
 namespace Kootam.Authentication.SignIn.Services;

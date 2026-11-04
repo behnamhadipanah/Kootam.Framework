@@ -22,9 +22,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Kootam.Authentication.SignIn\Kootam.Authentication.SignIn.csproj" />
-    <ProjectReference Include="..\..\src\Kootam.Authentication.SignIn.Sample\Kootam.Authentication.SignIn.Sample.csproj" />
-    <ProjectReference Include="..\..\..\..\Send\Email\Kootam.Email\src\Kootam.Email\Kootam.Email.csproj" />
-    <ProjectReference Include="..\..\..\..\Send\Sms\Kootam.Sms\src\Kootam.Sms\Kootam.Sms.csproj" />
   </ItemGroup>
 
 </Project>

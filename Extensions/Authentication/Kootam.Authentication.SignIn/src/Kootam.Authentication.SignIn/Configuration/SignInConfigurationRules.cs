@@ -1,4 +1,4 @@
-using Kootam.Authentication.SignIn.Contracts.Options;
+using Kootam.Authentication.Abstractions.Options;
 
 namespace Kootam.Authentication.SignIn.Configuration;
 

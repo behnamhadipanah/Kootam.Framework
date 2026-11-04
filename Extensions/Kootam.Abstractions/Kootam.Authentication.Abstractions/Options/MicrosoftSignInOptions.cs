@@ -1,4 +1,4 @@
-namespace Kootam.Authentication.SignIn.Contracts.Options;
+namespace Kootam.Authentication.Abstractions.Options;
 
 public sealed class MicrosoftSignInOptions : OidcSignInOptions
 {
