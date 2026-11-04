@@ -28,11 +28,17 @@ public sealed class EmailOptions
 
 public sealed class SmtpEmailOptions
 {
+    public const int DefaultPort = 587;
+
+    public const int DefaultImplicitSslPort = 465;
+
     public string? Host { get; set; }
 
     public string? ConnectHost { get; set; }
 
-    public int Port { get; set; } = 587;
+    public int Port { get; set; } = DefaultPort;
+
+    public int ImplicitSslPort { get; set; } = DefaultImplicitSslPort;
 
     public bool UseSsl { get; set; } = true;
 
@@ -41,4 +47,7 @@ public sealed class SmtpEmailOptions
     public string? Password { get; set; }
 
     public int TimeoutSeconds { get; set; } = 15;
+
+    public bool UsesImplicitSsl()
+        => ImplicitSslPort > 0 && Port == ImplicitSslPort;
 }

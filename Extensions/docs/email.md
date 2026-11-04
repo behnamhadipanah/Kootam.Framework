@@ -22,7 +22,7 @@ builder.Services.AddKootamEmail(builder.Configuration);
 
 ## تنظیمات
 
-`Email:Mode` فقط `Log` یا `Smtp` است. `Log` نامه را تحویل نمی‌دهد و برای توسعه است. `Smtp` بدون Host، Port، FromAddress، User و Password در startup خطا می‌دهد.
+`Email:Mode` فقط `Log` یا `Smtp` است. `Log` نامه را تحویل نمی‌دهد و برای توسعه است؛ متن سادهٔ نامه، از جمله کد ورود، در لاگ می‌آید. `Smtp` بدون Host، Port، FromAddress، User و Password در startup خطا می‌دهد.
 
 ```json
 {
@@ -35,6 +35,7 @@ builder.Services.AddKootamEmail(builder.Configuration);
       "Host": "mail.example.com",
       "ConnectHost": "",
       "Port": 587,
+      "ImplicitSslPort": 465,
       "UseSsl": true,
       "User": "",
       "Password": "",
@@ -45,6 +46,8 @@ builder.Services.AddKootamEmail(builder.Configuration);
 ```
 
 `ConnectHost` اختیاری است. وقتی نام SMTP رکورد عمومی ندارد، اتصال TCP به این آدرس می‌رود و نام گواهی همان `Host` می‌ماند. رمز را در مخزن نگذارید.
+
+`Port` پیش‌فرض ۵۸۷ است و هر پورت ۱ تا ۶۵۵۳۵ را می‌پذیرد. TLS ضمنی (اتصال از همان ابتدا رمزنگاری‌شده) پیش‌فرض فقط وقتی است که `Port` برابر `ImplicitSslPort` باشد؛ مقدار پیش‌فرض `ImplicitSslPort` برابر ۴۶۵ است. اگر سرور TLS ضمنی را روی پورت دیگری گوش می‌دهد، هر دو را همان پورت بگذارید. `ImplicitSslPort` با مقدار ۰ این حالت را خاموش می‌کند و `UseSsl` فقط STARTTLS یا اتصال ساده را انتخاب می‌کند.
 
 ## ساخت نامه
 
