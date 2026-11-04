@@ -12,12 +12,9 @@
 	<ItemGroup>
 		<PackageReference Include="FluentValidation" Version="12.1.1" />
 		<PackageReference Include="Kootam.Cqrs.Abstractions" Version="1.0.0" />
+		<PackageReference Include="Kootam.Framework.Domain" Version="1.0.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.10" />
 		<PackageReference Include="System.Security.Cryptography.Xml" Version="10.0.10" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<ProjectReference Include="..\..\Domain\Kootam.Framework.Domain\Kootam.Framework.Domain.csproj" />
 	</ItemGroup>
 	<ItemGroup>
 		<None Include="icon.png" Pack="true" PackagePath="\" />

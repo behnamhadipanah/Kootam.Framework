@@ -5,12 +5,6 @@
 ## نصب
 
 ```xml
-<ProjectReference Include="path/to/Kootam.Email.csproj" />
-```
-
-یا بعد از pack محلی:
-
-```xml
 <PackageReference Include="Kootam.Email" Version="1.0.0" />
 ```
 
