@@ -1,4 +1,4 @@
-﻿using Kootam.Caching.Abstractions;
+using Kootam.Caching.Abstractions;
 using Kootam.Caching.Redis.Adapter;
 using Kootam.Caching.Redis.Configuration;
 using Kootam.Caching.Redis.Context;
@@ -96,6 +96,8 @@ public static class RedisCachingServiceCollectionExtensions
     {
         services.AddSingleton<IRedisContext, RedisContext>();
         services.AddSingleton<IRedisRepository, RedisRepository>();
-        services.AddSingleton<ICacheAdapter, RedisCacheAdapter>();
+        services.AddSingleton<RedisCacheAdapter>();
+        services.AddSingleton<ICacheAdapter>(static provider => provider.GetRequiredService<RedisCacheAdapter>());
+        services.AddSingleton<ICacheStore>(static provider => provider.GetRequiredService<RedisCacheAdapter>());
     }
 }

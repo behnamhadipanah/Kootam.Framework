@@ -39,6 +39,7 @@ builder.Services.AddInMemoryCaching();
 
 - **Lifetime:** Singleton
 - **Use when:** Local dev, unit tests, single-node apps without shared state
+- `SetAsync` honors `expiry`. A missing expiry keeps the entry until `RemoveAsync`.
 
 ---
 
@@ -53,6 +54,8 @@ builder.Services
     .AddRedisCaching(builder.Configuration)
     .AddRedisHealthChecks();
 ```
+
+`AddRedisCaching` registers one `RedisCacheAdapter` as both `ICacheStore` and `ICacheAdapter`. Inject `ICacheStore` unless the call site needs the extra adapter operations.
 
 **appsettings.json:**
 
@@ -153,7 +156,7 @@ Always set expiry for data that can become stale.
 ## Agent Rules
 
 - Register **one** cache backend per service — do not register InMemory and Redis together.
-- Application layer depends on `ICacheStore` only.
+- Application layer depends on `ICacheStore` only. `AddRedisCaching` registers that same adapter as `ICacheStore`.
 - Always pass `TimeSpan? expiry` on `SetAsync` for non-static data.
 - Use `AddRedisHealthChecks()` in production Redis deployments.
 - Invalidate cache in command handlers after writes (`RemoveAsync` or pattern removal).
