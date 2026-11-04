@@ -1,9 +1,10 @@
 using Kootam.Authentication.SignIn.Configuration;
-using Kootam.Authentication.SignIn.Contracts;
-using Kootam.Authentication.SignIn.Contracts.Options;
-using Kootam.Authentication.SignIn.Models;
+using Kootam.Authentication.Abstractions.Options;
+using Kootam.Authentication.Abstractions.Services;
 using Kootam.Authentication.SignIn.Services;
 using Kootam.Caching.Abstractions;
+using Kootam.Email;
+using Kootam.Sms;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -17,30 +18,31 @@ public static class SignInServiceCollectionExtensions
         ArgumentNullException.ThrowIfNull(services);
         ArgumentNullException.ThrowIfNull(configuration);
 
-        var configured = configuration.GetSection(SignInOptions.SectionName).Get<SignInOptions>() ?? new SignInOptions();
-        if ((configured.EmailOtp.Enabled || configured.MobileOtp.Enabled)
-            && !services.Any(descriptor => descriptor.ServiceType == typeof(IContactOtpSender)))
+        if (!services.Any(static descriptor => descriptor.ServiceType == typeof(ICacheStore)))
         {
             throw new InvalidOperationException(
-                "Register IContactOtpSender before AddKootamSignIn when SignIn:EmailOtp or SignIn:MobileOtp is enabled.");
+                "Register a Kootam ICacheStore before AddKootamSignIn. Call AddRedisCaching when the project uses Redis, or AddInMemoryCaching otherwise.");
+        }
+
+        var configured = configuration.GetSection(SignInOptions.SectionName).Get<SignInOptions>() ?? new SignInOptions();
+        if (configured.EmailOtp.Enabled
+            && (!services.Any(static descriptor => descriptor.ServiceType == typeof(IEmailSender))
+                || !services.Any(static descriptor => descriptor.ServiceType == typeof(IEmailDocumentRenderer))))
+        {
+            throw new InvalidOperationException(
+                "Call AddKootamEmail before AddKootamSignIn when SignIn:EmailOtp is enabled.");
+        }
+
+        if (configured.MobileOtp.Enabled
+            && !services.Any(static descriptor => descriptor.ServiceType == typeof(ISmsOtpSender)))
+        {
+            throw new InvalidOperationException(
+                "Call AddKootamSms before AddKootamSignIn when SignIn:MobileOtp is enabled.");
         }
 
         services.AddOptions<SignInOptions>()
             .Bind(configuration.GetSection(SignInOptions.SectionName));
-
-        services.TryAddSingleton<ISignInCache>(static provider =>
-        {
-            if (provider.GetService<ICacheStore>() is { } store)
-                return new SignInCache(store);
-
-            if (provider.GetService<ICacheAdapter>() is ICacheStore adapter)
-                return new SignInCache(adapter);
-
-            throw new InvalidOperationException(
-                "Register a Kootam ICacheStore or ICacheAdapter before using sign-in codes.");
-        });
         services.TryAddSingleton(TimeProvider.System);
-        services.TryAddSingleton<SignInDevelopmentCodes>();
         services.TryAddSingleton<IContactOtpCodeGenerator, NumericContactOtpCodeGenerator>();
         services.TryAddSingleton<IContactOtpService, ContactOtpService>();
         services.AddHttpClient(ExternalIdentityVerifier.HttpClientName);

@@ -12,10 +12,11 @@ public sealed class LogEmailSender(IOptions<EmailOptions> options, ILogger<LogEm
         ArgumentNullException.ThrowIfNull(document);
 
         logger.LogInformation(
-            "Email logged instead of delivered. Mode={Mode} To={To} Subject={Subject}",
+            "Email logged instead of delivered. Mode={Mode} To={To} Subject={Subject} Body={Body}",
             options.Value.Mode,
             to.Trim(),
-            document.Subject);
+            document.Subject,
+            document.PlainText);
         return Task.CompletedTask;
     }
 }

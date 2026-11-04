@@ -11,7 +11,7 @@ Each extension is a standalone NuGet package under `Extensions/`. Abstractions d
 | Area | Abstraction | Implementations | Doc |
 |------|-------------|-----------------|-----|
 | CQRS | `Kootam.Cqrs.Abstractions` | `Kootam.Cqrs` | [cqrs.md](./cqrs.md) |
-| Authentication | `Kootam.Authentication.Abstractions`, `Kootam.Authentication.SignIn.Abstractions` | `Kootam.Authentication`, `.Jwt`, `.SqlServer`, `.Redis`, `.InMemory`, `.SignIn` | [authentication.md](./authentication.md), [sign-in.md](./sign-in.md) |
+| Authentication | `Kootam.Authentication.Abstractions` | `Kootam.Authentication`, `.Jwt`, `.SqlServer`, `.Redis`, `.InMemory`, `.SignIn` | [authentication.md](./authentication.md), [sign-in.md](./sign-in.md) |
 | Send | `Kootam.Email.Abstractions`, `Kootam.Sms.Abstractions` | `Kootam.Email`, `Kootam.Sms` | [email.md](./email.md), [sms.md](./sms.md) |
 | Caching | `Kootam.Caching.Abstractions` | `Kootam.Caching.InMemory`, `.Redis`, `.Sql` | [caching.md](./caching.md) |
 | Auto Mapping | `Kootam.AutoMap.Abstractions` | `Kootam.AutoMap.AutoMapper`, `Kootam.AutoMap.Mapster` | [automap.md](./automap.md) |
@@ -76,7 +76,7 @@ Each extension follows a common structure:
 |------|---------------------|
 | Commands & queries with validation | `Kootam.Cqrs` |
 | Cookie / header JWT auth | `Kootam.Authentication` + `Kootam.Authentication.Jwt` |
-| Contact OTP and external sign-in | `Kootam.Authentication.SignIn`. The host registers `IContactOtpSender`. |
+| Contact OTP and external sign-in | `Kootam.Authentication.SignIn`. The host adds Kootam email and SMS when those channels are enabled. |
 | Branded email | `Kootam.Email` |
 | SMS | `Kootam.Sms` |
 | Refresh tokens in SQL Server | `Kootam.Authentication.SqlServer` |

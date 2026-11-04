@@ -1,8 +1,8 @@
 using System.Security.Cryptography;
 using Kootam.Authentication.SignIn.Configuration;
-using Kootam.Authentication.SignIn.Contracts.Options;
-using Kootam.Authentication.SignIn.Enums;
-using Kootam.Authentication.SignIn.Models;
+using Kootam.Authentication.Abstractions.Enums;
+using Kootam.Authentication.Abstractions.Models;
+using Kootam.Authentication.Abstractions.Options;
 using Kootam.Authentication.SignIn.Services;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;

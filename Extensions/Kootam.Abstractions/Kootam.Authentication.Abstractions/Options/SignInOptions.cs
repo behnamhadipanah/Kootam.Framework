@@ -1,6 +1,6 @@
-using Kootam.Authentication.SignIn.Enums;
+using Kootam.Authentication.Abstractions.Enums;
 
-namespace Kootam.Authentication.SignIn.Contracts.Options;
+namespace Kootam.Authentication.Abstractions.Options;
 
 public sealed class SignInOptions
 {

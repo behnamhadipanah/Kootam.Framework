@@ -1,5 +1,5 @@
 using System.Security.Cryptography;
-using Kootam.Authentication.SignIn.Contracts;
+using Kootam.Authentication.Abstractions.Services;
 
 namespace Kootam.Authentication.SignIn.Services;
 

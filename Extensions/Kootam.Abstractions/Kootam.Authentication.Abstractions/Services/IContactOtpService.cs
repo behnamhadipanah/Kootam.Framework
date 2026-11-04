@@ -1,7 +1,7 @@
-using Kootam.Authentication.SignIn.Enums;
-using Kootam.Authentication.SignIn.Models;
+using Kootam.Authentication.Abstractions.Enums;
+using Kootam.Authentication.Abstractions.Models;
 
-namespace Kootam.Authentication.SignIn.Contracts;
+namespace Kootam.Authentication.Abstractions.Services;
 
 public interface IContactOtpService
 {

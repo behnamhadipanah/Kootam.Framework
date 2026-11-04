@@ -1,4 +1,4 @@
-namespace Kootam.Authentication.SignIn.Enums;
+namespace Kootam.Authentication.Abstractions.Enums;
 
 public enum ExternalSignInProvider
 {

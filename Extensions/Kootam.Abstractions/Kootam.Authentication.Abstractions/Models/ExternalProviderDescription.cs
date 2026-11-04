@@ -1,4 +1,4 @@
-namespace Kootam.Authentication.SignIn.Models;
+namespace Kootam.Authentication.Abstractions.Models;
 
 public sealed record ExternalProviderDescription(
     string Name,

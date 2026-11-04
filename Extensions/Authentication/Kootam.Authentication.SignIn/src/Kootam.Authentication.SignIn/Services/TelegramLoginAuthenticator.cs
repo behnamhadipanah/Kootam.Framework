@@ -1,6 +1,6 @@
 using System.Security.Cryptography;
 using System.Text;
-using Kootam.Authentication.SignIn.Models;
+using Kootam.Authentication.Abstractions.Models;
 
 namespace Kootam.Authentication.SignIn.Services;
 
