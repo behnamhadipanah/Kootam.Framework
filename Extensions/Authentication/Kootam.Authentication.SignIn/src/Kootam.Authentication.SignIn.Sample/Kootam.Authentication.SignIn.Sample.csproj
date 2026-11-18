@@ -9,12 +9,12 @@
 
   <ItemGroup>
     <PackageReference Include="Kootam.Caching.InMemory" Version="1.0.0" />
-    <PackageReference Include="Kootam.Email" Version="1.0.0" />
     <PackageReference Include="Kootam.Sms" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Kootam.Authentication.SignIn\Kootam.Authentication.SignIn.csproj" />
+    <ProjectReference Include="..\..\..\..\Send\Email\Kootam.Email\src\Kootam.Email\Kootam.Email.csproj" />
   </ItemGroup>
 
 </Project>

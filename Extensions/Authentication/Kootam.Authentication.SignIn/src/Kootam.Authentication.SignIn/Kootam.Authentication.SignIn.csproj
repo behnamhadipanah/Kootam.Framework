@@ -20,11 +20,14 @@
 
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Kootam.Authentication.Abstractions" Version="1.0.0" />
     <PackageReference Include="Kootam.Caching.Abstractions" Version="1.0.0" />
     <PackageReference Include="Kootam.Email.Abstractions" Version="1.0.0" />
     <PackageReference Include="Kootam.Sms.Abstractions" Version="1.0.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.21.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Kootam.Abstractions\Kootam.Authentication.Abstractions\Kootam.Authentication.Abstractions.csproj" />
   </ItemGroup>
 
 </Project>
