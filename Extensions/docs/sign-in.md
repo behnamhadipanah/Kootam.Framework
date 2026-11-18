@@ -4,7 +4,7 @@
 
 - کد ایمیل
 - کد پیامکی
-- هویت Google، Apple، Microsoft، Facebook و Telegram
+- هویت Google، Apple، Microsoft، Facebook، Telegram و هر ارائه‌دهندهٔ استاندارد OIDC. پیش‌فرض این مسیر Keycloak است
 
 بعد از تأیید، اپ کاربر را پیدا یا می‌سازد و با `Kootam.Authentication` و `Kootam.Authentication.Jwt` توکن می‌دهد.
 
@@ -50,7 +50,12 @@ builder.Services.AddKootamSignIn(builder.Configuration);
       "Apple": { "Enabled": false, "ClientId": "" },
       "Microsoft": { "Enabled": false, "ClientId": "", "Tenant": "common" },
       "Facebook": { "Enabled": false, "AppId": "", "AppSecret": "" },
-      "Telegram": { "Enabled": false, "BotToken": "" }
+      "Telegram": { "Enabled": false, "BotToken": "" },
+      "Oidc": {
+        "Enabled": false,
+        "Authority": "https://auth.example.com/realms/app",
+        "ClientId": ""
+      }
     }
   },
   "Sms": { "Mode": "Log" }
@@ -113,8 +118,27 @@ if (!identity.Succeeded)
 | Provider | ورودی | بررسی |
 | --- | --- | --- |
 | Google، Apple، Microsoft | `IdToken` | امضای JWKS، مخاطب، صادرکننده و عمر توکن |
+| OIDC، پیش‌فرض Keycloak | `IdToken` | discovery، امضای JWKS، مخاطب، `azp` در صورت وجود، صادرکننده و عمر توکن |
 | Facebook | `AccessToken` | `debug_token` و سپس پروفایل |
 | Telegram | `Telegram` | HMAC ویجت، حداکثر ۲۴ ساعت |
+
+`SignIn:External:Oidc` هر ارائه‌دهندهٔ استاندارد OIDC را می‌پذیرد. `Authority` آدرس issuer است و سند `{Authority}/.well-known/openid-configuration` مقدار `issuer` و `jwks_uri` را می‌دهد. پیش‌فرض Keycloak است و `Authority` همان آدرس realm است:
+
+```json
+"Oidc": {
+  "Enabled": true,
+  "Authority": "https://auth.example.com/realms/app",
+  "ClientId": "web"
+}
+```
+
+```csharp
+var identity = await verifier.VerifyAsync(new ExternalSignInRequest(
+    ExternalSignInProvider.Oidc,
+    IdToken: idToken));
+```
+
+برای Identity Provider استاندارد دیگر فقط `Authority` و `ClientId` عوض می‌شود. اسلش آخر `Authority` نادیده گرفته می‌شود. Keycloak محلی با `http` هم کار می‌کند. `issuer` سند discovery باید با `Authority` یکی باشد. کلاینت id token را می‌فرستد. `preferred_username` در `SuggestedUserName` برمی‌گردد و `IExternalSignInCatalog` همان `Authority` را کنار شناسهٔ کلاینت منتشر می‌کند.
 
 `IExternalSignInCatalog.Describe()` شناسهٔ عمومی کلاینت‌ها را برای دکمهٔ ورود برمی‌گرداند و رازها را برنمی‌گرداند.
 

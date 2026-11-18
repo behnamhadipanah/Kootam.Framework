@@ -16,6 +16,8 @@ public sealed class ExternalSignInOptions
 
     public TelegramSignInOptions Telegram { get; set; } = new();
 
+    public OidcAuthoritySignInOptions Oidc { get; set; } = new();
+
     public bool IsConfigured(ExternalSignInProvider provider)
         => provider switch
         {
@@ -24,6 +26,7 @@ public sealed class ExternalSignInOptions
             ExternalSignInProvider.Microsoft => Microsoft.IsConfigured(),
             ExternalSignInProvider.Facebook => Facebook.IsConfigured(),
             ExternalSignInProvider.Telegram => Telegram.IsConfigured(),
+            ExternalSignInProvider.Oidc => Oidc.IsConfigured(),
             _ => false
         };
 

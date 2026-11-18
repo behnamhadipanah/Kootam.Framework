@@ -5,4 +5,5 @@ public sealed record OidcTokenDocument(
     string? Email,
     bool EmailVerified,
     string? GivenName,
-    string? FamilyName);
+    string? FamilyName,
+    string? PreferredUserName = null);

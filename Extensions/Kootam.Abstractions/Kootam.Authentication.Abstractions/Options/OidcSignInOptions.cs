@@ -35,6 +35,6 @@ public class OidcSignInOptions
         }
     }
 
-    public bool IsConfigured()
+    public virtual bool IsConfigured()
         => Enabled && EffectiveClientIds().Count > 0;
 }

@@ -78,7 +78,7 @@ Contact OTP and external sign-in contracts live in `Kootam.Authentication.Abstra
 | Type | Role |
 |------|------|
 | `IContactOtpService` | Request and verify an email or mobile code |
-| `IExternalIdentityVerifier` | Verify Google, Apple, Microsoft, Facebook, and Telegram |
+| `IExternalIdentityVerifier` | Verify Google, Apple, Microsoft, Facebook, Telegram, and any standard OIDC provider. Keycloak is the default |
 | `IExternalSignInCatalog` | Public client identifiers for sign-in buttons |
 | `SignInOptions` | OTP windows and external provider settings |
 

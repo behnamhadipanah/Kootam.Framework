@@ -4,5 +4,6 @@ public enum OidcIssuerRule
 {
     Google = 1,
     Apple = 2,
-    Microsoft = 3
+    Microsoft = 3,
+    Configured = 4
 }

@@ -32,5 +32,11 @@ public static class SignInConfigurationRules
 
         if (external.Telegram.Enabled && !external.Telegram.IsConfigured())
             yield return "Telegram sign-in is enabled but SignIn:External:Telegram:BotToken is required.";
+
+        if (external.Oidc.Enabled && !external.Oidc.IsConfigured())
+        {
+            yield return
+                "OIDC sign-in is enabled but SignIn:External:Oidc:Authority and ClientId are required.";
+        }
     }
 }

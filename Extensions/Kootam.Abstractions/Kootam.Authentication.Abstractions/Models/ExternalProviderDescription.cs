@@ -5,4 +5,5 @@ public sealed record ExternalProviderDescription(
     string? ClientId,
     string? RedirectUri,
     string? TenantId,
-    string? BotId);
+    string? BotId,
+    string? Authority = null);

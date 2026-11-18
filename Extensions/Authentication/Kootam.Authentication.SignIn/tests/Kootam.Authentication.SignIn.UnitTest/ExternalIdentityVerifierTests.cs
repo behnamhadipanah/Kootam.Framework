@@ -34,11 +34,60 @@ public class ExternalIdentityVerifierTests
             $"https://login.microsoftonline.com/{tenant}/discovery/v2.0/keys",
             tenant);
 
-        Assert.Equal("user-1", google.Subject);
-        Assert.Equal("ada@example.com", google.Email);
-        Assert.True(google.EmailVerified);
-        Assert.Equal("user-1", apple.Subject);
-        Assert.Equal("user-1", microsoft.Subject);
+        Assert.Equal("user-1", google.Identity!.Subject);
+        Assert.Equal("ada@example.com", google.Identity.Email);
+        Assert.True(google.Identity.EmailVerified);
+        Assert.Equal("user-1", apple.Identity!.Subject);
+        Assert.Equal("user-1", microsoft.Identity!.Subject);
+    }
+
+    [Fact]
+    public async Task Oidc_accepts_keycloak_by_default_and_any_other_discovered_issuer()
+    {
+        const string keycloak = "https://auth.example.com/realms/app";
+        var keycloakIdentity = await VerifyOidc(
+            ExternalSignInProvider.Oidc,
+            keycloak,
+            "web",
+            $"{keycloak}/protocol/openid-connect/certs",
+            configuredAuthority: $"{keycloak}/",
+            preferredUserName: "ada",
+            authorizedParty: "web");
+        var otherIdentity = await VerifyOidc(
+            ExternalSignInProvider.Oidc,
+            "https://idp.example.com",
+            "mobile",
+            "https://cdn.example.com/jwks",
+            preferredUserName: "ada");
+        var foreignIssuer = await VerifyOidc(
+            ExternalSignInProvider.Oidc,
+            "https://auth.example.com/realms/other",
+            "web",
+            $"{keycloak}/protocol/openid-connect/certs",
+            configuredAuthority: keycloak,
+            expectSuccess: false);
+        var foreignClient = await VerifyOidc(
+            ExternalSignInProvider.Oidc,
+            keycloak,
+            "web",
+            $"{keycloak}/protocol/openid-connect/certs",
+            authorizedParty: "other-client",
+            expectSuccess: false);
+        var foreignDiscovery = await VerifyOidc(
+            ExternalSignInProvider.Oidc,
+            keycloak,
+            "web",
+            $"{keycloak}/protocol/openid-connect/certs",
+            discoveredIssuer: "https://evil.example",
+            expectSuccess: false);
+
+        Assert.Equal("user-1", keycloakIdentity.Identity!.Subject);
+        Assert.Equal("ada", keycloakIdentity.Identity.SuggestedUserName);
+        Assert.True(keycloakIdentity.Identity.EmailVerified);
+        Assert.Equal("user-1", otherIdentity.Identity!.Subject);
+        Assert.Equal(ExternalVerificationStatus.Failed, foreignIssuer.Status);
+        Assert.Equal(ExternalVerificationStatus.Failed, foreignClient.Status);
+        Assert.Equal(ExternalVerificationStatus.Failed, foreignDiscovery.Status);
     }
 
     [Fact]
@@ -103,12 +152,17 @@ public class ExternalIdentityVerifierTests
         Assert.Equal(ExternalVerificationStatus.Disabled, result.Status);
     }
 
-    private static async Task<ExternalIdentity> VerifyOidc(
+    private static async Task<ExternalVerificationResult> VerifyOidc(
         ExternalSignInProvider provider,
         string issuer,
         string audience,
         string jwksUrl,
-        string? tenant = null)
+        string? tenant = null,
+        string? configuredAuthority = null,
+        string? preferredUserName = null,
+        string? authorizedParty = null,
+        string? discoveredIssuer = null,
+        bool expectSuccess = true)
     {
         using var rsa = RSA.Create(2048);
         var key = new RsaSecurityKey(rsa) { KeyId = "k1" };
@@ -118,7 +172,21 @@ public class ExternalIdentityVerifierTests
             """;
         var handler = new StubHandler(request =>
         {
-            Assert.Equal(jwksUrl, request.RequestUri!.GetLeftPart(UriPartial.Path));
+            var path = request.RequestUri!.GetLeftPart(UriPartial.Path);
+            if (provider == ExternalSignInProvider.Oidc
+                && path.EndsWith("/.well-known/openid-configuration", StringComparison.Ordinal))
+            {
+                var authority = (configuredAuthority ?? issuer).Trim().TrimEnd('/');
+                Assert.Equal($"{authority}/.well-known/openid-configuration", path);
+                var published = discoveredIssuer ?? authority;
+                var discovery = $$"""{"issuer":"{{published}}","jwks_uri":"{{jwksUrl}}"}""";
+                return new HttpResponseMessage(System.Net.HttpStatusCode.OK)
+                {
+                    Content = new StringContent(discovery, System.Text.Encoding.UTF8, "application/json")
+                };
+            }
+
+            Assert.Equal(jwksUrl, path);
             return new HttpResponseMessage(System.Net.HttpStatusCode.OK)
             {
                 Content = new StringContent(jwks)
@@ -134,6 +202,10 @@ public class ExternalIdentityVerifierTests
         };
         if (tenant is not null)
             claims["tid"] = tenant;
+        if (preferredUserName is not null)
+            claims[JwtRegisteredClaimNames.PreferredUsername] = preferredUserName;
+        if (authorizedParty is not null)
+            claims["azp"] = authorizedParty;
 
         var token = new JsonWebTokenHandler().CreateToken(new SecurityTokenDescriptor
         {
@@ -162,12 +234,21 @@ public class ExternalIdentityVerifierTests
                     options.External.Microsoft.ClientId = audience;
                     options.External.Microsoft.Tenant = tenant!;
                     break;
+                case ExternalSignInProvider.Oidc:
+                    options.External.Oidc.Enabled = true;
+                    options.External.Oidc.ClientId = audience;
+                    options.External.Oidc.Authority = configuredAuthority ?? issuer;
+                    break;
             }
         });
 
         var result = await verifier.VerifyAsync(new ExternalSignInRequest(provider, IdToken: token));
-        Assert.True(result.Succeeded);
-        return result.Identity!;
+        if (expectSuccess)
+            Assert.True(result.Succeeded);
+        else
+            Assert.False(result.Succeeded);
+
+        return result;
     }
 
     private static ExternalIdentityVerifier Create(
@@ -214,5 +295,33 @@ public class SignInConfigurationRulesTests
 
         var warnings = SignInConfigurationRules.ExternalWarnings(external).ToArray();
         Assert.Contains(warnings, warning => warning.Contains("client secret", StringComparison.Ordinal));
+    }
+
+    [Fact]
+    public void Enabled_oidc_without_an_authority_is_a_warning()
+    {
+        var external = new ExternalSignInOptions();
+        external.Oidc.Enabled = true;
+        external.Oidc.ClientId = "web";
+
+        var warnings = SignInConfigurationRules.ExternalWarnings(external).ToArray();
+        Assert.Contains(warnings, warning => warning.Contains("SignIn:External:Oidc:Authority", StringComparison.Ordinal));
+    }
+
+    [Fact]
+    public void Catalog_publishes_the_oidc_authority_and_client_id()
+    {
+        var options = new SignInOptions();
+        options.External.Oidc.Enabled = true;
+        options.External.Oidc.Authority = "https://auth.example.com/realms/app/";
+        options.External.Oidc.ClientId = "web";
+        options.External.Oidc.RedirectUri = "https://app.example/callback";
+
+        var description = new ExternalSignInCatalog(Options.Create(options)).Describe().Single();
+
+        Assert.Equal("Oidc", description.Name);
+        Assert.Equal("web", description.ClientId);
+        Assert.Equal("https://auth.example.com/realms/app", description.Authority);
+        Assert.Equal("https://app.example/callback", description.RedirectUri);
     }
 }

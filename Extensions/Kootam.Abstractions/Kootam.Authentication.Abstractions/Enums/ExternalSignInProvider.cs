@@ -6,5 +6,6 @@ public enum ExternalSignInProvider
     Facebook = 2,
     Apple = 3,
     Microsoft = 4,
-    Telegram = 5
+    Telegram = 5,
+    Oidc = 6
 }

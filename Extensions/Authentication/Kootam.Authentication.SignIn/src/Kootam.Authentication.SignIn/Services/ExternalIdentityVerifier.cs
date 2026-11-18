@@ -1,6 +1,7 @@
 using System.Net.Http.Json;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json;
 using Kootam.Authentication.Abstractions.Enums;
 using Kootam.Authentication.Abstractions.Models;
 using Kootam.Authentication.Abstractions.Options;
@@ -59,6 +60,7 @@ public sealed class ExternalIdentityVerifier(
                     cancellationToken),
                 ExternalSignInProvider.Facebook => await VerifyFacebookAsync(request.AccessToken, cancellationToken),
                 ExternalSignInProvider.Telegram => VerifyTelegram(request.Telegram),
+                ExternalSignInProvider.Oidc => await VerifyDiscoveredOidcAsync(request.IdToken, cancellationToken),
                 _ => ExternalVerificationResult.Fail(ExternalVerificationStatus.Failed)
             };
         }
@@ -75,17 +77,24 @@ public sealed class ExternalIdentityVerifier(
         string jwksUrl,
         OidcIssuerRule issuerRule,
         ExternalSignInProvider provider,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken,
+        string? expectedIssuer = null)
     {
         if (string.IsNullOrWhiteSpace(idToken))
             return ExternalVerificationResult.Fail(ExternalVerificationStatus.Failed);
 
         var keys = await GetSigningKeysAsync(jwksUrl, cancellationToken);
-        var document = await OidcIdTokenValidator.ValidateAsync(idToken, keys, clientIds, issuerRule);
+        var document = await OidcIdTokenValidator.ValidateAsync(
+            idToken,
+            keys,
+            clientIds,
+            issuerRule,
+            expectedIssuer: expectedIssuer);
         if (document is null)
             return ExternalVerificationResult.Fail(ExternalVerificationStatus.Failed);
 
         var email = string.IsNullOrWhiteSpace(document.Email) ? null : document.Email.Trim();
+        var userName = provider == ExternalSignInProvider.Oidc ? document.PreferredUserName : null;
         return ExternalVerificationResult.Success(new ExternalIdentity(
             provider,
             document.Subject,
@@ -93,7 +102,7 @@ public sealed class ExternalIdentityVerifier(
             email is not null && document.EmailVerified,
             document.GivenName,
             document.FamilyName,
-            null));
+            userName));
     }
 
     private async Task<ExternalVerificationResult> VerifyFacebookAsync(
@@ -150,9 +159,88 @@ public sealed class ExternalIdentityVerifier(
             data.Username));
     }
 
+    private async Task<ExternalVerificationResult> VerifyDiscoveredOidcAsync(
+        string? idToken,
+        CancellationToken cancellationToken)
+    {
+        var oidc = options.Value.External.Oidc;
+        var authority = oidc.Issuer();
+        if (authority is null)
+            return ExternalVerificationResult.Fail(ExternalVerificationStatus.Disabled);
+
+        var discovery = await GetDiscoveryAsync(authority, cancellationToken);
+        if (discovery?.Issuer is null || discovery.JwksUri is null)
+            return ExternalVerificationResult.Fail(ExternalVerificationStatus.Failed);
+
+        return await VerifyOidcAsync(
+            idToken,
+            oidc.EffectiveClientIds(),
+            discovery.JwksUri,
+            OidcIssuerRule.Configured,
+            ExternalSignInProvider.Oidc,
+            cancellationToken,
+            discovery.Issuer);
+    }
+
+    private async Task<OidcDiscoveryDocument?> GetDiscoveryAsync(string authority, CancellationToken cancellationToken)
+    {
+        var url = $"{authority}/.well-known/openid-configuration";
+        var json = await GetCachedDocumentAsync(url, "auth:oidc:", cancellationToken, storeDownloaded: false);
+        if (string.IsNullOrWhiteSpace(json))
+            return null;
+
+        OidcDiscoveryDocument? document;
+        try
+        {
+            document = JsonSerializer.Deserialize<OidcDiscoveryDocument>(json);
+        }
+        catch (JsonException exception)
+        {
+            logger.LogWarning(exception, "OIDC discovery document at {Url} is not valid JSON.", url);
+            return null;
+        }
+
+        if (!DiscoveryAccepted(authority, document))
+        {
+            logger.LogWarning("OIDC discovery at {Url} does not match authority {Authority}.", url, authority);
+            return null;
+        }
+
+        await StoreCachedDocumentAsync(url, "auth:oidc:", json);
+        return document;
+    }
+
+    private static bool DiscoveryAccepted(string authority, OidcDiscoveryDocument? document)
+    {
+        if (document?.Issuer is null || string.IsNullOrWhiteSpace(document.JwksUri))
+            return false;
+
+        if (!string.Equals(NormalizeIssuer(document.Issuer), NormalizeIssuer(authority), StringComparison.Ordinal))
+            return false;
+
+        if (!Uri.TryCreate(authority, UriKind.Absolute, out var authorityUri)
+            || !Uri.TryCreate(document.JwksUri, UriKind.Absolute, out var jwksUri))
+            return false;
+
+        return string.Equals(jwksUri.Scheme, authorityUri.Scheme, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static string NormalizeIssuer(string value)
+        => value.Trim().TrimEnd('/');
+
     private async Task<IReadOnlyCollection<SecurityKey>> GetSigningKeysAsync(string url, CancellationToken cancellationToken)
     {
-        var cacheKey = "auth:jwks:" + url;
+        var json = await GetCachedDocumentAsync(url, "auth:jwks:", cancellationToken);
+        return new JsonWebKeySet(json).GetSigningKeys().ToArray();
+    }
+
+    private async Task<string> GetCachedDocumentAsync(
+        string url,
+        string cachePrefix,
+        CancellationToken cancellationToken,
+        bool storeDownloaded = true)
+    {
+        var cacheKey = cachePrefix + url;
         string? json = null;
         try
         {
@@ -160,24 +248,30 @@ public sealed class ExternalIdentityVerifier(
         }
         catch (Exception exception)
         {
-            logger.LogWarning(exception, "JWKS cache read failed for {Url}.", url);
+            logger.LogWarning(exception, "OIDC document cache read failed for {Url}.", url);
         }
 
-        if (string.IsNullOrWhiteSpace(json))
+        if (!string.IsNullOrWhiteSpace(json))
+            return json;
+
+        var client = httpClientFactory.CreateClient(HttpClientName);
+        json = await client.GetStringAsync(url, cancellationToken);
+        if (storeDownloaded)
+            await StoreCachedDocumentAsync(url, cachePrefix, json);
+
+        return json;
+    }
+
+    private async Task StoreCachedDocumentAsync(string url, string cachePrefix, string json)
+    {
+        try
         {
-            var client = httpClientFactory.CreateClient(HttpClientName);
-            json = await client.GetStringAsync(url, cancellationToken);
-            try
-            {
-                await cache.SetAsync(cacheKey, json, TimeSpan.FromHours(6));
-            }
-            catch (Exception exception)
-            {
-                logger.LogWarning(exception, "JWKS cache write failed for {Url}.", url);
-            }
+            await cache.SetAsync(cachePrefix + url, json, TimeSpan.FromHours(6));
         }
-
-        return new JsonWebKeySet(json).GetSigningKeys().ToArray();
+        catch (Exception exception)
+        {
+            logger.LogWarning(exception, "OIDC document cache write failed for {Url}.", url);
+        }
     }
 
     private static string MicrosoftKeysUrl(string? tenant)

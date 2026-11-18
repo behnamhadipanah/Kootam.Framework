@@ -14,7 +14,8 @@ public static class OidcIdTokenValidator
         IEnumerable<SecurityKey> signingKeys,
         IEnumerable<string> audiences,
         OidcIssuerRule issuerRule,
-        TimeSpan? clockSkew = null)
+        TimeSpan? clockSkew = null,
+        string? expectedIssuer = null)
     {
         if (string.IsNullOrWhiteSpace(token))
             return null;
@@ -35,7 +36,7 @@ public static class OidcIdTokenValidator
             ClockSkew = clockSkew ?? TimeSpan.FromMinutes(2),
             IssuerValidator = (issuer, securityToken, _) =>
             {
-                if (securityToken is not JsonWebToken jwt || !IssuerAccepted(issuer, jwt, issuerRule))
+                if (securityToken is not JsonWebToken jwt || !IssuerAccepted(issuer, jwt, issuerRule, expectedIssuer))
                     throw new SecurityTokenInvalidIssuerException("Issuer is not accepted.");
 
                 return issuer;
@@ -49,23 +50,48 @@ public static class OidcIdTokenValidator
         if (string.IsNullOrWhiteSpace(subject))
             return null;
 
+        if (issuerRule == OidcIssuerRule.Configured && !AuthorizedPartyAccepted(valid, audienceList))
+            return null;
+
         var email = ReadString(valid, JwtRegisteredClaimNames.Email);
         return new OidcTokenDocument(
             subject,
             email,
             email is not null && ReadVerified(valid),
             ReadString(valid, JwtRegisteredClaimNames.GivenName),
-            ReadString(valid, JwtRegisteredClaimNames.FamilyName));
+            ReadString(valid, JwtRegisteredClaimNames.FamilyName),
+            ReadString(valid, JwtRegisteredClaimNames.PreferredUsername));
     }
 
-    private static bool IssuerAccepted(string issuer, JsonWebToken jwt, OidcIssuerRule rule)
+    private static bool IssuerAccepted(string issuer, JsonWebToken jwt, OidcIssuerRule rule, string? expectedIssuer)
         => rule switch
         {
             OidcIssuerRule.Google => issuer is "https://accounts.google.com" or "accounts.google.com",
             OidcIssuerRule.Apple => issuer == "https://appleid.apple.com",
             OidcIssuerRule.Microsoft => MicrosoftIssuerAccepted(issuer, jwt),
+            OidcIssuerRule.Configured => ConfiguredIssuerAccepted(issuer, expectedIssuer),
             _ => false
         };
+
+    private static bool ConfiguredIssuerAccepted(string issuer, string? expectedIssuer)
+    {
+        if (string.IsNullOrWhiteSpace(issuer) || string.IsNullOrWhiteSpace(expectedIssuer))
+            return false;
+
+        return string.Equals(NormalizeIssuer(issuer), NormalizeIssuer(expectedIssuer), StringComparison.Ordinal);
+    }
+
+    private static string NormalizeIssuer(string value)
+        => value.Trim().TrimEnd('/');
+
+    private static bool AuthorizedPartyAccepted(JsonWebToken jwt, IReadOnlyList<string> audiences)
+    {
+        var authorizedParty = ReadString(jwt, "azp");
+        if (authorizedParty is null)
+            return true;
+
+        return audiences.Any(audience => string.Equals(audience, authorizedParty, StringComparison.Ordinal));
+    }
 
     private static bool MicrosoftIssuerAccepted(string issuer, JsonWebToken jwt)
     {

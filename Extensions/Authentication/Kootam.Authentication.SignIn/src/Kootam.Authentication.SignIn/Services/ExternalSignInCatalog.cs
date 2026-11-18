@@ -62,6 +62,17 @@ public sealed class ExternalSignInCatalog(IOptions<SignInOptions> options) : IEx
                 BotId(external.Telegram.BotToken)));
         }
 
+        if (external.IsConfigured(ExternalSignInProvider.Oidc))
+        {
+            providers.Add(new ExternalProviderDescription(
+                ExternalSignInProvider.Oidc.ToString(),
+                external.Oidc.EffectiveClientIds()[0],
+                Trim(external.Oidc.RedirectUri),
+                null,
+                null,
+                external.Oidc.Issuer()));
+        }
+
         return providers;
     }
 
